@@ -1,0 +1,17 @@
+TODO:
+* Command Bus
+	* Dependency injection/registration for command bus
+	* Implement
+
+* Wiring everything up
+
+* Message queue/bus
+	* Interfaces to register
+	* 
+	* Implement
+
+* Domain
+	* Switch to event sourcing
+
+* stylecop
+(* resharper)
