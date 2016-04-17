@@ -5,9 +5,10 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Messaging;
 
     public interface ICommandHandler<TCommand> where TCommand : ICommand 
     {
-        void Handle(TCommand command);
+        void Handle(TCommand command, IEventTransaction eventTransaction);
     }
 }

@@ -5,12 +5,25 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using SharedInterfaces.Messaging;
 
     public class AccountFactory
     {
-        public static Account CreateAccount(string name)
+        private IEventTransaction eventTransaction;
+
+        public AccountFactory(IEventTransaction eventTransaction)
         {
-            return new Account(name);
+            this.eventTransaction = eventTransaction;
+        }
+
+        private IEventTransaction GetTransaction()
+        {
+            return this.eventTransaction;
+        }
+
+        public Account CreateAccount(string name)
+        {
+            return new Account(GetTransaction(), name);
         }
     }
 }

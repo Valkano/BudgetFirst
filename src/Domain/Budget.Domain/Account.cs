@@ -4,10 +4,12 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using SharedInterfaces.Domain;
+    using SharedInterfaces.Messaging;
 
-    public class Account
+    public class Account : AggregateRoot
     {
-        internal Account(string name)
+        internal Account(IEventTransaction eventTransaction, string name) : base(eventTransaction)
         {
             this.Name = name;
         }        

@@ -55,6 +55,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\SharedInterfaces\SharedInterfaces.csproj">
+      <Project>{E6091DB1-C9F7-42DB-B4D5-E31FB6A5A6DA}</Project>
+      <Name>SharedInterfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Budget.Domain\Budget.Domain.csproj">
       <Project>{c5a29f5e-5669-41bb-aa7b-6943ed5cfbce}</Project>
       <Name>Budget.Domain</Name>
