@@ -45,5 +45,12 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <typeparam name="TDomainEvent">Event type</typeparam>
         /// <param name="domainEvent">Event to publish</param>
         void Publish<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : IDomainEvent;
+
+        /// <summary>
+        /// Register as a subscriber
+        /// </summary>
+        /// <typeparam name="TDomainEvent">Type of event</typeparam>
+        /// <param name="handler">Event handler</param>
+        void Subscribe<TDomainEvent>(Action<TDomainEvent> handler) where TDomainEvent : IDomainEvent;
     }
 }

@@ -29,7 +29,6 @@ namespace BudgetFirst.Budget.Domain.Tests
 {
     using System;
     using BudgetFirst.Budget.Domain.Aggregates;
-    using BudgetFirst.Budget.Domain.Events;
     using BudgetFirst.SharedInterfaces.Messaging;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

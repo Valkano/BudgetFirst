@@ -37,9 +37,21 @@ namespace BudgetFirst.MessageBus
     /// <summary>
     /// A publish/subscribe message bus
     /// </summary>
-    /// <remarks>TODO: Needs to implement the "subscribe" part as well</remarks>
     public class MessageBus : IMessageBus
     {
+        /// <summary>
+        /// Registered subscribers
+        /// </summary>
+        private Dictionary<Type, List<Action<IDomainEvent>>> registrations; // code smell
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="MessageBus"/> class.
+        /// </summary>
+        public MessageBus()
+        {
+            this.registrations = new Dictionary<Type, List<Action<IDomainEvent>>>();
+        }
+
         /// <summary>
         /// Publish an event to all subscribers
         /// </summary>
@@ -47,7 +59,33 @@ namespace BudgetFirst.MessageBus
         /// <param name="domainEvent">Event to publish</param>
         public void Publish<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : IDomainEvent
         {
-            throw new NotImplementedException();
+            List<Action<IDomainEvent>> handlers;
+            this.registrations.TryGetValue(domainEvent.GetType(), out handlers);
+            if (handlers == null)
+            {
+                return;
+            }
+
+            foreach (var subscriber in handlers)
+            {
+                subscriber.Invoke(domainEvent);
+            }
+        }
+
+        /// <summary>
+        /// Subscribe to events of a specific type
+        /// </summary>
+        /// <typeparam name="TDomainEvent">Event type</typeparam>
+        /// <param name="handler">Event handler to register</param>
+        public void Subscribe<TDomainEvent>(Action<TDomainEvent> handler) where TDomainEvent : IDomainEvent
+        {
+            var eventType = typeof(TDomainEvent);
+            if (!this.registrations.ContainsKey(eventType))
+            {
+                this.registrations[eventType] = new List<Action<IDomainEvent>>();
+            }
+
+            this.registrations[eventType].Add(@event => handler.Invoke((TDomainEvent)@event));
         }
     }
 }

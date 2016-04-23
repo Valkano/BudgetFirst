@@ -1,4 +1,4 @@
-﻿namespace BudgetFirst.Budget.Domain.Interfaces
+﻿namespace BudgetFirst.ReadSide.ReadModel
 {
     using System;
     using System.Collections.Generic;
@@ -6,9 +6,9 @@
     using System.Text;
 
     /// <summary>
-    /// TODO TODO
+    /// Account list read model
     /// </summary>
-    public interface IAccountRepository
+    public class AccountList
     {
     }
 }

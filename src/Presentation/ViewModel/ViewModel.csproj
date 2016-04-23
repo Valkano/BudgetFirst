@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C5A29F5E-5669-41BB-AA7B-6943ED5CFBCE}</ProjectGuid>
+    <ProjectGuid>{5C3F50FD-395C-4C4F-91DB-25A5FFDCC0C7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BudgetFirst.Budget.Domain</RootNamespace>
-    <AssemblyName>BudgetFirst.Budget.Domain</AssemblyName>
+    <RootNamespace>BudgetFirst.ViewModel</RootNamespace>
+    <AssemblyName>BudgetFirst.ViewModel</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -36,18 +36,22 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\..\Infrastructure\Budget.Domain.Interfaces\Budget.Domain.Interfaces.csproj">
-      <Project>{C0B0AF45-F29D-419C-90AE-E9B3719A032A}</Project>
-      <Name>Budget.Domain.Interfaces</Name>
+    <ProjectReference Include="..\..\Application\Budget.Domain.Commands\Budget.Domain.Commands.csproj">
+      <Project>{0d86c58c-1636-45cf-8fa2-5537b94c7c09}</Project>
+      <Name>Budget.Domain.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Application\ReadSide\ReadSide.csproj">
+      <Project>{79ede87e-204b-4a9f-b038-dc225a5b999e}</Project>
+      <Name>ReadSide</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\SharedInterfaces\SharedInterfaces.csproj">
-      <Project>{E6091DB1-C9F7-42DB-B4D5-E31FB6A5A6DA}</Project>
+      <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
       <Name>SharedInterfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Aggregates\Account.cs" />
-    <Compile Include="Aggregates\AccountFactory.cs" />
+    <Compile Include="AccountViewModel.cs" />
+    <Compile Include="ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

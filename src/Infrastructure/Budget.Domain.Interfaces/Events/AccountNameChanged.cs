@@ -25,7 +25,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.Budget.Domain.Events
+namespace BudgetFirst.Budget.Domain.Interfaces.Events
 {
     using System;
     using System.Collections.Generic;

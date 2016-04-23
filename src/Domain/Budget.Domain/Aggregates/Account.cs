@@ -31,7 +31,7 @@ namespace BudgetFirst.Budget.Domain.Aggregates
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using Events;
+    using Interfaces.Events;
     using SharedInterfaces.Domain;
     using SharedInterfaces.Messaging;
 

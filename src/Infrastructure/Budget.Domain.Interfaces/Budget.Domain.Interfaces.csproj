@@ -38,8 +38,15 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Events\AccountCreated.cs" />
+    <Compile Include="Events\AccountNameChanged.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SharedInterfaces\SharedInterfaces.csproj">
+      <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
+      <Name>SharedInterfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
