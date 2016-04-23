@@ -25,18 +25,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.SharedInterfaces.Commands
+namespace BudgetFirst.Budget.Domain.Events
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using System.Threading.Tasks;
+    using BudgetFirst.SharedInterfaces.Messaging;
 
     /// <summary>
-    /// Represents a command for the write-side
+    /// A new account was created
     /// </summary>
-    public interface ICommand
+    public class AccountCreated : DomainEvent
     {
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AccountCreated"/> class.
+        /// </summary>
+        /// <param name="name">Account name</param>
+        public AccountCreated(string name)
+        {
+            this.Name = name;
+        }
+
+        /// <summary>
+        /// Gets the account name
+        /// </summary>
+        public string Name { get; private set; }
     }
 }

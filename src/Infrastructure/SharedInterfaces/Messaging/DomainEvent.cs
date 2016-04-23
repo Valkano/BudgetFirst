@@ -25,18 +25,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.SharedInterfaces.Commands
+namespace BudgetFirst.SharedInterfaces.Messaging
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.Serialization;
     using System.Text;
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Represents a command for the write-side
+    /// An event, which is raised by an aggregate
     /// </summary>
-    public interface ICommand
+    [DataContract(Name = "DomainEvent", Namespace = "http://budgetfirst.github.io/schemas/2016/04/23/DomainEvent")]
+    public abstract class DomainEvent : IDomainEvent
     {
+        /// <summary>
+        /// Gets or sets the Id of the aggregate that this event was raised by
+        /// </summary>
+        [DataMember(Name = "AggregateId")]
+        public Guid AggregateId { get; set; }
     }
 }

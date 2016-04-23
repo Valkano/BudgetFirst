@@ -1,10 +1,16 @@
 TODO:
+* Object reconstitution:
+	Repository for aggregate -> replay events.
+		(still have to solve how to handle creation and initial creation event)
+			empty constructor and handle initial create event to set values?
+
 * How to separate command and query side?
 	Command-side could rehydrate aggregate(s) by replaying all events
 		must be a separate in-memory state from when read model is queried
 	Read model could also rehydrate on each request
 	Optimizations to this (caching, snapshotting) are to be implemented later (if needed)
 	=> we need some way to rehydrate a state from scratch.
+	=> solution: repository handles object lifetime (flyweight). initialize new repository for each request
 
 * How to handle events? Lifetime of instantiate object? (when to instantiate etc.)
 	=> would be nice to use scoped lifetime for this.

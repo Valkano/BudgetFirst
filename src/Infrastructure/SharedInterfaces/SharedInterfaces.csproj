@@ -42,10 +42,10 @@
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="DependencyInjection\IContainer.cs" />
     <Compile Include="IBootstrap.cs" />
+    <Compile Include="Messaging\DomainEvent.cs" />
     <Compile Include="Messaging\EventStore.cs" />
     <Compile Include="Messaging\EventTransaction.cs" />
     <Compile Include="Messaging\IDomainEvent.cs" />
-    <Compile Include="Messaging\IDomainEventHandler.cs" />
     <Compile Include="Messaging\IEventStore.cs" />
     <Compile Include="Messaging\IEventTransaction.cs" />
     <Compile Include="Messaging\IMessageBus.cs" />

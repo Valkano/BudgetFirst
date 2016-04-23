@@ -25,18 +25,42 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.SharedInterfaces.Commands
+namespace BudgetFirst.Budget.Domain.Aggregates
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using SharedInterfaces.Messaging;
 
     /// <summary>
-    /// Represents a command for the write-side
+    /// Factory for <see cref="Account"/> aggregates.
     /// </summary>
-    public interface ICommand
+    public class AccountFactory
     {
+        /// <summary>
+        /// Create a new account
+        /// </summary>
+        /// <param name="id">Account Id</param>
+        /// <param name="name">Account name</param>
+        /// <returns>New account</returns>
+        public static Account CreateAccount(Guid id, string name)
+        {
+            var account = new Account(id, name);
+            return account;
+        }
+
+        /// <summary>
+        /// Load an account from history
+        /// </summary>
+        /// <param name="id">Account to load</param>
+        /// <param name="history">History to load from</param>
+        /// <returns>Rehydrated aggregate</returns>
+        public static Account ReconstituteFromEvents(Guid id, IEnumerable<IDomainEvent> history) // TODO: should be repository
+        {
+            var account = new Account(id, history); 
+            return account;
+        }
     }
 }

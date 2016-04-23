@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_notes", "_notes", "{CFDF83
 		_notes\Third party modules that we still have to credit.txt = _notes\Third party modules that we still have to credit.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budget.Repositories", "Infrastructure\Budget.Repositories\Budget.Repositories.csproj", "{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{ED237741-44D0-4BF1-BC0E-67DFBA588F40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED237741-44D0-4BF1-BC0E-67DFBA588F40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED237741-44D0-4BF1-BC0E-67DFBA588F40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,5 +97,6 @@ Global
 		{02731945-17A1-4853-9314-2D8DCD12A02B} = {1293E469-09E8-4A65-9415-FF4CACBD01E4}
 		{C0B0AF45-F29D-419C-90AE-E9B3719A032A} = {EAC77D10-5E9C-4CC3-8922-3A40595E8403}
 		{ED237741-44D0-4BF1-BC0E-67DFBA588F40} = {91804646-9924-4562-AEEF-25FA91C83CFD}
+		{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7} = {EAC77D10-5E9C-4CC3-8922-3A40595E8403}
 	EndGlobalSection
 EndGlobal

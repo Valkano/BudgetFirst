@@ -42,8 +42,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account.cs" />
-    <Compile Include="AccountFactory.cs" />
+    <Compile Include="Aggregates\Account.cs" />
+    <Compile Include="Events\AccountNameChanged.cs" />
+    <Compile Include="Events\AccountCreated.cs" />
+    <Compile Include="Aggregates\AccountFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

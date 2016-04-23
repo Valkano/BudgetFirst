@@ -42,7 +42,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bootstrap.cs" />
     <Compile Include="CommandBus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
