@@ -8,7 +8,7 @@
         Title="Budget First" Height="350" Width="525">
     <Grid>
         <ListBox x:Name="accounts" HorizontalAlignment="Left" Height="100" Margin="96,68,0,0" VerticalAlignment="Top" Width="100"/>
-        <Button x:Name="button" Content="Add account" HorizontalAlignment="Left" Margin="96,173,0,0" VerticalAlignment="Top" Width="100" Click="button_Click"/>
+        <Button x:Name="button" Content="Add account" HorizontalAlignment="Left" Margin="96,173,0,0" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 </Window>

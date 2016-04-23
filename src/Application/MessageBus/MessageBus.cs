@@ -31,8 +31,8 @@ namespace BudgetFirst.MessageBus
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using SharedInterfaces.Messaging;
     using SharedInterfaces.DependencyInjection;
+    using SharedInterfaces.Messaging;
 
     /// <summary>
     /// A publish/subscribe message bus
@@ -43,8 +43,8 @@ namespace BudgetFirst.MessageBus
         /// <summary>
         /// Publish an event to all subscribers
         /// </summary>
-        /// <typeparam name="TDomainEvent"></typeparam>
-        /// <param name="domainEvent"></param>
+        /// <typeparam name="TDomainEvent">Type of the event to publish</typeparam>
+        /// <param name="domainEvent">Event to publish</param>
         public void Publish<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : IDomainEvent
         {
             throw new NotImplementedException();

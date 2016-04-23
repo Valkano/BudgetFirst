@@ -46,7 +46,7 @@ namespace BudgetFirst.Budget.Domain.Aggregates
         /// </summary>
         /// <param name="id">Account id</param>
         /// <param name="name">Account name</param>
-        internal Account(Guid id, string name) : this(id)
+        public Account(Guid id, string name) : this(id)
         {            
             this.RaiseEvent(new AccountCreated(name));
         }
@@ -57,7 +57,7 @@ namespace BudgetFirst.Budget.Domain.Aggregates
         /// </summary>
         /// <param name="id">Account id</param>
         /// <param name="history">Event history</param>
-        internal Account(Guid id, IEnumerable<IDomainEvent> history) : this(id)
+        public Account(Guid id, IEnumerable<IDomainEvent> history) : this(id)
         {
             this.LoadFrom(history);
         }

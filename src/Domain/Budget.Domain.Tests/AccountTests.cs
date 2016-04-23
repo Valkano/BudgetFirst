@@ -28,10 +28,10 @@
 namespace BudgetFirst.Budget.Domain.Tests
 {
     using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using BudgetFirst.SharedInterfaces.Messaging;
     using BudgetFirst.Budget.Domain.Aggregates;
     using BudgetFirst.Budget.Domain.Events;
+    using BudgetFirst.SharedInterfaces.Messaging;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
     /// Contains tests for the account aggregate

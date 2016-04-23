@@ -45,11 +45,13 @@ namespace BudgetFirst.CommandBus
         /// Dependency injection container, needed to resolve command handler
         /// </summary>
         private IContainer dependencyInjectionContainer;
+
         /// <summary>
         /// Message bus, needed to publish events to
         /// </summary>
         /// <remarks>TODO: event publishing should be job of event store?</remarks>
         private IMessageBus messageBus;
+
         /// <summary>
         /// Event store for event sourcing
         /// </summary>
@@ -75,17 +77,10 @@ namespace BudgetFirst.CommandBus
         /// <param name="command">Command to be executed</param>
         public void Submit<TCommand>(TCommand command) where TCommand : ICommand
         {
-            try
-            {
-                var eventTransaction = new EventTransaction();
-                InvokeHandler(command, eventTransaction);
-                StoreEvents(eventTransaction);
-                PublishEvents(eventTransaction);                
-            }
-            catch(Exception)
-            {
-                throw;
-            }            
+            var eventTransaction = new EventTransaction();
+            this.InvokeHandler(command, eventTransaction);
+            this.StoreEvents(eventTransaction);
+            this.PublishEvents(eventTransaction);
         }
 
         /// <summary>
@@ -96,7 +91,7 @@ namespace BudgetFirst.CommandBus
         /// <param name="eventTransaction">Event transaction to track unpublished events</param>
         private void InvokeHandler<TCommand>(TCommand command, IEventTransaction eventTransaction) where TCommand : ICommand
         {
-            var handler = dependencyInjectionContainer.Resolve<ICommandHandler<TCommand>>();
+            var handler = this.dependencyInjectionContainer.Resolve<ICommandHandler<TCommand>>();
             handler.Handle(command, eventTransaction);
         }
 
@@ -106,7 +101,7 @@ namespace BudgetFirst.CommandBus
         /// <param name="eventTransaction">Event transaction</param>
         private void StoreEvents(IEventTransaction eventTransaction)
         {
-            eventStore.Add(eventTransaction.GetEvents());
+            this.eventStore.Add(eventTransaction.GetEvents());
         }
 
         /// <summary>
