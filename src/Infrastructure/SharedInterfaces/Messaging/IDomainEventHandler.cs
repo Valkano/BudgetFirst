@@ -13,45 +13,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.ReadSide.ReadModel
+namespace BudgetFirst.SharedInterfaces.Messaging
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using SharedInterfaces.ReadModel;
+    using System.Threading.Tasks;
 
     /// <summary>
-    /// Account read model
+    /// Defines a domain event handler, intended for read side.
     /// </summary>
-    public class Account : ReadModel
+    /// <typeparam name="TDomainEvent">Type of domain event to handle</typeparam>
+    public interface IDomainEventHandler<TDomainEvent> where TDomainEvent : IDomainEvent
     {
         /// <summary>
-        /// Account Id
+        /// Handle the domain event
         /// </summary>
-        private Guid id;
-
-        /// <summary>
-        /// Account name
-        /// </summary>
-        private string name;
-
-        /// <summary>
-        /// Gets or sets account Id
-        /// </summary>
-        public Guid Id
-        {
-            get { return this.id; }
-            set { this.SetProperty(ref this.id, value); }
-        }
-        
-        /// <summary>
-        /// Gets or sets the account name
-        /// </summary>
-        public string Name
-        {
-            get { return this.name; }
-            set { this.SetProperty(ref this.name, value); }
-        }
+        /// <param name="event">Event to handle</param>
+        void Handle(TDomainEvent @event);
     }
 }

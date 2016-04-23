@@ -13,42 +13,57 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.Budget.Repositories
+namespace BudgetFirst.ReadSide.Repositories
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using BudgetFirst.Budget.Domain.Aggregates;
-    using BudgetFirst.SharedInterfaces.Messaging;
+    using System.Threading.Tasks;
+    using System.Xml.Linq;
+    using ReadModel;
 
     /// <summary>
-    /// Repository for <see cref="Account"/> aggregates
+    /// Read side account repository
     /// </summary>
     public class AccountRepository
     {
         /// <summary>
-        /// Event store
+        /// Identity map (i.e. state)
         /// </summary>
-        private readonly IEventStore eventStore;
+        private Dictionary<Guid, Account> identityMap;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="AccountRepository"/> class.
         /// </summary>
-        /// <param name="eventStore">Event store</param>
-        public AccountRepository(IEventStore eventStore)
+        public AccountRepository()
         {
-            this.eventStore = eventStore;
+            this.identityMap = new Dictionary<Guid, Account>();
         }
 
         /// <summary>
-        /// Find (rehydrate) an account aggregate
+        /// Retrieve an account from the repository.
         /// </summary>
         /// <param name="id">Account Id</param>
-        /// <returns>Rehydrated aggregate</returns>
+        /// <returns>Reference to the account in the repository, if found. <c>null</c> otherwise.</returns>
         public Account Find(Guid id)
         {
-            return new Account(id, this.eventStore.GetEvents());
+            Account account;
+            if (this.identityMap.TryGetValue(id, out account))
+            {
+                return account;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Save the account, or add it to the repository. 
+        /// </summary>
+        /// <param name="account">Account to save</param>
+        public void Save(Account account)
+        {
+            this.identityMap[account.Id] = account;
         }
     }
 }
