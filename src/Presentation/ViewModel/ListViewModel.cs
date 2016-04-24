@@ -55,7 +55,7 @@ namespace BudgetFirst.ViewModel
             this.viewModelRepository = viewModelRepository;
             this.ListReadModel = listReadModel;
             this.ListReadModel.CollectionChanged += this.ListReadModel_CollectionChanged;
-            
+
             // init list
             foreach (var item in listReadModel)
             {
@@ -76,7 +76,7 @@ namespace BudgetFirst.ViewModel
         private TListItemViewModel GetListItem(TListItemReadModel listItemReadModel)
         {
             // read and view models share the same Id; Uses caching
-            return this.viewModelRepository.Find(listItemReadModel.Id); 
+            return this.viewModelRepository.Find(listItemReadModel.Id);
         }
 
         /// <summary>
@@ -121,6 +121,10 @@ namespace BudgetFirst.ViewModel
                     }
 
                     this[e.OldStartingIndex] = this.GetListItem((TListItemReadModel)e.NewItems[0]);
+                    return;
+
+                case NotifyCollectionChangedAction.Reset:
+                    this.Clear();
                     return;
             }
         }
