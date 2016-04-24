@@ -52,7 +52,7 @@ namespace BudgetFirst.ApplicationCore
         /// Gets the account view model repository
         /// </summary>
         public AccountViewModelRepository AccountViewModelRepository { get; private set; }
-
+        
         /// <summary>
         /// Setup the dependency injection
         /// </summary>
@@ -67,12 +67,18 @@ namespace BudgetFirst.ApplicationCore
 
             // Read side repositories
             simpleInjector.Register<AccountReadModelRepository, AccountReadModelRepository>(Lifestyle.Singleton);
+            simpleInjector.Register<AccountListItemReadModelRepository, AccountListItemReadModelRepository>(Lifestyle.Singleton);
+            simpleInjector.Register<AccountListReadModelRepository, AccountListReadModelRepository>(Lifestyle.Singleton);
 
             // View side repositories
             simpleInjector.Register<AccountViewModelRepository, AccountViewModelRepository>(Lifestyle.Singleton);
 
+            // TODO: account list repository
+            simpleInjector.Register<AccountListItemViewModelRepository, AccountListItemViewModelRepository>(Lifestyle.Singleton);
+
             // Generators
             simpleInjector.Register<AccountGenerator, AccountGenerator>(Lifestyle.Singleton);
+            simpleInjector.Register<AccountListGenerator, AccountListGenerator>(Lifestyle.Singleton);
 
             var container = new SimpleInjectorWrapper(simpleInjector);
 
@@ -90,10 +96,19 @@ namespace BudgetFirst.ApplicationCore
         /// <param name="messageBus">Message bus</param>
         private void RegisterEventHandlers(IContainer container, IMessageBus messageBus)
         {
-            // All generators are treated as singletons
-            var accountGenerator = container.Resolve<AccountGenerator>();
-            messageBus.Subscribe<AccountCreated>(accountGenerator.Handle);
-            messageBus.Subscribe<AccountNameChanged>(accountGenerator.Handle);
+            {
+                // Account
+                var accountGenerator = container.Resolve<AccountGenerator>();
+                messageBus.Subscribe<AccountCreated>(accountGenerator.Handle);
+                messageBus.Subscribe<AccountNameChanged>(accountGenerator.Handle);
+            }
+
+            {
+                // Account list
+                var accountListGenerator = container.Resolve<AccountListGenerator>();
+                messageBus.Subscribe<AccountCreated>(accountListGenerator.Handle);
+                messageBus.Subscribe<AccountNameChanged>(accountListGenerator.Handle);
+            }
         }
     }
 }

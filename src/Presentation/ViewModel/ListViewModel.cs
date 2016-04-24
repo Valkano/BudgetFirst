@@ -23,6 +23,8 @@ namespace BudgetFirst.ViewModel
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Text;
+    using ReadSide.Repositories;
+    using Repository;
     using SharedInterfaces.Annotations;
     using SharedInterfaces.ReadModel;
 
@@ -30,24 +32,34 @@ namespace BudgetFirst.ViewModel
     /// List view models wrap list read models (i.e. observable collections).
     /// Implementation details: a view model must implement the same properties as the read model. 
     /// </summary>
+    /// <typeparam name="TListReadModel">List read model type</typeparam>
+    /// <typeparam name="TListItemReadModel">List item read model type</typeparam>
+    /// <typeparam name="TListItemViewModel">List item view model type</typeparam>
     public abstract class ListViewModel<TListReadModel, TListItemReadModel, TListItemViewModel> : ObservableCollection<TListItemViewModel>
         where TListReadModel : ObservableCollection<TListItemReadModel>
         where TListItemReadModel : ReadModel
         where TListItemViewModel : ViewModel<TListItemReadModel>
     {
         /// <summary>
+        /// View model repository
+        /// </summary>
+        private IViewModelRepository<TListItemReadModel, TListItemViewModel> viewModelRepository;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="ListViewModel{TListReadModel,TListItemReadModel,TListItemViewModel}"/> class.
         /// </summary>
         /// <param name="listReadModel">Read model to wrap and listen for events to.</param>
-        protected ListViewModel(TListReadModel listReadModel)
+        /// <param name="viewModelRepository">List item view model repository</param>
+        protected ListViewModel(TListReadModel listReadModel, IViewModelRepository<TListItemReadModel, TListItemViewModel> viewModelRepository)
         {
+            this.viewModelRepository = viewModelRepository;
             this.ListReadModel = listReadModel;
             this.ListReadModel.CollectionChanged += this.ListReadModel_CollectionChanged;
             
             // init list
             foreach (var item in listReadModel)
             {
-                this.Add(this.GetListItem(item)); // TODO: virtual call in constructor. Must assure that inheriting class doesn't use any state in that method
+                this.Add(this.GetListItem(item));
             }
         }
 
@@ -56,43 +68,61 @@ namespace BudgetFirst.ViewModel
         /// </summary>
         protected TListReadModel ListReadModel { get; private set; }
 
+        /// <summary>
+        /// Maps the read model list item to the view model list item (using the identity-mapped repository)
+        /// </summary>
+        /// <param name="listItemReadModel">List item read model</param>
+        /// <returns>Mapped view model</returns>
+        private TListItemViewModel GetListItem(TListItemReadModel listItemReadModel)
+        {
+            // read and view models share the same Id; Uses caching
+            return this.viewModelRepository.Find(listItemReadModel.Id); 
+        }
+
+        /// <summary>
+        /// Handles the collection changed event for the list read model
+        /// </summary>
+        /// <param name="sender">Sender of the event</param>
+        /// <param name="e">Event arguments</param>
         private void ListReadModel_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             // TODO: this might not be fully implemented yet. It assumes that this event is handled for a single item change only
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (var newItem in e.NewItems.OfType<TListItemReadModel>())
+                    if (e.NewItems == null || e.NewItems.Count != 1)
                     {
-                        this.Add(this.GetListItem(newItem));
+                        break;
                     }
-                    break;
 
+                    this.Insert(e.NewStartingIndex, this.GetListItem((TListItemReadModel)e.NewItems[0]));
+                    return;
                 case NotifyCollectionChangedAction.Move:
-                    // TODO: handle multiple items
-                    throw new NotImplementedException();
+                    if (e.NewItems == null || e.NewItems.Count != 1 || e.OldItems == null || e.OldItems.Count != 1)
+                    {
+                        break;
+                    }
+
                     this.Move(e.OldStartingIndex, e.NewStartingIndex);
-                    break;
-
+                    return;
                 case NotifyCollectionChangedAction.Remove:
-                    // TODO: handle multiple items
-                    throw new NotImplementedException();
+                    if (e.OldItems == null || e.OldItems.Count != 1)
+                    {
+                        break;
+                    }
+
                     this.RemoveAt(e.OldStartingIndex);
-                    break;
-
+                    return;
                 case NotifyCollectionChangedAction.Replace:
-                    // TODO: handle multiple items
-                    throw new NotImplementedException();
-                    var newItemReplaced = e.NewItems.OfType<TListItemReadModel>().Single();
-                    this[e.OldStartingIndex] = this.GetListItem(newItemReplaced);
-                    break;
+                    if (e.NewItems == null || e.NewItems.Count != 1 || e.OldItems == null || e.OldItems.Count != 1 ||
+                        e.OldStartingIndex != e.NewStartingIndex)
+                    {
+                        break;
+                    }
 
-                case NotifyCollectionChangedAction.Reset:
-                    this.Clear();
-                    break;
+                    this[e.OldStartingIndex] = this.GetListItem((TListItemReadModel)e.NewItems[0]);
+                    return;
             }
         }
-
-        protected abstract TListItemViewModel GetListItem(TListItemReadModel itemReadModel);
     }
 }

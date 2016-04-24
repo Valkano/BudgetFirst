@@ -26,7 +26,7 @@ namespace BudgetFirst.ReadSide.Repositories
     /// <summary>
     /// Read side account list item repository
     /// </summary>
-    public class AccountListItemReadModelRepository
+    public class AccountListItemReadModelRepository : IReadModelRepository<AccountListItem>
     {
         /// <summary>
         /// Identity map (i.e. state)

@@ -27,23 +27,9 @@ namespace BudgetFirst.ReadSide.ReadModel
     public class Account : ReadModel, IAccount
     {
         /// <summary>
-        /// Account Id
-        /// </summary>
-        private Guid id;
-
-        /// <summary>
         /// Account name
         /// </summary>
         private string name;
-
-        /// <summary>
-        /// Gets or sets account Id
-        /// </summary>
-        public Guid Id
-        {
-            get { return this.id; }
-            set { this.SetProperty(ref this.id, value); }
-        }
         
         /// <summary>
         /// Gets or sets the account name

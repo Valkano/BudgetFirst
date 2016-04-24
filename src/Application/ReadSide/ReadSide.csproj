@@ -57,6 +57,7 @@
     <Compile Include="Repositories\AccountListReadModelRepository.cs" />
     <Compile Include="Repositories\AccountListItemReadModelRepository.cs" />
     <Compile Include="Repositories\AccountReadModelRepository.cs" />
+    <Compile Include="Repositories\IReadModelRepository.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

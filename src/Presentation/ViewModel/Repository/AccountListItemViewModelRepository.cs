@@ -25,27 +25,27 @@ namespace BudgetFirst.ViewModel.Repository
     using SharedInterfaces.Commands;
 
     /// <summary>
-    /// Account view model repository
+    /// Account list item view model repository
     /// </summary>
-    public class AccountViewModelRepository : ViewModelRepository<AccountReadModelRepository, Account, AccountViewModel>
+    public class AccountListItemViewModelRepository : ViewModelRepository<AccountListItemReadModelRepository, AccountListItem, AccountListItemViewModel>
     {
-       /// <summary>
-        /// Initialises a new instance of the <see cref="AccountViewModelRepository"/> class.
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AccountListItemViewModelRepository"/> class.
         /// </summary>
         /// <param name="readModelRepository">Read model repository (to get and wrap read models)</param>
         /// <param name="commandBus">Command bus</param>
-        public AccountViewModelRepository(AccountReadModelRepository readModelRepository, ICommandBus commandBus) : base(readModelRepository, commandBus)
+        public AccountListItemViewModelRepository(AccountListItemReadModelRepository readModelRepository, ICommandBus commandBus) : base(readModelRepository, commandBus)
         {
         }
-        
+
         /// <summary>
-        /// Maps the account read model to the account view model
+        /// Maps the account list item read model to the corresponding view model
         /// </summary>
-        /// <param name="readModel">Account read model</param>
-        /// <returns>Account view model</returns>
-        protected override AccountViewModel Map(Account readModel)
+        /// <param name="readModel">Read model</param>
+        /// <returns>Mapped view model</returns>
+        protected override AccountListItemViewModel Map(AccountListItem readModel)
         {
-            return new AccountViewModel(readModel, this.CommandBus); 
+            return new AccountListItemViewModel(readModel, this.CommandBus);
         }
     }
 }

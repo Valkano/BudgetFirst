@@ -13,32 +13,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.ReadSide.ReadModel
+namespace BudgetFirst.ViewModel
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using SharedInterfaces.ReadModel;
+    using ReadSide.ReadModel;
+    using Repository;
 
     /// <summary>
-    /// Account list item, for use in account lists
+    /// Account list view model
     /// </summary>
-    public class AccountListItem : ReadModel, IAccountListItem
+    public class AccountListViewModel : ListViewModel<AccountList, AccountListItem, AccountListItemViewModel>
     {
         /// <summary>
-        /// Account name
+        /// Initialises a new instance of the <see cref="AccountListViewModel"/> class.
         /// </summary>
-        private string name;
-        
-        /// <summary>
-        /// Gets or sets the account name
-        /// </summary>
-        public string Name
+        /// <param name="listReadModel">List read model</param>
+        /// <param name="viewModelRepository">List item view model repository</param>
+        public AccountListViewModel(AccountList listReadModel, IViewModelRepository<AccountListItem, AccountListItemViewModel> viewModelRepository) : base(listReadModel, viewModelRepository)
         {
-            get { return this.name; }
-            set { this.SetProperty(ref this.name, value); }
         }
     }
 }

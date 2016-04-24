@@ -26,7 +26,7 @@ namespace BudgetFirst.ReadSide.Repositories
     /// <summary>
     /// Read side account list repository
     /// </summary>
-    public class AccountListReadModelRepository
+    public class AccountListReadModelRepository 
     {
         /// <summary>
         /// Single account list contained in this repository
