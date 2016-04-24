@@ -1,4 +1,4 @@
-﻿namespace Presentation.Wpf
+﻿namespace BudgetFirst.Presentation.Wpf
 {
     using System;
     using System.Collections.Generic;

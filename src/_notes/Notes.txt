@@ -1,38 +1,7 @@
 TODO:
-* Object reconstitution:
-	Repository for aggregate -> replay events.
-		(still have to solve how to handle creation and initial creation event)
-			empty constructor and handle initial create event to set values?
+* Refactor projects
+	* Merge
+	* Rename
+	* Adjust position in layer
 
-* How to separate command and query side?
-	Command-side could rehydrate aggregate(s) by replaying all events
-		must be a separate in-memory state from when read model is queried
-	Read model could also rehydrate on each request
-	Optimizations to this (caching, snapshotting) are to be implemented later (if needed)
-	=> we need some way to rehydrate a state from scratch.
-	=> solution: repository handles object lifetime (flyweight). initialize new repository for each request
-
-* How to handle events? Lifetime of instantiate object? (when to instantiate etc.)
-	=> would be nice to use scoped lifetime for this.
-		replay opens new scope, then identity map? 
-			=> actually, more an issue of how repository loads/instantiates?
-			...but messaging would still need to know the instances to submit message to
-
-	!! beware that messages may be directed to specific aggregates. message handling cannot be on all aggregates simultaneously
-	..or rather: it must not happen on an instance of an aggregate representing an entity with a specific id.
-	event handling must load corresponding entity from repository
-		=> better to split state and logic? logic has event handlers, state is loaded from repository? 
-			=> wrap state in domain object
-				i.e.:	limit set from outside, wraps state object
-
-* Repository for domain/entities
-	i.e. where we would keep the in-memory domain objects during processing of a command
-	
-* Domain
-	* Switch to event sourcing
-
-* Readmodel repository, ViewModel
-* Registrations in SimpleInjector (application core assembly?) + tests
-
-* stylecop
-(* resharper)
+* Do we still need these layers?

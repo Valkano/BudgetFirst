@@ -33,13 +33,13 @@ namespace BudgetFirst.ReadSide.Handlers
         /// <summary>
         /// Account repository
         /// </summary>
-        private AccountRepository repository;
+        private AccountReadModelRepository repository;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="AccountGenerator"/> class.
         /// </summary>
         /// <param name="repository">Account repository to use</param>
-        public AccountGenerator(AccountRepository repository)
+        public AccountGenerator(AccountReadModelRepository repository)
         {
             this.repository = repository;
         }

@@ -20,19 +20,45 @@ namespace BudgetFirst.ViewModel
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Budget.Domain.Commands.Account;
     using ReadSide.ReadModel;
+    using SharedInterfaces.Commands;
+    using SharedInterfaces.DependencyInjection;
 
     /// <summary>
     /// Account view model
     /// </summary>
-    public class AccountViewModel : ViewModel<Account>
+    public class AccountViewModel : ViewModel<Account>, IAccount
     {
+        /// <summary>
+        /// Command bus
+        /// </summary>
+        private readonly ICommandBus commandBus;
+
         /// <summary>
         /// Initialises a new instance of the <see cref="AccountViewModel"/> class.
         /// </summary>
         /// <param name="readModel">Account read model to base the view model on.</param>
-        public AccountViewModel(Account readModel) : base(readModel)
+        /// <param name="commandBus">Command bus</param>
+        public AccountViewModel(Account readModel, ICommandBus commandBus) : base(readModel)
         {
+            this.commandBus = commandBus;
+        }
+
+        /// <summary>
+        /// Gets or sets the Account Id
+        /// </summary>
+        public Guid Id
+        {
+            get
+            {
+                return this.ReadModel.Id;
+            }
+
+            set
+            {
+                // Should not happen. TODO: assertion?
+            }
         }
 
         /// <summary>
@@ -47,8 +73,19 @@ namespace BudgetFirst.ViewModel
 
             set
             {
-                // TODO 
+                // TODO: error handling?
+                this.commandBus.Submit(new ChangeAccountNameCommand() { Id = this.Id, Name = value });
             }
+        }
+
+        /// <summary>
+        /// Add a new account
+        /// </summary>
+        /// <param name="name">Account name</param>
+        public void AddAccount(string name)
+        {
+            // TODO: error handling? Guid?
+            this.commandBus.Submit(new CreateAccountCommand() { Id = Guid.NewGuid(), Name = name });
         }
     }
 }

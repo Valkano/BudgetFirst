@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0D86C58C-1636-45CF-8FA2-5537B94C7C09}</ProjectGuid>
+    <ProjectGuid>{EADDEB9C-FC1E-4B86-8E33-FF05A6F58710}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BudgetFirst.Budget.Domain.Commands</RootNamespace>
-    <AssemblyName>BudgetFirst.Budget.Domain.Commands</AssemblyName>
+    <RootNamespace>BudgetFirst.ApplicationCore</RootNamespace>
+    <AssemblyName>BudgetFirst.ApplicationCore</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -24,7 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,15 +36,55 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\..\Domain\DomainEvents\DomainEvents.csproj">
+      <Project>{371f14b9-221b-4933-b5d2-d1aae9a13593}</Project>
+      <Name>DomainEvents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\Budget.Domain.Interfaces\Budget.Domain.Interfaces.csproj">
+      <Project>{c0b0af45-f29d-419c-90ae-e9b3719a032a}</Project>
+      <Name>Budget.Domain.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\SharedInterfaces\SharedInterfaces.csproj">
-      <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
+      <Project>{E6091DB1-C9F7-42DB-B4D5-E31FB6A5A6DA}</Project>
       <Name>SharedInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Presentation\ViewModel\ViewModel.csproj">
+      <Project>{5c3f50fd-395c-4c4f-91db-25a5ffdcc0c7}</Project>
+      <Name>ViewModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Budget.Domain.Commands\Budget.Domain.Commands.csproj">
+      <Project>{0d86c58c-1636-45cf-8fa2-5537b94c7c09}</Project>
+      <Name>Budget.Domain.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommandBus\CommandBus.csproj">
+      <Project>{b62294cf-9b88-4cf2-8e0f-1d0552ad90dc}</Project>
+      <Name>CommandBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MessageBus\MessageBus.csproj">
+      <Project>{ed237741-44d0-4bf1-bc0e-67dfba588f40}</Project>
+      <Name>MessageBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReadSide\ReadSide.csproj">
+      <Project>{79EDE87E-204B-4A9F-B038-DC225A5B999E}</Project>
+      <Name>ReadSide</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account\CreateAccountNameCommand.cs" />
-    <Compile Include="Account\CreateAccountCommand.cs" />
+    <Compile Include="Bootstrap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="SimpleInjector, Version=3.1.3.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.3.1.3\lib\portable-net4+sl4+wp8+win8+wpa81\SimpleInjector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Code analysis for this project is disabled.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

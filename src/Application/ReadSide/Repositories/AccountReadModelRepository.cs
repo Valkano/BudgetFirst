@@ -26,7 +26,7 @@ namespace BudgetFirst.ReadSide.Repositories
     /// <summary>
     /// Read side account repository
     /// </summary>
-    public class AccountRepository
+    public class AccountReadModelRepository
     {
         /// <summary>
         /// Identity map (i.e. state)
@@ -34,9 +34,9 @@ namespace BudgetFirst.ReadSide.Repositories
         private Dictionary<Guid, Account> identityMap;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="AccountRepository"/> class.
+        /// Initialises a new instance of the <see cref="AccountReadModelRepository"/> class.
         /// </summary>
-        public AccountRepository()
+        public AccountReadModelRepository()
         {
             this.identityMap = new Dictionary<Guid, Account>();
         }

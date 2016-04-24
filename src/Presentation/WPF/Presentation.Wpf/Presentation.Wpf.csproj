@@ -7,8 +7,8 @@
     <ProjectGuid>{79F9FA8F-BB2F-4F12-8919-32084915B1DB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Presentation.Wpf</RootNamespace>
-    <AssemblyName>Presentation.Wpf</AssemblyName>
+    <RootNamespace>BudgetFirst.Presentation.Wpf</RootNamespace>
+    <AssemblyName>BudgetFirst.Presentation.Wpf</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -97,6 +97,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Application\ApplicationCore\ApplicationCore.csproj">
+      <Project>{eaddeb9c-fc1e-4b86-8e33-ff05a6f58710}</Project>
+      <Name>ApplicationCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Application\ReadSide\ReadSide.csproj">
       <Project>{79ede87e-204b-4a9f-b038-dc225a5b999e}</Project>
       <Name>ReadSide</Name>

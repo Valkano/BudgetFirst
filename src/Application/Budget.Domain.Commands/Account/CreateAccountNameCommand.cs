@@ -1,4 +1,16 @@
-﻿// This file is part of BudgetFirst.
+﻿// BudgetFirst 
+// ©2016 Thomas Mühlgrabner
+//
+// This source code is dual-licensed under:
+//   * Mozilla Public License 2.0 (MPL 2.0) 
+//   * GNU General Public License v3.0 (GPLv3)
+//
+// ==================== Mozilla Public License 2.0 ===================
+// This Source Code Form is subject to the terms of the Mozilla Public 
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// ================= GNU General Public License v3.0 =================
+// This file is part of BudgetFirst.
 //
 // BudgetFirst is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,45 +25,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.ReadSide.ReadModel
+namespace BudgetFirst.Budget.Domain.Commands.Account
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using SharedInterfaces.ReadModel;
+    using BudgetFirst.SharedInterfaces.Commands;
 
     /// <summary>
-    /// Account read model
+    /// Change account name
     /// </summary>
-    public class Account : ReadModel, IAccount
+    public class ChangeAccountNameCommand : ICommand
     {
         /// <summary>
-        /// Account Id
+        /// Gets or sets the Id of the account
         /// </summary>
-        private Guid id;
+        public Guid Id { get; set; }
 
-        /// <summary>
-        /// Account name
-        /// </summary>
-        private string name;
-
-        /// <summary>
-        /// Gets or sets account Id
-        /// </summary>
-        public Guid Id
-        {
-            get { return this.id; }
-            set { this.SetProperty(ref this.id, value); }
-        }
-        
         /// <summary>
         /// Gets or sets the account name
         /// </summary>
-        public string Name
-        {
-            get { return this.name; }
-            set { this.SetProperty(ref this.name, value); }
-        }
+        public string Name { get; set; }
     }
 }
