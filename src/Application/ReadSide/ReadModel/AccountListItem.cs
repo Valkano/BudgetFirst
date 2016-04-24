@@ -13,36 +13,46 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.ApplicationCore
+namespace BudgetFirst.ReadSide.ReadModel
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using ViewModel.Repository;
+    using SharedInterfaces.ReadModel;
 
     /// <summary>
-    /// Singleton for view model repositories
+    /// Account list item, for use in account lists
     /// </summary>
-    public static class Repositories
+    public class AccountListItem : ReadModel, IAccountListItem
     {
         /// <summary>
-        /// Bootstrap which handles all initialisation of the application core
+        /// Account Id
         /// </summary>
-        private static readonly Bootstrap Bootstrap;
+        private Guid id;
 
         /// <summary>
-        /// Initialises static members of the <see cref="Repositories"/> class.
+        /// Account name
         /// </summary>
-        static Repositories()
+        private string name;
+
+        /// <summary>
+        /// Gets or sets account Id
+        /// </summary>
+        public Guid Id
         {
-            Bootstrap = new Bootstrap();
+            get { return this.id; }
+            set { this.SetProperty(ref this.id, value); }
         }
 
         /// <summary>
-        /// Gets the account view model repository
+        /// Gets or sets the account name
         /// </summary>
-        public static AccountViewModelRepository AccountViewModelRepository => Bootstrap.AccountViewModelRepository;
+        public string Name
+        {
+            get { return this.name; }
+            set { this.SetProperty(ref this.name, value); }
+        }
     }
 }

@@ -17,13 +17,16 @@ namespace BudgetFirst.ReadSide.ReadModel
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Linq;
     using System.Text;
+    using SharedInterfaces.ReadModel;
 
     /// <summary>
     /// Account list read model
     /// </summary>
-    public class AccountList
+    public class AccountList : ObservableCollection<AccountListItem>
     {
     }
 }

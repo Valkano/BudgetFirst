@@ -28,7 +28,7 @@ namespace BudgetFirst.ViewModel
     /// <summary>
     /// Account view model
     /// </summary>
-    public class AccountViewModel : ViewModel<Account>, IAccount
+    public class AccountListItemViewModel : ViewModel<AccountListItem>, IAccountListItem
     {
         /// <summary>
         /// Command bus
@@ -36,11 +36,11 @@ namespace BudgetFirst.ViewModel
         private readonly ICommandBus commandBus;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="AccountViewModel"/> class.
+        /// Initialises a new instance of the <see cref="AccountListItemViewModel"/> class.
         /// </summary>
         /// <param name="readModel">Account read model to base the view model on.</param>
         /// <param name="commandBus">Command bus</param>
-        public AccountViewModel(Account readModel, ICommandBus commandBus) : base(readModel)
+        public AccountListItemViewModel(AccountListItem readModel, ICommandBus commandBus) : base(readModel)
         {
             this.commandBus = commandBus;
         }
@@ -57,7 +57,7 @@ namespace BudgetFirst.ViewModel
         }
 
         /// <summary>
-        /// Gets or sets the account name
+        /// Gets the account name
         /// </summary>
         public string Name
         {
@@ -65,12 +65,16 @@ namespace BudgetFirst.ViewModel
             {
                 return this.ReadModel.Name;
             }
+        }
 
-            set
-            {
-                // TODO: error handling?
-                this.commandBus.Submit(new ChangeAccountNameCommand() { Id = this.Id, Name = value });
-            }
+        /// <summary>
+        /// Add a new account
+        /// </summary>
+        /// <param name="name">Account name</param>
+        public void AddAccount(string name)
+        {
+            // TODO: error handling? Guid?
+            this.commandBus.Submit(new CreateAccountCommand() { Id = Guid.NewGuid(), Name = name });
         }
     }
 }

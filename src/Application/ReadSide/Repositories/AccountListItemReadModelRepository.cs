@@ -13,64 +13,57 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.ViewModel
+namespace BudgetFirst.ReadSide.Repositories
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using Budget.Domain.Commands.Account;
-    using ReadSide.ReadModel;
-    using SharedInterfaces.Commands;
-    using SharedInterfaces.DependencyInjection;
+    using System.Xml.Linq;
+    using ReadModel;
 
     /// <summary>
-    /// Account view model
+    /// Read side account list item repository
     /// </summary>
-    public class AccountViewModel : ViewModel<Account>, IAccount
+    public class AccountListItemReadModelRepository
     {
         /// <summary>
-        /// Command bus
+        /// Identity map (i.e. state)
         /// </summary>
-        private readonly ICommandBus commandBus;
+        private Dictionary<Guid, AccountListItem> identityMap;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="AccountViewModel"/> class.
+        /// Initialises a new instance of the <see cref="AccountListItemReadModelRepository"/> class.
         /// </summary>
-        /// <param name="readModel">Account read model to base the view model on.</param>
-        /// <param name="commandBus">Command bus</param>
-        public AccountViewModel(Account readModel, ICommandBus commandBus) : base(readModel)
+        public AccountListItemReadModelRepository()
         {
-            this.commandBus = commandBus;
+            this.identityMap = new Dictionary<Guid, AccountListItem>();
         }
 
         /// <summary>
-        /// Gets the Account Id
+        /// Retrieve an account list item from the repository.
         /// </summary>
-        public Guid Id
+        /// <param name="id">Account Id</param>
+        /// <returns>Reference to the account list item in the repository, if found. <c>null</c> otherwise.</returns>
+        public AccountListItem Find(Guid id)
         {
-            get
+            AccountListItem account;
+            if (this.identityMap.TryGetValue(id, out account))
             {
-                return this.ReadModel.Id;
+                return account;
             }
+
+            return null;
         }
 
         /// <summary>
-        /// Gets or sets the account name
+        /// Save the account list item, or add it to the repository. 
         /// </summary>
-        public string Name
+        /// <param name="account">Account list item to save</param>
+        public void Save(AccountListItem account)
         {
-            get
-            {
-                return this.ReadModel.Name;
-            }
-
-            set
-            {
-                // TODO: error handling?
-                this.commandBus.Submit(new ChangeAccountNameCommand() { Id = this.Id, Name = value });
-            }
+            this.identityMap[account.Id] = account;
         }
     }
 }

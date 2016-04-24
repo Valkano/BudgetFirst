@@ -13,36 +13,50 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.ApplicationCore
+namespace BudgetFirst.ReadSide.Repositories
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using ViewModel.Repository;
+    using System.Xml.Linq;
+    using ReadModel;
 
     /// <summary>
-    /// Singleton for view model repositories
+    /// Read side account list repository
     /// </summary>
-    public static class Repositories
+    public class AccountListReadModelRepository
     {
         /// <summary>
-        /// Bootstrap which handles all initialisation of the application core
+        /// Single account list contained in this repository
         /// </summary>
-        private static readonly Bootstrap Bootstrap;
+        private AccountList accountList;
 
         /// <summary>
-        /// Initialises static members of the <see cref="Repositories"/> class.
+        /// Initialises a new instance of the <see cref="AccountListReadModelRepository"/> class.
         /// </summary>
-        static Repositories()
+        public AccountListReadModelRepository()
         {
-            Bootstrap = new Bootstrap();
+            this.accountList = new AccountList();
         }
 
         /// <summary>
-        /// Gets the account view model repository
+        /// Retrieve an account list from the repository.
         /// </summary>
-        public static AccountViewModelRepository AccountViewModelRepository => Bootstrap.AccountViewModelRepository;
+        /// <returns>Reference to the account list in the repository, if found. <c>null</c> otherwise.</returns>
+        public AccountList Find()
+        {
+            return this.accountList;
+        }
+
+        /// <summary>
+        /// Save the account list, or add it to the repository. Beware: replaces existing account list in repository.
+        /// </summary>
+        /// <param name="accountList">Account list to save</param>
+        public void Save(AccountList accountList)
+        {
+            this.accountList = accountList;
+        }
     }
 }

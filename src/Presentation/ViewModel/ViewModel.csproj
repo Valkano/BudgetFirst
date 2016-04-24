@@ -50,8 +50,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountListItemViewModel.cs" />
     <Compile Include="AccountViewModel.cs" />
     <Compile Include="Repository\AccountViewModelRepository.cs" />
+    <Compile Include="ListViewModel.cs" />
     <Compile Include="ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
