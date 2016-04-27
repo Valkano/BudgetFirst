@@ -36,11 +36,31 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     /// <summary>
     /// Represents a domain event, which is raised by an aggregate
     /// </summary>
-    public interface IDomainEvent
+    public interface IDomainEvent : IComparable
     {
+        /// <summary>
+        /// Gets the Id of the event
+        /// </summary>
+        Guid EventId { get; }
+
+        /// <summary>
+        /// Gets the Id of the device that the event happened on
+        /// </summary>
+        Guid DeviceId { get; }
+
         /// <summary>
         /// Gets the Id of the aggregate that raised this event
         /// </summary>
         Guid AggregateId { get; }
+
+        /// <summary>
+        /// Gets the UTC timestamp of when the event occurred
+        /// </summary>
+        DateTime Timestamp { get; }
+
+        /// <summary>
+        /// Gets the VectorClock for the event
+        /// </summary>
+        VectorClock VectorClock { get; }
     }
 }

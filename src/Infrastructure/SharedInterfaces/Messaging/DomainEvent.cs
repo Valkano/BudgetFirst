@@ -41,9 +41,47 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     public abstract class DomainEvent : IDomainEvent
     {
         /// <summary>
+        /// Gets or sets the Id of the event
+        /// </summary>
+        public Guid EventId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Id of the device that the event happened on
+        /// </summary>
+        public Guid DeviceId { get; set; }
+
+        /// <summary>
         /// Gets or sets the Id of the aggregate that this event was raised by
         /// </summary>
         [DataMember(Name = "AggregateId")]
         public Guid AggregateId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the UTC timestamp of when the event occurred
+        /// </summary>
+        public DateTime Timestamp { get; set; }
+
+        /// <summary>
+        /// Gets or sets the VectorClock for the event
+        /// </summary>
+        public VectorClock VectorClock { get; set; }
+
+        /// <summary>
+        /// Compares this Event with a second event and determines the order they happened
+        /// </summary>
+        /// <param name="obj">The event to compare</param>
+        /// <returns>1 if this event happened after, -1 if this event happened before, 0 if the order can not be determined</returns>
+        public int CompareTo(object obj)
+        {
+            var event2 = obj as DomainEvent;
+
+            var comparison = this.VectorClock.CompareTo(event2.VectorClock);
+            if (comparison == VectorComparison.Greater)
+                return 1;
+            else if (comparison == VectorComparison.Smaller)
+                return -1;
+            else
+                return DateTime.Compare(this.Timestamp, event2.Timestamp);
+        }
     }
 }
