@@ -39,18 +39,21 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     /// <summary>
     /// A Vector Clock that can tell the relative order of events on distributed systems.
     /// </summary>
-    public class VectorClock
+    public class VectorClock : IComparable
     {
         public IReadOnlyDictionary<string, int> Vector { get; private set; }
+        public DateTime Timestamp { get; private set; }
 
         public VectorClock()
         {
             this.Vector = new Dictionary<string, int>();
+            Timestamp = DateTime.UtcNow;
         }
 
         public VectorClock(Dictionary<string, int> vector)
         {
             this.Vector = vector;
+            Timestamp = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -112,7 +115,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// </summary>
         /// <param name="clock2">The VectorClock to compare.</param>
         /// <returns>A VectorComparison enum with the result of the comparison.</returns>
-        public VectorComparison CompareTo(VectorClock clock2)
+        public VectorComparison CompareVectors(VectorClock clock2)
         {
             /* We check every deviceId that is a key in this vector clock against every deviceId in clock2.
              * If all deviceId values in both clocks are equal they are the same clock(equal).  This result should never happen in BudgetFirst since we always increment the clock for each event.
@@ -157,8 +160,10 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                 }
             }
 
+
             if (equal)
             {
+                //The vectors are the same
                 return VectorComparison.Equal;
             }
             else if (greater && !smaller)
@@ -171,9 +176,31 @@ namespace BudgetFirst.SharedInterfaces.Messaging
             }
             else
             {
+                //The events were simultaneuous
                 return VectorComparison.Simultaneous;
             }
+        }
 
+        /// <summary>
+        /// The default comparer for VectorClock.  Determines the order of events 
+        /// based on the vector and the timestamp.
+        /// </summary>
+        /// <param name="obj">The VectorClock to compare to.</param>
+        /// <returns>1 if this VectorClock happened after, 
+        /// -1 if this VectorClock happened before,
+        /// 0 if the order can not be determined(Simultaneous or Equal Vectors and the same timestamp)</returns>
+        public int CompareTo(object obj)
+        {
+            VectorClock clock2 = obj as VectorClock;
+            VectorComparison compare = this.CompareVectors(clock2);
+            if (compare == VectorComparison.Greater)
+                return 1;
+            else if (compare == VectorComparison.Smaller)
+                return -1;
+            else //Either simlutaneuous or equal falls back to timestamp comparison
+            {
+                return DateTime.Compare(this.Timestamp, clock2.Timestamp);
+            }
         }
 
         /// <summary>
@@ -185,9 +212,14 @@ namespace BudgetFirst.SharedInterfaces.Messaging
             return new VectorClock(this.CopyVector());
         }
 
+        /// <summary>
+        /// Creates a Dictionary Copy of the IReadOnlyDictionary Vector.
+        /// </summary>
         private Dictionary<string, int> CopyVector()
         {
             return this.Vector.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
+
+
     }
 }

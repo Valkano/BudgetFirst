@@ -93,9 +93,9 @@
             clock3 = clock3.Increment("key1");
             clock3 = clock3.Increment("key2");
 
-            Assert.That(clock1.CompareTo(clock2) == VectorComparison.Smaller);
-            Assert.That(clock2.CompareTo(clock1) == VectorComparison.Greater);
-            Assert.That(clock3.CompareTo(clock2) == VectorComparison.Equal);
+            Assert.That(clock1.CompareVectors(clock2) == VectorComparison.Smaller);
+            Assert.That(clock2.CompareVectors(clock1) == VectorComparison.Greater);
+            Assert.That(clock3.CompareVectors(clock2) == VectorComparison.Equal);
         }
 
         [Test]
@@ -112,35 +112,35 @@
             clock2 = clock2.Increment("key2");
             clock3 = clock3.Increment("key3");
 
-            Assert.That(clock1.CompareTo(clock2) == VectorComparison.Simultaneous);
-            Assert.That(clock2.CompareTo(clock1) == VectorComparison.Simultaneous);
+            Assert.That(clock1.CompareVectors(clock2) == VectorComparison.Simultaneous);
+            Assert.That(clock2.CompareVectors(clock1) == VectorComparison.Simultaneous);
 
-            Assert.That(clock1.CompareTo(clock3) == VectorComparison.Simultaneous);
-            Assert.That(clock3.CompareTo(clock1) == VectorComparison.Simultaneous);
+            Assert.That(clock1.CompareVectors(clock3) == VectorComparison.Simultaneous);
+            Assert.That(clock3.CompareVectors(clock1) == VectorComparison.Simultaneous);
 
-            Assert.That(clock3.CompareTo(clock2) == VectorComparison.Simultaneous);
-            Assert.That(clock2.CompareTo(clock3) == VectorComparison.Simultaneous);
+            Assert.That(clock3.CompareVectors(clock2) == VectorComparison.Simultaneous);
+            Assert.That(clock2.CompareVectors(clock3) == VectorComparison.Simultaneous);
 
             VectorClock clock4 = clock1.Merge(clock2);
             clock4 = clock4.Merge(clock3);
 
-            Assert.That(clock4.CompareTo(clock1) == VectorComparison.Greater);
-            Assert.That(clock4.CompareTo(clock2) == VectorComparison.Greater);
-            Assert.That(clock4.CompareTo(clock3) == VectorComparison.Greater);
-            Assert.That(clock1.CompareTo(clock4) == VectorComparison.Smaller);
-            Assert.That(clock2.CompareTo(clock4) == VectorComparison.Smaller);
-            Assert.That(clock3.CompareTo(clock4) == VectorComparison.Smaller);
+            Assert.That(clock4.CompareVectors(clock1) == VectorComparison.Greater);
+            Assert.That(clock4.CompareVectors(clock2) == VectorComparison.Greater);
+            Assert.That(clock4.CompareVectors(clock3) == VectorComparison.Greater);
+            Assert.That(clock1.CompareVectors(clock4) == VectorComparison.Smaller);
+            Assert.That(clock2.CompareVectors(clock4) == VectorComparison.Smaller);
+            Assert.That(clock3.CompareVectors(clock4) == VectorComparison.Smaller);
 
             //All previous clocks  descend from baseClock which has the vector ["key1" : 2]
             VectorClock otherClock = new VectorClock();
             otherClock = otherClock.Increment("key4");
 
             //otherClock should be simultaneous with all of them since it doesnt recognize ["key1" : 2]
-            Assert.That(otherClock.CompareTo(baseClock) == VectorComparison.Simultaneous);
-            Assert.That(otherClock.CompareTo(clock1) == VectorComparison.Simultaneous);
-            Assert.That(otherClock.CompareTo(clock2) == VectorComparison.Simultaneous);
-            Assert.That(otherClock.CompareTo(clock3) == VectorComparison.Simultaneous);
-            Assert.That(otherClock.CompareTo(clock4) == VectorComparison.Simultaneous);
+            Assert.That(otherClock.CompareVectors(baseClock) == VectorComparison.Simultaneous);
+            Assert.That(otherClock.CompareVectors(clock1) == VectorComparison.Simultaneous);
+            Assert.That(otherClock.CompareVectors(clock2) == VectorComparison.Simultaneous);
+            Assert.That(otherClock.CompareVectors(clock3) == VectorComparison.Simultaneous);
+            Assert.That(otherClock.CompareVectors(clock4) == VectorComparison.Simultaneous);
         }
     }
 }

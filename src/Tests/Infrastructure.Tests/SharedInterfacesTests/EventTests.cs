@@ -85,7 +85,7 @@
         [Test]
         public void SimultaneousEventsLastWins()
         {
-            Assert.That(evt3.VectorClock.CompareTo(evt4.VectorClock) == VectorComparison.Simultaneous);
+            Assert.That(evt3.VectorClock.CompareVectors(evt4.VectorClock) == VectorComparison.Simultaneous);
             List<IDomainEvent> eventList = new List<IDomainEvent>();
             eventList.Add(evt4);//Earlier timestamp
             eventList.Add(evt3);

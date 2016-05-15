@@ -81,21 +81,14 @@ namespace BudgetFirst.SharedInterfaces.Messaging
 
         /// <summary>
         /// Compares this Event with a second event and determines the order 
-        /// they happened, based on the VectorClock and Timestamp.
+        /// they happened, based on the VectorClock.
         /// </summary>
         /// <param name="obj">The event to compare</param>
         /// <returns>1 if this event happened after, -1 if this event happened before, 0 if the order can not be determined</returns>
         public int CompareTo(object obj)
         {
             var event2 = obj as DomainEvent;
-
-            var comparison = this.VectorClock.CompareTo(event2.VectorClock);
-            if (comparison == VectorComparison.Greater)
-                return 1;
-            else if (comparison == VectorComparison.Smaller)
-                return -1;
-            else
-                return DateTime.Compare(this.Timestamp, event2.Timestamp);
+            return this.VectorClock.CompareTo(event2.VectorClock);
         }
     }
 }
