@@ -11,7 +11,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
+// along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 namespace BudgetFirst.ReadSide.ReadModel
 {
@@ -20,12 +20,14 @@ namespace BudgetFirst.ReadSide.ReadModel
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
+    using System.Runtime.InteropServices;
     using System.Text;
     using SharedInterfaces.ReadModel;
 
     /// <summary>
     /// Account list read model
     /// </summary>
+    [ComVisible(false)]
     public class AccountList : ObservableCollection<AccountListItem>
     {
     }

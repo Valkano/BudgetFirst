@@ -23,7 +23,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
+// along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 namespace BudgetFirst.SharedInterfaces.Messaging
 {
@@ -41,12 +41,13 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     public abstract class DomainEvent : IDomainEvent
     {
         /// <summary>
-        /// Constructor for the abstract DomainEvent class, initializes the EventId and Timestamp.
+        /// Initialises a new instance of the <see cref="DomainEvent"/> class. 
+        /// Initialises the EventId and Timestamp.
         /// </summary>
         public DomainEvent()
         {
-            EventId = new Guid();
-            Timestamp = DateTime.UtcNow;
+            this.EventId = new Guid();
+            this.Timestamp = DateTime.UtcNow;
         }
 
         /// <summary>

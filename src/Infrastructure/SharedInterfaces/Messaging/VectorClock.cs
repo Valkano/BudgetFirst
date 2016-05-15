@@ -20,7 +20,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
+// along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 namespace BudgetFirst.SharedInterfaces.Messaging
 {
@@ -30,31 +30,65 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     using System.Text;
     using System.Threading.Tasks;
 
-
-    public enum VectorComparison
-    {
-        Equal, Greater, Smaller, Simultaneous
-    }
-
     /// <summary>
     /// A Vector Clock that can tell the relative order of events on distributed systems.
     /// </summary>
     public class VectorClock : IComparable
     {
-        public IReadOnlyDictionary<string, int> Vector { get; private set; }
-        public DateTime Timestamp { get; private set; }
-
+        /// <summary>
+        /// Initialises a new instance of the <see cref="VectorClock"/> class.
+        /// </summary>
         public VectorClock()
         {
             this.Vector = new Dictionary<string, int>();
-            Timestamp = DateTime.UtcNow;
+            this.Timestamp = DateTime.UtcNow;
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="VectorClock"/> class.
+        /// </summary>
+        /// <param name="vector">Initial vector</param>
         public VectorClock(Dictionary<string, int> vector)
         {
             this.Vector = vector;
-            Timestamp = DateTime.UtcNow;
+            this.Timestamp = DateTime.UtcNow;
         }
+
+        /// <summary>
+        /// Comparison result for vector clocks
+        /// </summary>
+        public enum ComparisonResult
+        {
+            /// <summary>
+            /// Both vector clocks are equal
+            /// </summary>
+            Equal,
+
+            /// <summary>
+            /// The vector clock is greater (later)
+            /// </summary>
+            Greater,
+
+            /// <summary>
+            /// The vector clock is smaller (earlier)
+            /// </summary>
+            Smaller,
+
+            /// <summary>
+            /// Both vector clocks are simultaneous
+            /// </summary>
+            Simultaneous
+        }
+
+        /// <summary>
+        /// Gets the vector
+        /// </summary>
+        public IReadOnlyDictionary<string, int> Vector { get; private set; }
+
+        /// <summary>
+        /// Gets the timestamp
+        /// </summary>
+        public DateTime Timestamp { get; private set; }
 
         /// <summary>
         /// Create a copy of the current VectorClock and Increment the Vector for the given Device ID by 1 on the new VectorClock
@@ -111,11 +145,11 @@ namespace BudgetFirst.SharedInterfaces.Messaging
 
         /// <summary>
         /// A function to compare the current VectorClock to another and 
-        /// determine which came first, or if the events happend simultaneously.
+        /// determine which came first, or if the events happened simultaneously.
         /// </summary>
         /// <param name="clock2">The VectorClock to compare.</param>
-        /// <returns>A VectorComparison enum with the result of the comparison.</returns>
-        public VectorComparison CompareVectors(VectorClock clock2)
+        /// <returns>A ComparisonResult enum with the result of the comparison.</returns>
+        public ComparisonResult CompareVectors(VectorClock clock2)
         {
             /* We check every deviceId that is a key in this vector clock against every deviceId in clock2.
              * If all deviceId values in both clocks are equal they are the same clock(equal).  This result should never happen in BudgetFirst since we always increment the clock for each event.
@@ -137,6 +171,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                         equal = false;
                         greater = false;
                     }
+
                     if (this.Vector[deviceId] > clock2.Vector[deviceId])
                     {
                         equal = false;
@@ -150,7 +185,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                 }
             }
 
-            //Check if clock2 has any deviceIds that are not present in this VectorClock
+            // Check if clock2 has any deviceIds that are not present in this VectorClock
             foreach (string deviceId in clock2.Vector.Keys)
             {
                 if (!this.Vector.ContainsKey(deviceId) && clock2.Vector[deviceId] != 0)
@@ -159,25 +194,24 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                     greater = false;
                 }
             }
-
-
+            
             if (equal)
             {
-                //The vectors are the same
-                return VectorComparison.Equal;
+                // The vectors are the same
+                return ComparisonResult.Equal;
             }
             else if (greater && !smaller)
             {
-                return VectorComparison.Greater;
+                return ComparisonResult.Greater;
             }
             else if (smaller && !greater)
             {
-                return VectorComparison.Smaller;
+                return ComparisonResult.Smaller;
             }
             else
             {
-                //The events were simultaneuous
-                return VectorComparison.Simultaneous;
+                // The events were simultaneous
+                return ComparisonResult.Simultaneous;
             }
         }
 
@@ -192,14 +226,16 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         public int CompareTo(object obj)
         {
             VectorClock clock2 = obj as VectorClock;
-            VectorComparison compare = this.CompareVectors(clock2);
-            if (compare == VectorComparison.Greater)
-                return 1;
-            else if (compare == VectorComparison.Smaller)
-                return -1;
-            else //Either simlutaneuous or equal falls back to timestamp comparison
+            ComparisonResult compare = this.CompareVectors(clock2);
+
+            switch (compare)
             {
-                return DateTime.Compare(this.Timestamp, clock2.Timestamp);
+                case ComparisonResult.Greater:
+                    return 1;
+                case ComparisonResult.Smaller:
+                    return -1;
+                default:
+                    return DateTime.Compare(this.Timestamp, clock2.Timestamp);
             }
         }
 
@@ -215,11 +251,10 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <summary>
         /// Creates a Dictionary Copy of the IReadOnlyDictionary Vector.
         /// </summary>
+        /// <returns>Copy of the vector</returns>
         private Dictionary<string, int> CopyVector()
         {
             return this.Vector.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
-
-
     }
 }

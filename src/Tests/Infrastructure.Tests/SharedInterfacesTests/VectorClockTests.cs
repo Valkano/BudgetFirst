@@ -8,10 +8,15 @@
     using NUnit.Framework;
     using SharedInterfaces.Messaging;
 
-
+    /// <summary>
+    /// Contains tests for vector clocks
+    /// </summary>
     [TestFixture]
     public class VectorClockTests
     {
+        /// <summary>
+        /// New vector clocks start at 1
+        /// </summary>
         [Test]
         public void StartAtOne()
         {
@@ -22,6 +27,9 @@
             Assert.That(clock.Vector["key1"] == 1);
         }
 
+        /// <summary>
+        /// Incrementing vector clocks increments by 1
+        /// </summary>
         [Test]
         public void IncrementClock()
         {
@@ -36,6 +44,9 @@
             Assert.That(clock.Vector["key1"] == 3 && clock.Vector["key2"] == 4);
         }
 
+        /// <summary>
+        /// Tests merging of vector clocks
+        /// </summary>
         [Test]
         public void MergeClock()
         {
@@ -51,18 +62,21 @@
             VectorClock clock3 = new VectorClock();
             clock3 = clock3.Increment("key3");
 
-            VectorClock MergedClock = new VectorClock();
-            MergedClock = MergedClock.Merge(clock1);
-            MergedClock = MergedClock.Increment("key1");
-            MergedClock = MergedClock.Merge(clock2);
-            MergedClock = MergedClock.Merge(clock3);
+            VectorClock mergedClock = new VectorClock();
+            mergedClock = mergedClock.Merge(clock1);
+            mergedClock = mergedClock.Increment("key1");
+            mergedClock = mergedClock.Merge(clock2);
+            mergedClock = mergedClock.Merge(clock3);
 
-            Assert.That(MergedClock.Vector["key1"] == 4 && MergedClock.Vector["key2"] == 2 && MergedClock.Vector["key3"] == 1);
+            Assert.That(mergedClock.Vector["key1"] == 4 && mergedClock.Vector["key2"] == 2 && mergedClock.Vector["key3"] == 1);
 
-            //Merge should not affect the original VectorClock
+            // Merge should not affect the original VectorClock
             Assert.That(clock1.Vector["key1"] == 3);
         }
 
+        /// <summary>
+        /// Tests copying of vector clocks
+        /// </summary>
         [Test]
         public void CopyClock()
         {
@@ -80,6 +94,9 @@
             Assert.That(clock2.Vector["key1"] == 4);
         }
 
+        /// <summary>
+        /// Tests comparing of vector clocks
+        /// </summary>
         [Test]
         public void CompareVectors()
         {
@@ -93,11 +110,14 @@
             clock3 = clock3.Increment("key1");
             clock3 = clock3.Increment("key2");
 
-            Assert.That(clock1.CompareVectors(clock2) == VectorComparison.Smaller);
-            Assert.That(clock2.CompareVectors(clock1) == VectorComparison.Greater);
-            Assert.That(clock3.CompareVectors(clock2) == VectorComparison.Equal);
+            Assert.That(clock1.CompareVectors(clock2) == VectorClock.ComparisonResult.Smaller);
+            Assert.That(clock2.CompareVectors(clock1) == VectorClock.ComparisonResult.Greater);
+            Assert.That(clock3.CompareVectors(clock2) == VectorClock.ComparisonResult.Equal);
         }
 
+        /// <summary>
+        /// Simultaneous operations are detected
+        /// </summary>
         [Test]
         public void DetectSimultaneousOperations()
         {
@@ -112,35 +132,35 @@
             clock2 = clock2.Increment("key2");
             clock3 = clock3.Increment("key3");
 
-            Assert.That(clock1.CompareVectors(clock2) == VectorComparison.Simultaneous);
-            Assert.That(clock2.CompareVectors(clock1) == VectorComparison.Simultaneous);
+            Assert.That(clock1.CompareVectors(clock2) == VectorClock.ComparisonResult.Simultaneous);
+            Assert.That(clock2.CompareVectors(clock1) == VectorClock.ComparisonResult.Simultaneous);
 
-            Assert.That(clock1.CompareVectors(clock3) == VectorComparison.Simultaneous);
-            Assert.That(clock3.CompareVectors(clock1) == VectorComparison.Simultaneous);
+            Assert.That(clock1.CompareVectors(clock3) == VectorClock.ComparisonResult.Simultaneous);
+            Assert.That(clock3.CompareVectors(clock1) == VectorClock.ComparisonResult.Simultaneous);
 
-            Assert.That(clock3.CompareVectors(clock2) == VectorComparison.Simultaneous);
-            Assert.That(clock2.CompareVectors(clock3) == VectorComparison.Simultaneous);
+            Assert.That(clock3.CompareVectors(clock2) == VectorClock.ComparisonResult.Simultaneous);
+            Assert.That(clock2.CompareVectors(clock3) == VectorClock.ComparisonResult.Simultaneous);
 
             VectorClock clock4 = clock1.Merge(clock2);
             clock4 = clock4.Merge(clock3);
 
-            Assert.That(clock4.CompareVectors(clock1) == VectorComparison.Greater);
-            Assert.That(clock4.CompareVectors(clock2) == VectorComparison.Greater);
-            Assert.That(clock4.CompareVectors(clock3) == VectorComparison.Greater);
-            Assert.That(clock1.CompareVectors(clock4) == VectorComparison.Smaller);
-            Assert.That(clock2.CompareVectors(clock4) == VectorComparison.Smaller);
-            Assert.That(clock3.CompareVectors(clock4) == VectorComparison.Smaller);
+            Assert.That(clock4.CompareVectors(clock1) == VectorClock.ComparisonResult.Greater);
+            Assert.That(clock4.CompareVectors(clock2) == VectorClock.ComparisonResult.Greater);
+            Assert.That(clock4.CompareVectors(clock3) == VectorClock.ComparisonResult.Greater);
+            Assert.That(clock1.CompareVectors(clock4) == VectorClock.ComparisonResult.Smaller);
+            Assert.That(clock2.CompareVectors(clock4) == VectorClock.ComparisonResult.Smaller);
+            Assert.That(clock3.CompareVectors(clock4) == VectorClock.ComparisonResult.Smaller);
 
-            //All previous clocks  descend from baseClock which has the vector ["key1" : 2]
+            // All previous clocks  descend from baseClock which has the vector ["key1" : 2]
             VectorClock otherClock = new VectorClock();
             otherClock = otherClock.Increment("key4");
 
-            //otherClock should be simultaneous with all of them since it doesnt recognize ["key1" : 2]
-            Assert.That(otherClock.CompareVectors(baseClock) == VectorComparison.Simultaneous);
-            Assert.That(otherClock.CompareVectors(clock1) == VectorComparison.Simultaneous);
-            Assert.That(otherClock.CompareVectors(clock2) == VectorComparison.Simultaneous);
-            Assert.That(otherClock.CompareVectors(clock3) == VectorComparison.Simultaneous);
-            Assert.That(otherClock.CompareVectors(clock4) == VectorComparison.Simultaneous);
+            // otherClock should be simultaneous with all of them since it doesnt recognize ["key1" : 2]
+            Assert.That(otherClock.CompareVectors(baseClock) == VectorClock.ComparisonResult.Simultaneous);
+            Assert.That(otherClock.CompareVectors(clock1) == VectorClock.ComparisonResult.Simultaneous);
+            Assert.That(otherClock.CompareVectors(clock2) == VectorClock.ComparisonResult.Simultaneous);
+            Assert.That(otherClock.CompareVectors(clock3) == VectorClock.ComparisonResult.Simultaneous);
+            Assert.That(otherClock.CompareVectors(clock4) == VectorClock.ComparisonResult.Simultaneous);
         }
     }
 }

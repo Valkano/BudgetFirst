@@ -11,13 +11,14 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Foobar.  If not, see<http://www.gnu.org/licenses/>.
+// along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 namespace BudgetFirst.ViewModel.Repository
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.InteropServices;
     using System.Text;
     using System.Threading.Tasks;
     using ReadSide.ReadModel;
@@ -27,6 +28,7 @@ namespace BudgetFirst.ViewModel.Repository
     /// <summary>
     /// Account list item view model repository
     /// </summary>
+    [ComVisible(false)]
     public class AccountListItemViewModelRepository : ViewModelRepository<AccountListItemReadModelRepository, AccountListItem, AccountListItemViewModel>
     {
         /// <summary>
