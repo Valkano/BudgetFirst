@@ -12,7 +12,7 @@ namespace BudgetFirst.Presentation.Wpf.Services
 {
     public class WpfWindowService : IWindowService
     {
-        private static Dictionary<Type, Type> registeredWindows;
+        private static Dictionary<Type, Type> registeredWindows = new Dictionary<Type, Type>();
 
         public void showMessage(string message)
         {
@@ -35,6 +35,8 @@ namespace BudgetFirst.Presentation.Wpf.Services
 
             viewModel.RequestClose += (sender, e) =>
             {
+                viewModelClose = true;
+
                 if (!windowClose)
                     window.Close();
             };
@@ -42,9 +44,10 @@ namespace BudgetFirst.Presentation.Wpf.Services
 
             window.Closing += (sender, e) =>
             {
+                windowClose = true;
                 //Call RequestClose on the ViewModel and block the thread until it runs it closing routines
                 if (!viewModelClose)
-                    viewModel.RaiseRequestClose();
+                    viewModel.CloseCommand.Execute(null);
             };
 
             window.Show();

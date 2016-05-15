@@ -39,9 +39,9 @@
             return this.container.GetInstance<TInstance>();
         }
 
-        public IEnumerable<TInstance> ResolveAll<TInstance>() where TInstance : class
+        /*public IEnumerable<TInstance> ResolveAll<TInstance>() where TInstance : class
         {
             return this.container.GetAllInstances<TInstance>();
-        }
+        }*/
     }
 }

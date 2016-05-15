@@ -33,6 +33,7 @@
             set { this.closeable = value; CloseCommand.RaiseCanExecuteChanged(); RaisePropertyChanged(); }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CloseableViewModel()
         {
             CloseCommand = new RelayCommand(() => Close(), () => Closeable);
@@ -41,14 +42,14 @@
 
         public RelayCommand CloseCommand { get; set; }
 
-        private void Close()
+        protected virtual void Close()
         {
             RaiseRequestClose();
         }
 
         public event EventHandler RequestClose;
 
-        public virtual void RaiseRequestClose()
+        private void RaiseRequestClose()
         {
             this.RequestClose?.Invoke(this, EventArgs.Empty);
         }

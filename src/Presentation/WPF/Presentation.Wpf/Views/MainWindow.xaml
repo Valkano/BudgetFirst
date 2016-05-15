@@ -6,9 +6,13 @@
         xmlns:local="clr-namespace:BudgetFirst.Presentation.Wpf.Views"
         mc:Ignorable="d"
         Title="Budget First" Height="350" Width="525">
-    <Grid>
-        <ListBox x:Name="accounts" HorizontalAlignment="Left" Height="100" Margin="96,68,0,0" VerticalAlignment="Top" Width="100"/>
-        <Button x:Name="button" Content="Add account" HorizontalAlignment="Left" Margin="96,173,0,0" VerticalAlignment="Top" Width="100"/>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="E_xit" Command="{Binding CloseCommand}" InputGestureText="Alt+F4" />
+            </MenuItem>
+        </Menu>
 
-    </Grid>
+        <ContentControl />
+    </DockPanel>
 </Window>

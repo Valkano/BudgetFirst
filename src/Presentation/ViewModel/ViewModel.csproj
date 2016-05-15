@@ -35,21 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\..\Application\Budget.Domain.Commands\Budget.Domain.Commands.csproj">
-      <Project>{0d86c58c-1636-45cf-8fa2-5537b94c7c09}</Project>
-      <Name>Budget.Domain.Commands</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Application\ReadSide\ReadSide.csproj">
-      <Project>{79ede87e-204b-4a9f-b038-dc225a5b999e}</Project>
-      <Name>ReadSide</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Infrastructure\SharedInterfaces\SharedInterfaces.csproj">
-      <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
-      <Name>SharedInterfaces</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AccountListItemViewModel.cs" />
     <Compile Include="AccountListViewModel.cs" />
     <Compile Include="AccountViewModel.cs" />
@@ -88,6 +73,20 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mobile\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\Budget.Domain.Commands\Budget.Domain.Commands.csproj">
+      <Project>{0d86c58c-1636-45cf-8fa2-5537b94c7c09}</Project>
+      <Name>Budget.Domain.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Application\ReadSide\ReadSide.csproj">
+      <Project>{79ede87e-204b-4a9f-b038-dc225a5b999e}</Project>
+      <Name>ReadSide</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\SharedInterfaces\SharedInterfaces.csproj">
+      <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
+      <Name>SharedInterfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
