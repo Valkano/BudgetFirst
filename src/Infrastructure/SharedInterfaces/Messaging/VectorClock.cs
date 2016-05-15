@@ -41,31 +41,36 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     /// </summary>
     public class VectorClock
     {
-        public Dictionary<string, int> Vector { get; set; }
+        public IReadOnlyDictionary<string, int> Vector { get; private set; }
 
         public VectorClock()
         {
             this.Vector = new Dictionary<string, int>();
         }
 
+        public VectorClock(Dictionary<string, int> vector)
+        {
+            this.Vector = vector;
+        }
+
         /// <summary>
-        /// Create a copy of the current VecotrClock and Increment the Vector for the given Device ID by 1 on the new VectorClock
+        /// Create a copy of the current VectorClock and Increment the Vector for the given Device ID by 1 on the new VectorClock
         /// </summary>
         /// <param name="deviceId">The deviceId to increment.</param>
         /// <returns>The new incremented VectorClock</returns>
         public VectorClock Increment(string deviceId)
         {
-            VectorClock newClock = this.Copy();
-            if (newClock.Vector.ContainsKey(deviceId))
+            Dictionary<string, int> newVector = this.CopyVector();
+            if (newVector.ContainsKey(deviceId))
             {
-                newClock.Vector[deviceId]++;
+                newVector[deviceId]++;
             }
             else
             {
-                newClock.Vector[deviceId] = 1;
+                newVector[deviceId] = 1;
             }
 
-            return newClock;
+            return new VectorClock(newVector);
         }
 
         /// <summary>
@@ -76,17 +81,17 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <returns>A new VectorClock with the maximum value for each device.</returns>
         public VectorClock Merge(VectorClock clock2)
         {
-            VectorClock mergedClock = new VectorClock();
+            Dictionary<string, int> mergedVector = this.CopyVector();
 
             foreach (string deviceId in this.Vector.Keys)
             {
                 if (clock2.Vector.ContainsKey(deviceId))
                 {
-                    mergedClock.Vector[deviceId] = Math.Max(this.Vector[deviceId], clock2.Vector[deviceId]);
+                    mergedVector[deviceId] = Math.Max(this.Vector[deviceId], clock2.Vector[deviceId]);
                 }
                 else
                 {
-                    mergedClock.Vector[deviceId] = this.Vector[deviceId];
+                    mergedVector[deviceId] = this.Vector[deviceId];
                 }
             }
 
@@ -94,11 +99,11 @@ namespace BudgetFirst.SharedInterfaces.Messaging
             {
                 if (!this.Vector.ContainsKey(deviceId))
                 {
-                    mergedClock.Vector[deviceId] = clock2.Vector[deviceId];
+                    mergedVector[deviceId] = clock2.Vector[deviceId];
                 }
             }
 
-            return mergedClock;
+            return new VectorClock(mergedVector);
         }
 
         /// <summary>
@@ -177,7 +182,12 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <returns>A copy of the current VectorClock</returns>
         public VectorClock Copy()
         {
-            return new VectorClock() { Vector = new Dictionary<string, int>(this.Vector) };
+            return new VectorClock(this.CopyVector());
+        }
+
+        private Dictionary<string, int> CopyVector()
+        {
+            return this.Vector.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
     }
 }

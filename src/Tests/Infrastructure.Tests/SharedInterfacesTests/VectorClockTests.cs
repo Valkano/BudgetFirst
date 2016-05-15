@@ -28,8 +28,7 @@
             Dictionary<string, int> vector = new Dictionary<string, int>();
             vector["key1"] = 2;
             vector["key2"] = 3;
-            VectorClock clock = new VectorClock();
-            clock.Vector = vector;
+            VectorClock clock = new VectorClock(vector);
 
             clock = clock.Increment("key1");
             clock = clock.Increment("key2");
@@ -76,6 +75,7 @@
             clock2 = clock2.Increment("key1");
 
             Assert.That(clock1 != clock2);
+            Assert.That(clock1.Vector != clock2.Vector);
             Assert.That(clock1.Vector["key1"] == 3);
             Assert.That(clock2.Vector["key1"] == 4);
         }
