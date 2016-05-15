@@ -41,9 +41,54 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     public abstract class DomainEvent : IDomainEvent
     {
         /// <summary>
+        /// Constructor for the abstract DomainEvent class, initializes the EventId and Timestamp.
+        /// </summary>
+        public DomainEvent()
+        {
+            EventId = new Guid();
+            Timestamp = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Gets or sets the Id of the event
+        /// </summary>
+        [DataMember(Name = "EventId")]
+        public Guid EventId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Id of the device that the event happened on
+        /// </summary>
+        [DataMember(Name = "DeviceId")]
+        public Guid DeviceId { get; set; }
+
+        /// <summary>
         /// Gets or sets the Id of the aggregate that this event was raised by
         /// </summary>
         [DataMember(Name = "AggregateId")]
         public Guid AggregateId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the UTC timestamp of when the event occurred
+        /// </summary>
+        [DataMember(Name = "Timestamp")]
+        public DateTime Timestamp { get; set; }
+
+        /// <summary>
+        /// Gets or sets the VectorClock for the event
+        /// </summary>
+        [DataMember(Name = "VectorClock")]
+        public VectorClock VectorClock { get; set; }
+
+        /// <summary>
+        /// Compares this Event with a second event and determines the order 
+        /// they happened, based on the VectorClock.
+        /// </summary>
+        /// <param name="obj">The event to compare</param>
+        /// <returns>1 if this event happened after, -1 if this event happened before, 0 if the order can not be determined</returns>
+        public int CompareTo(object obj)
+        {
+            var event2 = obj as DomainEvent;
+            return this.VectorClock.CompareTo(event2.VectorClock);
+        }
     }
 }
