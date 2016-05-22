@@ -13,23 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
+
 namespace BudgetFirst.ReadSide.Handlers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Budget.Domain.Interfaces.Events;
+    using BudgetFirst.SharedInterfaces.Commands;
     using ReadModel;
     using Repositories;
     using SharedInterfaces.Messaging;
-
+    
     /// <summary>
     /// Generator for accounts
     /// </summary>
     public class AccountGenerator : IDomainEventHandler<AccountCreated>, IDomainEventHandler<AccountNameChanged>
     {
+        /// <summary>
+        /// The application's Command Bus.
+        /// </summary>
+        private readonly ICommandBus commandBus;
+
         /// <summary>
         /// Account repository
         /// </summary>
@@ -39,9 +42,11 @@ namespace BudgetFirst.ReadSide.Handlers
         /// Initialises a new instance of the <see cref="AccountGenerator"/> class.
         /// </summary>
         /// <param name="repository">Account repository to use</param>
-        public AccountGenerator(AccountReadModelRepository repository)
+        /// <param name="commandBus">The application's command bus</param>
+        public AccountGenerator(AccountReadModelRepository repository, ICommandBus commandBus)
         {
             this.repository = repository;
+            this.commandBus = commandBus;
         }
 
         /// <summary>
@@ -56,7 +61,8 @@ namespace BudgetFirst.ReadSide.Handlers
                 throw new InvalidOperationException("Account with id " + @event.AggregateId.ToString() + " is already created in repository.");
             }
 
-            account = new Account() { Id = @event.AggregateId, Name = @event.Name };
+            account = new Account(this.commandBus) { Id = @event.AggregateId };
+            account.UpdateName(@event.Name);
             this.repository.Save(account);
         }
 
@@ -72,7 +78,7 @@ namespace BudgetFirst.ReadSide.Handlers
                 throw new InvalidOperationException("Account with id " + @event.AggregateId.ToString() + " was not found in repository.");
             }
 
-            account.Name = @event.Name;
+            account.UpdateName(@event.Name);
             this.repository.Save(account);
         }
     }

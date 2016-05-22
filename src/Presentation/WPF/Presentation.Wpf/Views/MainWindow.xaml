@@ -13,6 +13,34 @@
             </MenuItem>
         </Menu>
 
-        <ContentControl />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <DockPanel>
+
+                <Button DockPanel.Dock="Bottom" Content="Add Account" Command="{Binding AddAccountCommand}" />
+                <Button DockPanel.Dock="Bottom" Content="Rename Account" Command="{Binding RenameAccountCommand}" />
+                <ListBox ItemsSource="{Binding AccountList}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedAccount}"/>
+            </DockPanel>
+
+            <GridSplitter Width="4" Grid.Column="1" Grid.RowSpan="1" HorizontalAlignment="Stretch"/>
+
+            <DataGrid Grid.Column="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Date" />
+                    <DataGridTextColumn Header="Category" />
+                    <DataGridTextColumn Header="Memo" />
+                    <DataGridTextColumn Header="Amount" />
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </DockPanel>
 </Window>

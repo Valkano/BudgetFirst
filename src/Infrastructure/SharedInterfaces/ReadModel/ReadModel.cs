@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
+
 namespace BudgetFirst.SharedInterfaces.ReadModel
 {
     using System;
@@ -23,6 +24,7 @@ namespace BudgetFirst.SharedInterfaces.ReadModel
     using System.Text;
     using System.Threading.Tasks;
     using Annotations;
+    using BudgetFirst.SharedInterfaces.Commands;
 
     /// <summary>
     /// Base class for read models

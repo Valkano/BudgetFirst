@@ -47,8 +47,8 @@ namespace BudgetFirst.Budget.Domain.Aggregates
         /// <returns>New account</returns>
         public static Account CreateAccount(Guid id, string name)
         {
-            var account = new Account(id, name);
-            return account;
+            // var account = new Account(id, name);
+            return null;
         }
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace BudgetFirst.Budget.Domain.Aggregates
         /// <returns>Rehydrated aggregate</returns>
         public static Account ReconstituteFromEvents(Guid id, IEnumerable<IDomainEvent> history) // TODO: should be repository
         {
-            var account = new Account(id, history); 
-            return account;
+            // var account = new Account(id, history); 
+            return null;
         }
     }
 }

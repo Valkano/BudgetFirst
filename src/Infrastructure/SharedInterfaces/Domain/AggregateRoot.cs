@@ -73,6 +73,15 @@ namespace BudgetFirst.SharedInterfaces.Domain
         public IEnumerable<IDomainEvent> Events => this.eventTransaction.GetEvents();
 
         /// <summary>
+        /// Gets the unpublished events from the Account Aggregate
+        /// </summary>
+        /// <returns>The EventTransaction that contains the unpublished events</returns>
+        public IEventTransaction GetUnpublishedEvents()
+        {
+            return this.eventTransaction;
+        }
+
+        /// <summary>
         /// Define an event handler
         /// </summary>
         /// <typeparam name="TDomainEvent">Type of event to handle</typeparam>

@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
+
 namespace BudgetFirst.ApplicationCore
 {
     using System;
@@ -20,29 +21,35 @@ namespace BudgetFirst.ApplicationCore
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using ViewModel.Repository;
+    using BudgetFirst.ReadSide.Repositories;
 
     /// <summary>
-    /// Singleton for view model repositories
+    /// A class that holds references to the Application's Read Model Repositories.
     /// </summary>
-    public static class Repositories
+    public class Repositories
     {
         /// <summary>
-        /// Bootstrap which handles all initialisation of the application core
+        /// bootstrap which handles all initialisation of the application core
         /// </summary>
-        private static readonly Bootstrap Bootstrap;
+        private readonly Bootstrap bootstrap;
 
         /// <summary>
-        /// Initialises static members of the <see cref="Repositories"/> class.
+        /// Initialises a new instance of the <see cref="Repositories"/> class.
         /// </summary>
-        static Repositories()
+        /// <param name="bootstrap">The application core's bootstrap</param>
+        internal Repositories(Bootstrap bootstrap)
         {
-            Bootstrap = new Bootstrap();
+            this.bootstrap = bootstrap;
         }
 
         /// <summary>
-        /// Gets the account view model repository
+        /// Gets the account read model repository
         /// </summary>
-        public static AccountViewModelRepository AccountViewModelRepository => Bootstrap.AccountViewModelRepository;
+        public AccountReadModelRepository AccountReadModelRepository => this.bootstrap.AccountReadModelRepository;
+
+        /// <summary>
+        /// Gets the Account List read model Repository
+        /// </summary>
+        public AccountListReadModelRepository AccountListReadModelRepository => this.bootstrap.AccountListReadModelRepository;
     }
 }

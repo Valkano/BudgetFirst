@@ -35,19 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AccountListItemViewModel.cs" />
-    <Compile Include="AccountListViewModel.cs" />
-    <Compile Include="AccountViewModel.cs" />
-    <Compile Include="Repository\AccountListItemViewModelRepository.cs" />
-    <Compile Include="Repository\AccountViewModelRepository.cs" />
-    <Compile Include="ListViewModel.cs" />
-    <Compile Include="Repository\IViewModelRepository.cs" />
-    <Compile Include="Repository\ViewModelRepository.cs" />
-    <Compile Include="ViewModel.cs" />
     <Compile Include="Desktop\MainDesktopViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IWindowService.cs" />
-    <Compile Include="Shared\CloseableViewModel.cs" />
+    <Compile Include="Shared\ClosableViewModel.cs" />
     <Compile Include="ViewModelContainer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +66,10 @@
     <Folder Include="Mobile\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Application\ApplicationCore\ApplicationCore.csproj">
+      <Project>{eaddeb9c-fc1e-4b86-8e33-ff05a6f58710}</Project>
+      <Name>ApplicationCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Application\Budget.Domain.Commands\Budget.Domain.Commands.csproj">
       <Project>{0d86c58c-1636-45cf-8fa2-5537b94c7c09}</Project>
       <Name>Budget.Domain.Commands</Name>

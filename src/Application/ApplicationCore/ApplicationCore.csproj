@@ -48,10 +48,6 @@
       <Project>{E6091DB1-C9F7-42DB-B4D5-E31FB6A5A6DA}</Project>
       <Name>SharedInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Presentation\ViewModel\ViewModel.csproj">
-      <Project>{5c3f50fd-395c-4c4f-91db-25a5ffdcc0c7}</Project>
-      <Name>ViewModel</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Budget.Domain.Commands\Budget.Domain.Commands.csproj">
       <Project>{0d86c58c-1636-45cf-8fa2-5537b94c7c09}</Project>
       <Name>Budget.Domain.Commands</Name>
@@ -71,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
+    <Compile Include="Core.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories.cs" />
   </ItemGroup>
