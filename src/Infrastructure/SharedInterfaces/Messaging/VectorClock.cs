@@ -49,9 +49,22 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// Initialises a new instance of the <see cref="VectorClock"/> class.
         /// </summary>
         /// <param name="vector">Initial vector</param>
-        public VectorClock(Dictionary<string, int> vector)
+        public VectorClock(Dictionary<string, int> vector) : this(vector, true)
+        {
+        }
+
+        /// <summary>
+        /// Initalises a new instance of the <see cref="VectorClock"/> class.
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="copyVector"></param>
+        private VectorClock(Dictionary<string, int> vector, bool copyVector)
         {
             this.Vector = vector;
+            if(copyVector)
+            {
+                this.Vector = this.CopyVector();
+            }
             this.Timestamp = DateTime.UtcNow;
         }
 
@@ -133,7 +146,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                 newVector[deviceId] = 1;
             }
 
-            return new VectorClock(newVector);
+            return new VectorClock(newVector, false);
         }
 
         /// <summary>
@@ -166,7 +179,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                 }
             }
 
-            return new VectorClock(mergedVector);
+            return new VectorClock(mergedVector, false);
         }
 
         /// <summary>
@@ -271,7 +284,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <returns>A copy of the current VectorClock</returns>
         public VectorClock Copy()
         {
-            return new VectorClock(this.CopyVector());
+            return new VectorClock(this.CopyVector(), false);
         }
 
         /// <summary>
