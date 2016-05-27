@@ -17,6 +17,7 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
 {
     using BudgetFirst.SharedInterfaces.Commands;
     using BudgetFirst.SharedInterfaces.Messaging;
+    using BudgetFirst.Budget.Repositories;
 
     /// <summary>
     /// Handles commands related to Accounts
@@ -24,17 +25,17 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
     public class AccountCommandHandler : ICommandHandler<CreateAccountCommand>, ICommandHandler<ChangeAccountNameCommand>
     {
         /// <summary>
-        /// The event store
+        /// The Account repository
         /// </summary>
-        private readonly IEventStore eventStore;
+        private readonly AccountRepository repository;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="AccountCommandHandler"/> class.
         /// </summary>
         /// <param name="eventStore">The event store</param>
-        public AccountCommandHandler(IEventStore eventStore)
+        public AccountCommandHandler(AccountRepository repository)
         {
-            this.eventStore = eventStore;
+            this.repository = repository;
         }
 
         /// <summary>
@@ -42,11 +43,14 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
         /// </summary>
         /// <param name="command">The ChangeAccountNameCommand</param>
         /// <returns>The EventTransaction with the new events</returns>
-        public IEventTransaction Handle(ChangeAccountNameCommand command)
+        public void Handle(ChangeAccountNameCommand command, IEventTransaction eventTransaction)
         {
-            Aggregates.Account account = new Aggregates.Account(command.Id, this.eventStore.GetEvents());
+            Aggregates.Account account = this.repository.Find(command.Id);
             account.ChangeName(command.Name);
-            return account.GetUnpublishedEvents();
+            foreach (var @event in account.Events)
+            {
+                eventTransaction.Add(@event);
+            }
         }
 
         /// <summary>
@@ -54,10 +58,13 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
         /// </summary>
         /// <param name="command">The CreateAccountNameCommand</param>
         /// <returns>The EventTransaction with the new events</returns>
-        public IEventTransaction Handle(CreateAccountCommand command)
+        public void Handle(CreateAccountCommand command, IEventTransaction eventTransaction)
         {
             Aggregates.Account account = new Aggregates.Account(command.Id, command.Name);
-            return account.GetUnpublishedEvents();
+            foreach(var @event in account.Events)
+            {
+                eventTransaction.Add(@event);
+            }
         }
     }
 }

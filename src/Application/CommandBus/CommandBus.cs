@@ -77,7 +77,8 @@ namespace BudgetFirst.CommandBus
         /// <param name="command">Command to be executed</param>
         public void Submit<TCommand>(TCommand command) where TCommand : ICommand
         {
-            var eventTransaction = this.InvokeHandler(command);
+            var eventTransaction = new EventTransaction();
+            this.InvokeHandler(command, eventTransaction);
             this.StoreEvents(eventTransaction);
             this.PublishEvents(eventTransaction);
         }
@@ -87,11 +88,11 @@ namespace BudgetFirst.CommandBus
         /// </summary>
         /// <typeparam name="TCommand">Command type</typeparam>
         /// <param name="command">Command to execute</param>
-        /// <returns>Event transaction to track unpublished events</returns>
-        private IEventTransaction InvokeHandler<TCommand>(TCommand command) where TCommand : ICommand
+        /// <param name="eventTransaction">Event transaction to track unpublished events</param>
+        private void InvokeHandler<TCommand>(TCommand command, IEventTransaction eventTransaction) where TCommand : ICommand
         {
             var handler = this.dependencyInjectionContainer.Resolve<ICommandHandler<TCommand>>();
-            return handler.Handle(command);
+            handler.Handle(command, eventTransaction);
         }
 
         /// <summary>

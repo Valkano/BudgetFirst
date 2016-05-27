@@ -21,7 +21,6 @@ namespace BudgetFirst.ReadSide.ReadModel
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using BudgetFirst.SharedInterfaces.Commands;
     using SharedInterfaces.ReadModel;
 
     /// <summary>

@@ -22,7 +22,6 @@ namespace BudgetFirst.ReadSide.Handlers
     using System.Text;
     using System.Threading.Tasks;
     using Budget.Domain.Interfaces.Events;
-    using BudgetFirst.SharedInterfaces.Commands;
     using ReadModel;
     using Repositories;
     using SharedInterfaces.Messaging;
