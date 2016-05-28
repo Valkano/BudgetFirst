@@ -34,12 +34,12 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     using System.Threading.Tasks;
 
     /// <summary>
-    /// An event transaction encapsulates a list of events
+    /// An event transaction encapsulates a list of eventsToAdd
     /// </summary>
     public class EventTransaction : IEventTransaction
     {
         /// <summary>
-        /// List of events contained in this transaction
+        /// List of eventsToAdd contained in this transaction
         /// </summary>
         private List<IDomainEvent> events = new List<IDomainEvent>();
 
@@ -54,10 +54,19 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         }
 
         /// <summary>
-        /// Get all events contained in this transaction.
-        /// Beware: the events are referenced directly, so do not manipulate them.
+        /// Add a collection of events to the transaction
         /// </summary>
-        /// <returns>References to all events in the transaction</returns>
+        /// <param name="eventsToAdd">The events to add</param>
+        public void Add(IEnumerable<IDomainEvent> eventsToAdd)
+        {
+            this.events.AddRange(eventsToAdd);
+        }
+
+        /// <summary>
+        /// Get all eventsToAdd contained in this transaction.
+        /// Beware: the eventsToAdd are referenced directly, so do not manipulate them.
+        /// </summary>
+        /// <returns>References to all eventsToAdd in the transaction</returns>
         public IReadOnlyList<IDomainEvent> GetEvents()
         {
             return this.events;

@@ -44,6 +44,7 @@ namespace BudgetFirst.SharedInterfaces.Commands
         /// Handle the command
         /// </summary>
         /// <param name="command">Command to handle</param>
+        /// <param name="eventTransaction">The event transaction for unpublished events</param>
         void Handle(TCommand command, IEventTransaction eventTransaction);
     }
 }

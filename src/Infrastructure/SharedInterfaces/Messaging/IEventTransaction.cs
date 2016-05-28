@@ -50,5 +50,11 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <typeparam name="TDomainEvent">Event type</typeparam>
         /// <param name="domainEvent">Event to add</param>
         void Add<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : IDomainEvent;
+
+        /// <summary>
+        /// Add a collection of events to the transaction
+        /// </summary>
+        /// <param name="eventsToAdd">The events to add</param>
+        void Add(IEnumerable<IDomainEvent> eventsToAdd);
     }
 }
