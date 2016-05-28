@@ -25,6 +25,7 @@
 namespace BudgetFirst.SharedInterfaces.Messaging
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -33,7 +34,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     /// <summary>
     /// A Vector Clock that can tell the relative order of events on distributed systems.
     /// </summary>
-    public class VectorClock : IComparable
+    public class VectorClock : IComparable, IReadOnlyDictionary<string, int>
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="VectorClock"/> class.
@@ -48,9 +49,23 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// Initialises a new instance of the <see cref="VectorClock"/> class.
         /// </summary>
         /// <param name="vector">Initial vector</param>
-        public VectorClock(Dictionary<string, int> vector)
+        public VectorClock(Dictionary<string, int> vector) : this(vector, true)
+        {
+        }
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="VectorClock"/> class.
+        /// </summary>
+        /// <param name="vector">Initial vector</param>
+        /// <param name="copyVector">If the vector should be copied</param>
+        private VectorClock(Dictionary<string, int> vector, bool copyVector)
         {
             this.Vector = vector;
+            if (copyVector)
+            {
+                this.Vector = this.CopyVector();
+            }
+
             this.Timestamp = DateTime.UtcNow;
         }
 
@@ -81,14 +96,39 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         }
 
         /// <summary>
-        /// Gets the vector
-        /// </summary>
-        public IReadOnlyDictionary<string, int> Vector { get; private set; }
-
-        /// <summary>
         /// Gets the timestamp
         /// </summary>
         public DateTime Timestamp { get; private set; }
+
+        /// <summary>
+        /// Gets an IEnumerable of Keys/Devices in the Vector Clock.
+        /// </summary>
+        public IEnumerable<string> Keys => this.Vector.Keys;
+
+        /// <summary>
+        /// Gets an IEnumerable of integer values in the Vector Clock.
+        /// </summary>
+        public IEnumerable<int> Values => this.Vector.Values;
+
+        /// <summary>
+        /// The number of devices in the Vector Clock.
+        /// </summary>
+        public int Count => this.Vector.Count;
+
+        /// <summary>
+        /// Gets or sets the Vector.
+        /// </summary>
+        private Dictionary<string, int> Vector { get; set; }
+
+        /// <summary>
+        /// Gets the value for a particular device.
+        /// </summary>
+        /// <param name="key">The device</param>
+        /// <returns>The value for the device</returns>
+        public int this[string key]
+        {
+            get { return this.Vector[key]; }
+        }
 
         /// <summary>
         /// Create a copy of the current VectorClock and Increment the Vector for the given Device ID by 1 on the new VectorClock
@@ -107,7 +147,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                 newVector[deviceId] = 1;
             }
 
-            return new VectorClock(newVector);
+            return new VectorClock(newVector, false);
         }
 
         /// <summary>
@@ -140,7 +180,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                 }
             }
 
-            return new VectorClock(mergedVector);
+            return new VectorClock(mergedVector, false);
         }
 
         /// <summary>
@@ -162,23 +202,23 @@ namespace BudgetFirst.SharedInterfaces.Messaging
             bool greater = true;
             bool smaller = true;
 
-            foreach (string deviceId in this.Vector.Keys)
+            foreach (string deviceId in this.Keys)
             {
-                if (clock2.Vector.ContainsKey(deviceId))
+                if (clock2.ContainsKey(deviceId))
                 {
-                    if (this.Vector[deviceId] < clock2.Vector[deviceId])
+                    if (this[deviceId] < clock2[deviceId])
                     {
                         equal = false;
                         greater = false;
                     }
 
-                    if (this.Vector[deviceId] > clock2.Vector[deviceId])
+                    if (this[deviceId] > clock2[deviceId])
                     {
                         equal = false;
                         smaller = false;
                     }
                 }
-                else if (this.Vector[deviceId] != 0)
+                else if (this[deviceId] != 0)
                 {
                     equal = false;
                     smaller = false;
@@ -186,15 +226,15 @@ namespace BudgetFirst.SharedInterfaces.Messaging
             }
 
             // Check if clock2 has any deviceIds that are not present in this VectorClock
-            foreach (string deviceId in clock2.Vector.Keys)
+            foreach (string deviceId in clock2.Keys)
             {
-                if (!this.Vector.ContainsKey(deviceId) && clock2.Vector[deviceId] != 0)
+                if (!this.ContainsKey(deviceId) && clock2[deviceId] != 0)
                 {
                     equal = false;
                     greater = false;
                 }
             }
-            
+
             if (equal)
             {
                 // The vectors are the same
@@ -245,8 +285,35 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <returns>A copy of the current VectorClock</returns>
         public VectorClock Copy()
         {
-            return new VectorClock(this.CopyVector());
+            return new VectorClock(this.CopyVector(), false);
         }
+
+        /// <summary>
+        /// Returns a boolean value of whether the VectorClock contains a device.
+        /// </summary>
+        /// <param name="key">The device</param>
+        /// <returns>True if the device is present in the VectorClock, otherwise false</returns>
+        public bool ContainsKey(string key) => this.Vector.ContainsKey(key);
+
+        /// <summary>
+        /// Tries to get the value for a device, and returns a boolean if the get is successful or not.
+        /// </summary>
+        /// <param name="key">The device</param>
+        /// <param name="value">The value for the device</param>
+        /// <returns>Whether the get is successful or not</returns>
+        public bool TryGetValue(string key, out int value) => this.Vector.TryGetValue(key, out value);
+
+        /// <summary>
+        /// Gets an Enumerator of KeyValuePairs representing the VectorClock.
+        /// </summary>
+        /// <returns>The Enumerator</returns>
+        public IEnumerator<KeyValuePair<string, int>> GetEnumerator() => this.Vector.GetEnumerator();
+
+        /// <summary>
+        /// Gets the Enumerator for the VectorClock's Vector.
+        /// </summary>
+        /// <returns>The Enumerator</returns>
+        IEnumerator IEnumerable.GetEnumerator() => (this.Vector as IEnumerable).GetEnumerator();
 
         /// <summary>
         /// Creates a Dictionary Copy of the IReadOnlyDictionary Vector.

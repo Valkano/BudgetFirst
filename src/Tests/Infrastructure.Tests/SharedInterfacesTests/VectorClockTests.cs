@@ -21,10 +21,10 @@
         public void StartAtOne()
         {
             VectorClock clock = new VectorClock();
-            Assert.That(!clock.Vector.ContainsKey("key1"));
+            Assert.That(!clock.ContainsKey("key1"));
 
             clock = clock.Increment("key1");
-            Assert.That(clock.Vector["key1"] == 1);
+            Assert.That(clock["key1"] == 1);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@
             clock = clock.Increment("key1");
             clock = clock.Increment("key2");
 
-            Assert.That(clock.Vector["key1"] == 3 && clock.Vector["key2"] == 4);
+            Assert.That(clock["key1"] == 3 && clock["key2"] == 4);
         }
 
         /// <summary>
@@ -68,10 +68,10 @@
             mergedClock = mergedClock.Merge(clock2);
             mergedClock = mergedClock.Merge(clock3);
 
-            Assert.That(mergedClock.Vector["key1"] == 4 && mergedClock.Vector["key2"] == 2 && mergedClock.Vector["key3"] == 1);
+            Assert.That(mergedClock["key1"] == 4 && mergedClock["key2"] == 2 && mergedClock["key3"] == 1);
 
             // Merge should not affect the original VectorClock
-            Assert.That(clock1.Vector["key1"] == 3);
+            Assert.That(clock1["key1"] == 3);
         }
 
         /// <summary>
@@ -89,9 +89,8 @@
             clock2 = clock2.Increment("key1");
 
             Assert.That(clock1 != clock2);
-            Assert.That(clock1.Vector != clock2.Vector);
-            Assert.That(clock1.Vector["key1"] == 3);
-            Assert.That(clock2.Vector["key1"] == 4);
+            Assert.That(clock1["key1"] == 3);
+            Assert.That(clock2["key1"] == 4);
         }
 
         /// <summary>
