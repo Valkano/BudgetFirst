@@ -54,17 +54,18 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         }
 
         /// <summary>
-        /// Initalises a new instance of the <see cref="VectorClock"/> class.
+        /// Initialises a new instance of the <see cref="VectorClock"/> class.
         /// </summary>
-        /// <param name="vector"></param>
-        /// <param name="copyVector"></param>
+        /// <param name="vector">Initial vector</param>
+        /// <param name="copyVector">If the vector should be copied</param>
         private VectorClock(Dictionary<string, int> vector, bool copyVector)
         {
             this.Vector = vector;
-            if(copyVector)
+            if (copyVector)
             {
                 this.Vector = this.CopyVector();
             }
+
             this.Timestamp = DateTime.UtcNow;
         }
 
