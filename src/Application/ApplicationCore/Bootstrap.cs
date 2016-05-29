@@ -22,6 +22,8 @@ namespace BudgetFirst.ApplicationCore
     using System.Text;
     using Budget.Domain.Interfaces.Events;
     using BudgetFirst.Budget.Domain.Commands.Account;
+    using BudgetFirst.Wrappers;
+
     using CommandBus;
     using MessageBus;
     using ReadSide.Handlers;
@@ -29,7 +31,6 @@ namespace BudgetFirst.ApplicationCore
     using SharedInterfaces.Commands;
     using SharedInterfaces.DependencyInjection;
     using SharedInterfaces.Messaging;
-    using SimpleInjector;
 
     /// <summary>
     /// Sets up dependency injection, message handler registration etc.
@@ -88,33 +89,31 @@ namespace BudgetFirst.ApplicationCore
         /// <returns>Initialised dependency injection container</returns>
         private IContainer SetupDependencyInjection()
         {
-            var simpleInjector = new SimpleInjector.Container();
+            var simpleInjector = new Container();
 
             // Core messaging infrastructure
-            simpleInjector.Register<IEventStore, EventStore>(Lifestyle.Singleton);
-            simpleInjector.Register<ICommandBus, CommandBus>(Lifestyle.Singleton);
-            simpleInjector.Register<IMessageBus, MessageBus>(Lifestyle.Singleton);
+            simpleInjector.Register<IEventStore, EventStore>(Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<ICommandBus, CommandBus>(Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<IMessageBus, MessageBus>(Wrappers.Container.Lifestyle.Singleton);
 
             // Command Handlers
             simpleInjector.Register<ICommandHandler<CreateAccountCommand>, AccountCommandHandler>();
             simpleInjector.Register<ICommandHandler<ChangeAccountNameCommand>, AccountCommandHandler>();
 
             // Read side repositories
-            simpleInjector.Register<AccountReadModelRepository, AccountReadModelRepository>(Lifestyle.Singleton);
-            simpleInjector.Register<AccountListItemReadModelRepository, AccountListItemReadModelRepository>(Lifestyle.Singleton);
-            simpleInjector.Register<AccountListReadModelRepository, AccountListReadModelRepository>(Lifestyle.Singleton);
+            simpleInjector.Register<AccountReadModelRepository, AccountReadModelRepository>(Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountListItemReadModelRepository, AccountListItemReadModelRepository>(Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountListReadModelRepository, AccountListReadModelRepository>(Wrappers.Container.Lifestyle.Singleton);
 
             // Generators
-            simpleInjector.Register<AccountGenerator, AccountGenerator>(Lifestyle.Singleton);
-            simpleInjector.Register<AccountListGenerator, AccountListGenerator>(Lifestyle.Singleton);
-
-            var container = new SimpleInjectorWrapper(simpleInjector);
+            simpleInjector.Register<AccountGenerator, AccountGenerator>(Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountListGenerator, AccountListGenerator>(Wrappers.Container.Lifestyle.Singleton);
 
             // Must also register container itself because infrastructure needs it
-            simpleInjector.RegisterSingleton<IContainer>(container);
+            simpleInjector.RegisterSingleton<IContainer>(simpleInjector);
 
             simpleInjector.Verify();
-            return container;
+            return simpleInjector;
         }
 
         /// <summary>
