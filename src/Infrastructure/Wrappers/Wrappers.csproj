@@ -39,19 +39,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SharedInterfaces\SharedInterfaces.csproj">
+      <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
+      <Name>SharedInterfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="SimpleInjector, Version=3.1.5.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\SimpleInjector.3.1.5\lib\portable-net4+sl4+wp8+win8+wpa81\SimpleInjector.dll</HintPath>
+      <HintPath>..\..\packages\SimpleInjector.3.1.5\lib\portable-net4+sl4+wp8+win8+wpa81\SimpleInjector.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\SharedInterfaces\SharedInterfaces.csproj">
-      <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
-      <Name>SharedInterfaces</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

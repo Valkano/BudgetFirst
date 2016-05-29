@@ -49,7 +49,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Infrastructure.Tests", "Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Tests.Net45", "Tests\Infrastructure.Tests.Net45\Infrastructure.Tests.Net45.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrappers", "Infrastructure\Wrappers\Wrappers\Wrappers.csproj", "{D7547C5A-DC03-425F-B8FE-FC9FEBCD1CC5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrappers", "Infrastructure\Wrappers\Wrappers.csproj", "{D7547C5A-DC03-425F-B8FE-FC9FEBCD1CC5}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
