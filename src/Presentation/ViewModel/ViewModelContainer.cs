@@ -22,6 +22,7 @@ namespace BudgetFirst.ViewModel
     using System.Text;
     using System.Threading.Tasks;
     using Desktop;
+    using BudgetFirst.Wrappers;
 
     /// <summary>
     /// A Singleton Container for ViewModels.
@@ -38,9 +39,9 @@ namespace BudgetFirst.ViewModel
         /// </summary>
         private ViewModelContainer()
         {
-            this.Container = new SimpleInjector.Container();
+            this.Container = new BudgetFirst.Wrappers.Container();
 
-            this.Container.Register<MainDesktopViewModel>(SimpleInjector.Lifestyle.Singleton);
+            this.Container.Register<MainDesktopViewModel>(Container.Lifestyle.Singleton);
         }
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace BudgetFirst.ViewModel
         /// <summary>
         /// Gets the SimpleInjector Container.
         /// </summary>
-        public SimpleInjector.Container Container { get; private set; }
+        public Container Container { get; private set; }
 
         /// <summary>
         /// Returns an instance of <see cref="TInstance"/> from the container.
@@ -61,7 +62,7 @@ namespace BudgetFirst.ViewModel
         /// <returns>An instantiated <see cref="TInstance"/>.</returns>
         public TInstance Resolve<TInstance>() where TInstance : class
         {
-            return this.Container.GetInstance<TInstance>();
+            return this.Container.Resolve<TInstance>();
         }
     }
 }

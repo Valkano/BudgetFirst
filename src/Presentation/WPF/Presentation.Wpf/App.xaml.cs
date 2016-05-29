@@ -61,7 +61,7 @@
         {
             WpfWindowService.RegisterWindow<MainDesktopViewModel, MainWindow>();
 
-            ViewModelContainer.Default.Container.Register<IWindowService, WpfWindowService>(SimpleInjector.Lifestyle.Singleton);
+            ViewModelContainer.Default.Container.Register<IWindowService, WpfWindowService>(Wrappers.Container.Lifestyle.Singleton);
         }
     }
 }
