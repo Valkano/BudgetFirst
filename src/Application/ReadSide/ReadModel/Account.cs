@@ -13,12 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
+
 namespace BudgetFirst.ReadSide.ReadModel
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using BudgetFirst.Budget.Domain.Commands.Account;
+    using BudgetFirst.Budget.Domain.Interfaces.Events;
+    using BudgetFirst.SharedInterfaces.Commands;
     using SharedInterfaces.ReadModel;
 
     /// <summary>
@@ -27,17 +31,40 @@ namespace BudgetFirst.ReadSide.ReadModel
     public class Account : ReadModel, IAccount
     {
         /// <summary>
+        /// The application's CommandBus
+        /// </summary>
+        private ICommandBus commandBus;
+
+        /// <summary>
         /// Account name
         /// </summary>
         private string name;
-        
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="Account"/> class.
+        /// </summary>
+        /// <param name="commandBus">The application's command bus</param>
+        public Account(ICommandBus commandBus)
+        {
+            this.commandBus = commandBus;
+        }
+
         /// <summary>
         /// Gets or sets the account name
         /// </summary>
         public string Name
         {
             get { return this.name; }
-            set { this.SetProperty(ref this.name, value); }
+            set { this.commandBus.Submit(new ChangeAccountNameCommand() { Id = this.Id, Name = value }); }
+        }
+
+        /// <summary>
+        /// Updates the Account's name backing variable directly without using the command bus, should be used by Generators ONLY.
+        /// </summary>
+        /// <param name="newName">The new name.</param>
+        public void UpdateName(string newName)
+        {
+            this.SetProperty(ref this.name, newName, "Name");
         }
     }
 }

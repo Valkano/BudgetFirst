@@ -49,6 +49,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Infrastructure.Tests", "Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Tests.Net45", "Tests\Infrastructure.Tests.Net45\Infrastructure.Tests.Net45.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrappers", "Infrastructure\Wrappers\Wrappers.csproj", "{D7547C5A-DC03-425F-B8FE-FC9FEBCD1CC5}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Tests\Infrastructure.Tests\Infrastructure.Tests.projitems*{8edf4429-251a-416d-bb68-93f227191bcf}*SharedItemsImports = 4
@@ -115,6 +117,10 @@ Global
 		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7547C5A-DC03-425F-B8FE-FC9FEBCD1CC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7547C5A-DC03-425F-B8FE-FC9FEBCD1CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7547C5A-DC03-425F-B8FE-FC9FEBCD1CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7547C5A-DC03-425F-B8FE-FC9FEBCD1CC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -135,5 +141,6 @@ Global
 		{EADDEB9C-FC1E-4B86-8E33-FF05A6F58710} = {91804646-9924-4562-AEEF-25FA91C83CFD}
 		{A57CC877-9214-4C7A-B505-7262647EACC2} = {C1E1E144-1762-4177-B5EC-46014205CBF7}
 		{8EDF4429-251A-416D-BB68-93F227191BCF} = {C1E1E144-1762-4177-B5EC-46014205CBF7}
+		{D7547C5A-DC03-425F-B8FE-FC9FEBCD1CC5} = {EAC77D10-5E9C-4CC3-8922-3A40595E8403}
 	EndGlobalSection
 EndGlobal

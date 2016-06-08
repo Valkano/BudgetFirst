@@ -25,42 +25,57 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.Budget.Domain.Aggregates
+namespace BudgetFirst.ViewModel
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using SharedInterfaces.Messaging;
+
+    using BudgetFirst.Wrappers;
+
+    using Desktop;
 
     /// <summary>
-    /// Factory for <see cref="Account"/> aggregates.
+    /// A Singleton Container for ViewModels.
     /// </summary>
-    public class AccountFactory
+    public class ViewModelContainer
     {
         /// <summary>
-        /// Create a new account
+        /// The default instance of the <see cref="ViewModelContainer"/>
         /// </summary>
-        /// <param name="id">Account Id</param>
-        /// <param name="name">Account name</param>
-        /// <returns>New account</returns>
-        public static Account CreateAccount(Guid id, string name)
+        private static ViewModelContainer defaultInstance;
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="ViewModelContainer"/> class from being created.
+        /// </summary>
+        private ViewModelContainer()
         {
-            // var account = new Account(id, name);
-            return null;
+            this.Container = new BudgetFirst.Wrappers.Container();
+
+            this.Container.Register<MainDesktopViewModel>(Container.Lifestyle.Singleton);
         }
 
         /// <summary>
-        /// Load an account from history
+        /// Gets the default instance of the <see cref="ViewModelContainer"/>
         /// </summary>
-        /// <param name="id">Account to load</param>
-        /// <param name="history">History to load from</param>
-        /// <returns>Rehydrated aggregate</returns>
-        public static Account ReconstituteFromEvents(Guid id, IEnumerable<IDomainEvent> history) // TODO: should be repository
+        public static ViewModelContainer Default
+            => ViewModelContainer.defaultInstance ?? (ViewModelContainer.defaultInstance = new ViewModelContainer());
+
+        /// <summary>
+        /// Gets the SimpleInjector Container.
+        /// </summary>
+        public Container Container { get; private set; }
+
+        /// <summary>
+        /// Returns an instance of <see cref="TInstance"/> from the container.
+        /// </summary>
+        /// <typeparam name="TInstance">The type to return.</typeparam>
+        /// <returns>An instantiated <see cref="TInstance"/>.</returns>
+        public TInstance Resolve<TInstance>() where TInstance : class
         {
-            // var account = new Account(id, history); 
-            return null;
+            return this.Container.Resolve<TInstance>();
         }
     }
 }

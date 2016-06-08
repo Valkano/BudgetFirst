@@ -25,42 +25,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.Budget.Domain.Aggregates
+namespace BudgetFirst.ViewModel.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using SharedInterfaces.Messaging;
+    using BudgetFirst.ViewModel.Shared;
 
     /// <summary>
-    /// Factory for <see cref="Account"/> aggregates.
+    /// Interface for working with windows in a non-platform specific way.
     /// </summary>
-    public class AccountFactory
+    public interface IWindowService
     {
         /// <summary>
-        /// Create a new account
+        /// Shows a Window for a certain ViewModel
         /// </summary>
-        /// <param name="id">Account Id</param>
-        /// <param name="name">Account name</param>
-        /// <returns>New account</returns>
-        public static Account CreateAccount(Guid id, string name)
-        {
-            // var account = new Account(id, name);
-            return null;
-        }
+        /// <typeparam name="T">The type of the ViewModel, it must subclass <see cref="ClosableViewModel"/></typeparam>
+        /// <param name="viewModel">The ViewModel to open a window for.</param>
+        /// <returns>The Window that was created.</returns>
+        object ShowWindow<T>(T viewModel) where T : ClosableViewModel;
 
         /// <summary>
-        /// Load an account from history
+        /// Show's a message to the user.
         /// </summary>
-        /// <param name="id">Account to load</param>
-        /// <param name="history">History to load from</param>
-        /// <returns>Rehydrated aggregate</returns>
-        public static Account ReconstituteFromEvents(Guid id, IEnumerable<IDomainEvent> history) // TODO: should be repository
-        {
-            // var account = new Account(id, history); 
-            return null;
-        }
+        /// <param name="message">The message to show.</param>
+        void ShowMessage(string message);
     }
 }

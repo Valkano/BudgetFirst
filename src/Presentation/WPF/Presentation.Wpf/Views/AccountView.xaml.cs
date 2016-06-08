@@ -13,30 +13,35 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.ViewModel
+
+namespace BudgetFirst.Presentation.Wpf.Views
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.InteropServices;
     using System.Text;
     using System.Threading.Tasks;
-    using ReadSide.ReadModel;
-    using Repository;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Data;
+    using System.Windows.Documents;
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using System.Windows.Navigation;
+    using System.Windows.Shapes;
 
     /// <summary>
-    /// Account list view model
+    /// Interaction logic for AccountView.xaml
     /// </summary>
-    [ComVisible(false)]
-    public class AccountListViewModel : ListViewModel<AccountList, AccountListItem, AccountListItemViewModel>
+    public partial class AccountView : UserControl
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="AccountListViewModel"/> class.
+        /// Initialises a new instance of the <see cref="AccountView"/> class.
         /// </summary>
-        /// <param name="listReadModel">List read model</param>
-        /// <param name="viewModelRepository">List item view model repository</param>
-        public AccountListViewModel(AccountList listReadModel, IViewModelRepository<AccountListItem, AccountListItemViewModel> viewModelRepository) : base(listReadModel, viewModelRepository)
+        public AccountView()
         {
+            this.InitializeComponent();
         }
     }
 }

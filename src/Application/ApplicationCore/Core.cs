@@ -25,51 +25,59 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.SharedInterfaces.DependencyInjection
+namespace BudgetFirst.ApplicationCore
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using BudgetFirst.SharedInterfaces.Commands;
+    using BudgetFirst.SharedInterfaces.Messaging;
 
     /// <summary>
-    /// A dependency injection wrapper for use with SimpleInjector
+    /// Represents the Application's core functionality as a Singleton.
     /// </summary>
-    public class SimpleInjectorWrapper : IContainer
+    public class Core
     {
         /// <summary>
-        /// Actual SimpleInjector container
+        /// The backing variable for the Singleton instance of <see cref="Core"/>.
         /// </summary>
-        private readonly SimpleInjector.Container container;
+        private static Core defaultInstance;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="SimpleInjectorWrapper"/> class.
+        /// The Core's Bootstrap.
         /// </summary>
-        /// <param name="container">SimpleInjector container to wrap</param>
-        public SimpleInjectorWrapper(SimpleInjector.Container container)
+        private readonly Bootstrap bootstrap = new Bootstrap();
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="Core"/> class from being created.
+        /// </summary>
+        private Core()
         {
-            this.container = container;
+            this.Repositories = new Repositories(this.bootstrap);
+            this.MessageBus = this.bootstrap.MessageBus;
+            this.CommandBus = this.bootstrap.CommandBus;
         }
 
         /// <summary>
-        /// Resolve an instance
+        /// The singleton instance of <see cref="Core"/>
         /// </summary>
-        /// <typeparam name="TInstance">Type of instance to resolve</typeparam>
-        /// <returns>Resolved instance</returns>
-        public TInstance Resolve<TInstance>() where TInstance : class
-        {
-            return this.container.GetInstance<TInstance>();
-        }
+        public static Core Default => Core.defaultInstance ?? (Core.defaultInstance = new Core());
 
         /// <summary>
-        /// Resolve all registered instances
+        /// Gets the Application's Repositories.
         /// </summary>
-        /// <typeparam name="TInstance">Type of instance to resolve</typeparam>
-        /// <returns>Resolved instances</returns>
-        public IEnumerable<TInstance> ResolveAll<TInstance>() where TInstance : class
-        {
-            return this.container.GetAllInstances<TInstance>();
-        }
+        public Repositories Repositories { get; private set; }
+
+        /// <summary>
+        /// Gets the  Application's MessageBus.
+        /// </summary>
+        public IMessageBus MessageBus { get; private set; }
+
+        /// <summary>
+        /// Gets the  Application's CommandBus
+        /// </summary>
+        public ICommandBus CommandBus { get; private set; }
     }
 }

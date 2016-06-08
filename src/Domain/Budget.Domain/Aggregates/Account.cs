@@ -70,12 +70,22 @@ namespace BudgetFirst.Budget.Domain.Aggregates
         private Account(Guid id) : base(id)
         {
             this.Handles<AccountCreated>(this.When);
+            this.Handles<AccountNameChanged>(this.When);
         }
 
         /// <summary>
         /// Gets the account name
         /// </summary>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// Changes the name of the account and emits a AccountNameChanged event
+        /// </summary>
+        /// <param name="newName">The new name of the account</param>
+        public void ChangeName(string newName)
+        {
+            this.RaiseEvent(new AccountNameChanged(newName));
+        }
 
         /// <summary>
         /// Handles <see cref="AccountCreated"/> events
@@ -93,7 +103,6 @@ namespace BudgetFirst.Budget.Domain.Aggregates
         private void When(AccountNameChanged e)
         {
             this.Name = e.Name;
-            throw new NotImplementedException();
         }
     }
 }
