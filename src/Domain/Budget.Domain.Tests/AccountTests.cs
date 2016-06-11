@@ -30,19 +30,19 @@ namespace BudgetFirst.Budget.Domain.Tests
     using System;
     using BudgetFirst.Budget.Domain.Aggregates;
     using BudgetFirst.SharedInterfaces.Messaging;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Contains tests for the account aggregate
     /// </summary>
     /// <remarks>TODO: Switching to a different unit testing framework might be a good idea (multiplatform-support!)</remarks>
-    [TestClass]
+    [TestFixture]
     public class AccountTests
     {
         /// <summary>
         /// A new account must have a correct name
         /// </summary>
-        [TestMethod]
+        [Test]
         public void NewAccountHasName()
         {
             var account = new Account(new Guid("DB1C3C3E-C8C4-47A0-AD43-F154FDDB0577"), "Test1");
@@ -52,7 +52,7 @@ namespace BudgetFirst.Budget.Domain.Tests
         /// <summary>
         /// An account, that is loaded from history, must have the correct name
         /// </summary>
-        [TestMethod]
+        [Test]
         public void ReconstitutedNewAccountHasCorrectName()
         {
             var accountId = new Guid("A34C7724-F9FE-4A14-89A2-C8F1D662EE2A");
