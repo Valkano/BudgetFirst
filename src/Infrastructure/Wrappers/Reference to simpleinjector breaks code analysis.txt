@@ -1,0 +1,2 @@
+﻿Having a reference to simpleinjector breaks the code anaylsis, which is why we wrap it.
+One might argue that we might not even need an IoC container - feel free to refactor down to functions and passing dependencies as parameters, closing them off etc. :)

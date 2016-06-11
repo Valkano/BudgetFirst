@@ -1,0 +1,1 @@
+﻿The intent is to keep the domain separate and isolated from any technical scaffolding.

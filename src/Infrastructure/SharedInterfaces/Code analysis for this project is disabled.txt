@@ -1,1 +1,0 @@
-﻿FxCop is not enabled for this project. We would get build errors otherwise (possibly due to the use of SimpleInjector).

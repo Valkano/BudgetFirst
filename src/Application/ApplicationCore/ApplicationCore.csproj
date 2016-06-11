@@ -36,10 +36,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\..\Domain\DomainEvents\DomainEvents.csproj">
-      <Project>{371f14b9-221b-4933-b5d2-d1aae9a13593}</Project>
-      <Name>DomainEvents</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Budget.Domain.Interfaces\Budget.Domain.Interfaces.csproj">
       <Project>{c0b0af45-f29d-419c-90ae-e9b3719a032a}</Project>
       <Name>Budget.Domain.Interfaces</Name>
@@ -56,14 +52,6 @@
       <Project>{0d86c58c-1636-45cf-8fa2-5537b94c7c09}</Project>
       <Name>Budget.Domain.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CommandBus\CommandBus.csproj">
-      <Project>{b62294cf-9b88-4cf2-8e0f-1d0552ad90dc}</Project>
-      <Name>CommandBus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MessageBus\MessageBus.csproj">
-      <Project>{ed237741-44d0-4bf1-bc0e-67dfba588f40}</Project>
-      <Name>MessageBus</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ReadSide\ReadSide.csproj">
       <Project>{79EDE87E-204B-4A9F-B038-DC225A5B999E}</Project>
       <Name>ReadSide</Name>
@@ -72,11 +60,10 @@
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
     <Compile Include="Core.cs" />
+    <Compile Include="Messaging\CommandBus.cs" />
+    <Compile Include="Messaging\MessageBus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Code analysis for this project is disabled.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

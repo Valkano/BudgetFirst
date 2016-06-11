@@ -1,4 +1,7 @@
-﻿// This source code is dual-licensed under:
+﻿// BudgetFirst 
+// ©2016 Thomas Mühlgrabner
+//
+// This source code is dual-licensed under:
 //   * Mozilla Public License 2.0 (MPL 2.0) 
 //   * GNU General Public License v3.0 (GPLv3)
 //
