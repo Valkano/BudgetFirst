@@ -5,6 +5,6 @@ install:
   - nuget restore src/BudgetFirst.sln
   - nuget install NUnit.Runners -Version 3.0.1 -OutputDirectory testrunner
 script:
-  - xbuild /p:Configuration=Release src/BudgetFirst.sln
+  - xbuild /p:Configuration=Release /p:TargetFrameworkVersion="v4.5" src/BudgetFirst.sln
   - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit3-console.exe ./src/Tests/Infrastructure.Tests.Net45/bin/Debug/Infrastructure.Tests.Net45.dll
 
