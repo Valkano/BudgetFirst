@@ -44,7 +44,7 @@ namespace BudgetFirst.Budget.Repositories
         /// Event store
         /// </summary>
         private readonly IEventStore eventStore;
-
+        
         /// <summary>
         /// Initialises a new instance of the <see cref="AccountRepository"/> class.
         /// </summary>
@@ -58,10 +58,30 @@ namespace BudgetFirst.Budget.Repositories
         /// Find (rehydrate) an account aggregate
         /// </summary>
         /// <param name="id">Account Id</param>
+        /// <param name="unitOfWork">Unit of work</param>
         /// <returns>Rehydrated aggregate</returns>
-        public Account Find(Guid id)
+        public Account Find(Guid id, IAggregateUnitOfWork unitOfWork)
         {
-            return new Account(id, this.eventStore.GetEvents());
+            // This assumes that the aggregate in the unit of work is up-to-date
+            var fromUnitOfWork = unitOfWork.Get<Account>(id);
+            if (fromUnitOfWork != null)
+            {
+                return fromUnitOfWork;
+            }
+
+            var newAccount = new Account(id, this.eventStore.GetEvents());
+            unitOfWork.Register(newAccount);
+            return newAccount;
+        }
+
+        /// <summary>
+        /// Save the (new) account (in the unit of work)
+        /// </summary>
+        /// <param name="account">Account to save</param>
+        /// <param name="unitOfWork">Unit of work to use</param>
+        public void Save(Account account, IAggregateUnitOfWork unitOfWork)
+        {
+            unitOfWork.Register(account);
         }
     }
 }

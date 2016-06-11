@@ -78,7 +78,7 @@ namespace BudgetFirst.ApplicationCore.Messaging
         /// <param name="command">Command to be executed</param>
         public void Submit<TCommand>(TCommand command) where TCommand : ICommand
         {
-            var eventTransaction = new EventTransaction();
+            var eventTransaction = new AggregateUnitOfWork();
             this.InvokeHandler(command, eventTransaction);
             this.StoreEvents(eventTransaction);
             this.PublishEvents(eventTransaction);
@@ -89,29 +89,29 @@ namespace BudgetFirst.ApplicationCore.Messaging
         /// </summary>
         /// <typeparam name="TCommand">Command type</typeparam>
         /// <param name="command">Command to execute</param>
-        /// <param name="eventTransaction">Event transaction to track unpublished events</param>
-        private void InvokeHandler<TCommand>(TCommand command, IEventTransaction eventTransaction) where TCommand : ICommand
+        /// <param name="aggregateUnitOfWork">Event transaction to track unpublished events</param>
+        private void InvokeHandler<TCommand>(TCommand command, IAggregateUnitOfWork aggregateUnitOfWork) where TCommand : ICommand
         {
             var handler = this.dependencyInjectionContainer.Resolve<ICommandHandler<TCommand>>();
-            handler.Handle(command, eventTransaction);
+            handler.Handle(command, aggregateUnitOfWork);
         }
 
         /// <summary>
         /// Add the events from the transaction to the event store
         /// </summary>
-        /// <param name="eventTransaction">Event transaction</param>
-        private void StoreEvents(IEventTransaction eventTransaction)
+        /// <param name="aggregateUnitOfWork">Event transaction</param>
+        private void StoreEvents(IAggregateUnitOfWork aggregateUnitOfWork)
         {
-            this.eventStore.Add(eventTransaction.GetEvents());
+            this.eventStore.Add(aggregateUnitOfWork.GetEvents());
         }
 
         /// <summary>
         /// Publish the events from the transaction
         /// </summary>
-        /// <param name="eventTransaction">Event transaction containing the new events</param>
-        private void PublishEvents(IEventTransaction eventTransaction)
+        /// <param name="aggregateUnitOfWork">Event transaction containing the new events</param>
+        private void PublishEvents(IAggregateUnitOfWork aggregateUnitOfWork)
         {
-            var newEvents = eventTransaction.GetEvents();
+            var newEvents = aggregateUnitOfWork.GetEvents();
             foreach (var newEvent in newEvents)
             {
                 this.messageBus.Publish(newEvent);

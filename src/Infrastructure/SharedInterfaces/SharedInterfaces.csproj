@@ -43,11 +43,11 @@
     <Compile Include="IBootstrap.cs" />
     <Compile Include="Messaging\DomainEvent.cs" />
     <Compile Include="Messaging\EventStore.cs" />
-    <Compile Include="Messaging\EventTransaction.cs" />
+    <Compile Include="Messaging\AggregateUnitOfWork.cs" />
     <Compile Include="Messaging\IDomainEvent.cs" />
     <Compile Include="Messaging\IDomainEventHandler.cs" />
     <Compile Include="Messaging\IEventStore.cs" />
-    <Compile Include="Messaging\IEventTransaction.cs" />
+    <Compile Include="Messaging\IAggregateUnitOfWork.cs" />
     <Compile Include="Messaging\IMessageBus.cs" />
     <Compile Include="Messaging\VectorClock.cs" />
     <Compile Include="Properties\Annotations.cs" />

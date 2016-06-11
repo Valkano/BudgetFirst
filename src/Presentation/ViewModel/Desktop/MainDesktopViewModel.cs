@@ -62,6 +62,11 @@ namespace BudgetFirst.ViewModel.Desktop
         private AccountListItem selectedAccount;
 
         /// <summary>
+        /// Counter to cause rename of account to be different each time
+        /// </summary>
+        private int renameCount = 0;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="MainDesktopViewModel"/> class.
         /// </summary>
         /// <param name="windowService">The platform's window service.</param>
@@ -150,7 +155,7 @@ namespace BudgetFirst.ViewModel.Desktop
 
             var accountRepo = ApplicationCore.Core.Default.Repositories.AccountReadModelRepository;
             var account = accountRepo.Find(this.SelectedAccount.Id);
-            account.Name = "Renamed Account";
+            account.Name = $"Renamed Account ({this.renameCount++})";
         }
 
         /// <summary>

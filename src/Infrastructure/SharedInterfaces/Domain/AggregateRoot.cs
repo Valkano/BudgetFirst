@@ -43,7 +43,7 @@ namespace BudgetFirst.SharedInterfaces.Domain
         /// Unpublished events
         /// </summary>
         /// <remarks>Track events for event sourcing in the base class to avoid polluting domain model with infrastructure code</remarks>
-        private readonly IEventTransaction eventTransaction;
+        private readonly IList<IDomainEvent> events;
 
         /// <summary>
         /// Aggregate Id
@@ -63,14 +63,19 @@ namespace BudgetFirst.SharedInterfaces.Domain
         protected AggregateRoot(Guid id)
         {
             this.aggregateId = id;
-            this.eventTransaction = new EventTransaction();
+            this.events = new List<IDomainEvent>();
             this.eventHandlers = new Dictionary<Type, Action<IDomainEvent>>();
         }
 
         /// <summary>
         /// Gets the list of unpublished events that this aggregate has raised
         /// </summary>
-        public IEnumerable<IDomainEvent> Events => this.eventTransaction.GetEvents();
+        public IEnumerable<IDomainEvent> Events => this.events;
+
+        /// <summary>
+        /// Aggregate Id
+        /// </summary>
+        public Guid Id => this.aggregateId;
 
         /// <summary>
         /// Define an event handler
@@ -104,7 +109,7 @@ namespace BudgetFirst.SharedInterfaces.Domain
         {
             domainEvent.AggregateId = this.aggregateId;
             this.HandleEvent(domainEvent);
-            this.eventTransaction.Add(domainEvent);
+            this.events.Add(domainEvent);
         }
 
         /// <summary>

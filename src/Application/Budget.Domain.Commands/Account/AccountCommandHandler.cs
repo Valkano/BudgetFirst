@@ -54,23 +54,22 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
         /// Handles the ChangeAccountName command
         /// </summary>
         /// <param name="command">The ChangeAccountNameCommand</param>
-        /// <param name="eventTransaction">The event transaction</param>
-        public void Handle(ChangeAccountNameCommand command, IEventTransaction eventTransaction)
+        /// <param name="aggregateUnitOfWork">The event transaction</param>
+        public void Handle(ChangeAccountNameCommand command, IAggregateUnitOfWork aggregateUnitOfWork)
         {
-            Aggregates.Account account = this.repository.Find(command.Id);
+            Aggregates.Account account = this.repository.Find(command.Id, aggregateUnitOfWork);
             account.ChangeName(command.Name);
-            eventTransaction.Add(account.Events);
         }
 
         /// <summary>
         /// Handles the CreateAccountName command
         /// </summary>
         /// <param name="command">The CreateAccountNameCommand</param>
-        /// <param name="eventTransaction">The event transaction</param>
-        public void Handle(CreateAccountCommand command, IEventTransaction eventTransaction)
+        /// <param name="aggregateUnitOfWork">The event transaction</param>
+        public void Handle(CreateAccountCommand command, IAggregateUnitOfWork aggregateUnitOfWork)
         {
             Aggregates.Account account = new Aggregates.Account(command.Id, command.Name);
-            eventTransaction.Add(account.Events);
+            this.repository.Save(account, aggregateUnitOfWork);
         }
     }
 }

@@ -25,42 +25,42 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.Budget.Domain.Aggregates
+namespace BudgetFirst.SharedInterfaces.Messaging
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using SharedInterfaces.Messaging;
+    using Domain;
 
     /// <summary>
-    /// Factory for <see cref="Account"/> aggregates.
+    /// Unit of work for aggregates.
+    /// Should only be used on a single aggregate per unit of work.
+    /// Combine multiple unit of works for multiple aggregates in a saga.
     /// </summary>
-    public class AccountFactory
+    public interface IAggregateUnitOfWork
     {
         /// <summary>
-        /// Create a new account
+        /// Get all events in this unit of work, from all aggregates.
+        /// Event order is only guaranteed per aggregate. You should not use a unit of work over multiple aggregates
         /// </summary>
-        /// <param name="id">Account Id</param>
-        /// <param name="name">Account name</param>
-        /// <returns>New account</returns>
-        public static Account CreateAccount(Guid id, string name)
-        {
-            // var account = new Account(id, name);
-            return null;
-        }
+        /// <returns>All events in the transaction</returns>
+        IReadOnlyList<IDomainEvent> GetEvents();
 
         /// <summary>
-        /// Load an account from history
+        /// Register an aggregate in the unit of work.
+        /// Do not register multiple aggregates per unit of work.
         /// </summary>
-        /// <param name="id">Account to load</param>
-        /// <param name="history">History to load from</param>
-        /// <returns>Rehydrated aggregate</returns>
-        public static Account ReconstituteFromEvents(Guid id, IEnumerable<IDomainEvent> history) // TODO: should be repository
-        {
-            // var account = new Account(id, history); 
-            return null;
-        }
+        /// <param name="aggregate">Aggregate to register in unit of work</param>
+        void Register(AggregateRoot aggregate);
+
+        /// <summary>
+        /// Retrieve an aggregate from the current unit of work
+        /// </summary>
+        /// <typeparam name="TAggregate">Aggregate type</typeparam>
+        /// <param name="id">Aggregate id</param>
+        /// <returns>Aggregate from unit of work, or <c>null</c> if not present in unit of work</returns>
+        TAggregate Get<TAggregate>(Guid id) where TAggregate : AggregateRoot;
     }
 }
