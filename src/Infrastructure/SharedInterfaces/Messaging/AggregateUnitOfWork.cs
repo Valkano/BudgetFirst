@@ -68,6 +68,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
             {
                 result.AddRange(aggregate.Events);
             }
+
             return result;
         }
         
