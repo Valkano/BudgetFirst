@@ -52,7 +52,7 @@ namespace BudgetFirst.ApplicationCore
         /// </summary>
         public Bootstrap()
         {
-            this.Container = this.SetupDependencyInjection();
+            Container = this.SetupDependencyInjection();
             this.EventStore = this.Container.Resolve<IEventStore>();
             this.MessageBus = this.Container.Resolve<IMessageBus>();
             this.CommandBus = this.Container.Resolve<ICommandBus>();
