@@ -1,0 +1,9 @@
+version: 0.1.{build}
+configuration:
+- Release
+- Debug
+before_build:
+- cmd: nuget restore src/BudgetFirst.sln
+build:
+  project: src/BudgetFirst.sln
+  verbosity: minimal

@@ -1,0 +1,3 @@
+This is a list of all the third party modules/open source licenses that we still have to credit somewhere:
+* SimpleInjector
+* mvvm light

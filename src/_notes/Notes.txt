@@ -1,0 +1,20 @@
+TODO:
+* Refactor projects
+	* Merge
+	* Rename
+	* Adjust position in layer
+
+* Do we still need these layers?
+
+
+v0.1
+----
+* Change how event transaction works. Repository should track unit of work instead?
+
+Later optimisations
+-------------------
+* Test how having thousands, or even millions, of events affects aggregate rehydration speed. Especially on mobile devices
+	We could keep an identity map. Must be able to reset after sync.
+
+* Read model repository: check how fast rebuild of model after sync is, especially on mobile devices
+	might have to snapshot? (but have to know if snapshot can be used, i.e. no new events were added in meantime. vector clocks?)
