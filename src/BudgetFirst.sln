@@ -43,16 +43,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Tests.Net45"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrappers", "Infrastructure\Wrappers\Wrappers.csproj", "{D7547C5A-DC03-425F-B8FE-FC9FEBCD1CC5}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Budget.Domain.Tests", "Domain\Budget.Domain.Tests\Budget.Domain.Tests.shproj", "{29B288D4-239F-4756-8B03-B161799CD762}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Budget.Domain.Tests", "Tests\Budget.Domain.Tests\Budget.Domain.Tests.shproj", "{29B288D4-239F-4756-8B03-B161799CD762}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budget.Domain.Tests.Net45", "Domain\Budget.Domain.Tests.Net45\Budget.Domain.Tests.Net45.csproj", "{7D7B5867-28E9-40A9-AE89-0EFA863FA9A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budget.Domain.Tests.Net45", "Tests\Budget.Domain.Tests.Net45\Budget.Domain.Tests.Net45.csproj", "{7D7B5867-28E9-40A9-AE89-0EFA863FA9A1}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Domain\Budget.Domain.Tests\Budget.Domain.Tests.projitems*{29b288d4-239f-4756-8b03-b161799cd762}*SharedItemsImports = 13
+		Tests\Budget.Domain.Tests\Budget.Domain.Tests.projitems*{29b288d4-239f-4756-8b03-b161799cd762}*SharedItemsImports = 13
 		Tests\Infrastructure.Tests\Infrastructure.Tests.projitems*{8edf4429-251a-416d-bb68-93f227191bcf}*SharedItemsImports = 4
 		Tests\Infrastructure.Tests\Infrastructure.Tests.projitems*{a57cc877-9214-4c7a-b505-7262647eacc2}*SharedItemsImports = 13
-		Domain\Budget.Domain.Tests\Budget.Domain.Tests.projitems*{7d7b5867-28e9-40a9-ae89-0efa863fa9a1}*SharedItemsImports = 4
+		Tests\Budget.Domain.Tests\Budget.Domain.Tests.projitems*{7d7b5867-28e9-40a9-ae89-0efa863fa9a1}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -148,7 +148,7 @@ Global
 		{A57CC877-9214-4C7A-B505-7262647EACC2} = {C1E1E144-1762-4177-B5EC-46014205CBF7}
 		{8EDF4429-251A-416D-BB68-93F227191BCF} = {C1E1E144-1762-4177-B5EC-46014205CBF7}
 		{D7547C5A-DC03-425F-B8FE-FC9FEBCD1CC5} = {EAC77D10-5E9C-4CC3-8922-3A40595E8403}
-		{29B288D4-239F-4756-8B03-B161799CD762} = {1293E469-09E8-4A65-9415-FF4CACBD01E4}
-		{7D7B5867-28E9-40A9-AE89-0EFA863FA9A1} = {1293E469-09E8-4A65-9415-FF4CACBD01E4}
+		{29B288D4-239F-4756-8B03-B161799CD762} = {C1E1E144-1762-4177-B5EC-46014205CBF7}
+		{7D7B5867-28E9-40A9-AE89-0EFA863FA9A1} = {C1E1E144-1762-4177-B5EC-46014205CBF7}
 	EndGlobalSection
 EndGlobal
