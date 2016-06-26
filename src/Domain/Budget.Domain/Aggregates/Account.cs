@@ -48,7 +48,7 @@ namespace BudgetFirst.Budget.Domain.Aggregates
         /// <param name="name">Account name</param>
         public Account(Guid id, string name) : this(id)
         {            
-            this.RaiseEvent(new AccountCreated(name));
+            this.Update(new AccountCreated(name));
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace BudgetFirst.Budget.Domain.Aggregates
         /// <param name="newName">The new name of the account</param>
         public void ChangeName(string newName)
         {
-            this.RaiseEvent(new AccountNameChanged(newName));
+            this.Update(new AccountNameChanged(newName));
         }
 
         /// <summary>
