@@ -69,7 +69,7 @@ namespace BudgetFirst.Budget.Repositories
                 return fromUnitOfWork;
             }
 
-            var newAccount = new Account(id, this.eventStore.GetEvents());
+            var newAccount = new Account(id, this.eventStore.GetEventsFor(id));
             unitOfWork.Register(newAccount);
             return newAccount;
         }

@@ -45,6 +45,11 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         private List<IDomainEvent> store = new List<IDomainEvent>();
 
         /// <summary>
+        /// Lookup which groups the events in the store by aggregate
+        /// </summary>
+        private Dictionary<Guid, List<IDomainEvent>> lookup = new Dictionary<Guid, List<IDomainEvent>>();
+
+        /// <summary>
         /// Get all saved events.
         /// Beware: events are referenced directly, do not manipulate them.
         /// </summary>
@@ -55,14 +60,29 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         }
 
         /// <summary>
+        /// Get all saved events for a specific aggregate.
+        /// Beware: events are referenced directly, do not manipulate them.
+        /// </summary>
+        /// <param name="aggregateId">Aggregate Id</param>
+        /// <returns>Reference to all events for the given aggregate</returns>
+        public IReadOnlyList<IDomainEvent> GetEventsFor(Guid aggregateId)
+        {
+            List<IDomainEvent> events = null;
+            this.lookup.TryGetValue(aggregateId, out events);
+            return events;
+        }
+
+        /// <summary>
         /// Save multiple events
         /// </summary>
         /// <param name="domainEvents">Events to save</param>
         public void Add(IEnumerable<IDomainEvent> domainEvents)
         {
-            this.store.AddRange(domainEvents);
+            var newEvents = domainEvents.ToList();
+            this.store.AddRange(newEvents);
+            this.AddToLookup(newEvents);
         }
-
+        
         /// <summary>
         /// Save a single event
         /// </summary>
@@ -70,6 +90,42 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         public void Add(IDomainEvent domainEvent)
         {
             this.store.Add(domainEvent);
+            this.AddToLookup(domainEvent);
+        }
+
+        /// <summary>
+        /// Add multiple events to the lookup
+        /// </summary>
+        /// <param name="newEvents">New events to add</param>
+        private void AddToLookup(IEnumerable<IDomainEvent> newEvents)
+        {
+            foreach (var e in newEvents.GroupBy(x => x.AggregateId))
+            {
+                this.EnsureLookupKeyExists(e.Key);
+                this.lookup[e.Key].AddRange(e);
+            }
+        }
+
+        /// <summary>
+        /// Add a single event to the lookup
+        /// </summary>
+        /// <param name="domainEvent">Event to add</param>
+        private void AddToLookup(IDomainEvent domainEvent)
+        {
+            this.EnsureLookupKeyExists(domainEvent.AggregateId);
+            this.lookup[domainEvent.AggregateId].Add(domainEvent);
+        }
+
+        /// <summary>
+        /// Ensure that the lookup key exists (initialise as new list if not yet set).
+        /// </summary>
+        /// <param name="key">Lookup key (i.e. aggregate id)</param>
+        private void EnsureLookupKeyExists(Guid key)
+        {
+            if (!this.lookup.ContainsKey(key))
+            {
+                this.lookup[key] = new List<IDomainEvent>();
+            }
         }
     }
 }
