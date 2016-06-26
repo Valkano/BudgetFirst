@@ -59,6 +59,7 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
         {
             Aggregates.Account account = this.repository.Find(command.Id, aggregateUnitOfWork);
             account.ChangeName(command.Name);
+            this.repository.Save(account, aggregateUnitOfWork);
         }
 
         /// <summary>

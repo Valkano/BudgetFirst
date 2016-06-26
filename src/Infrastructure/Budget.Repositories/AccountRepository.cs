@@ -55,11 +55,12 @@ namespace BudgetFirst.Budget.Repositories
         }
 
         /// <summary>
-        /// Find (rehydrate) an account aggregate
+        /// Find (rehydrate) an account aggregate.
         /// </summary>
         /// <param name="id">Account Id</param>
         /// <param name="unitOfWork">Unit of work</param>
         /// <returns>Rehydrated aggregate</returns>
+        /// <remarks>TODO: Could it happen that there are new events for the aggregate that are not on the aggregate in our unit of work?</remarks>
         public Account Find(Guid id, IAggregateUnitOfWork unitOfWork)
         {
             // This assumes that the aggregate in the unit of work is up-to-date

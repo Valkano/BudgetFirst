@@ -130,8 +130,7 @@ namespace BudgetFirst.ViewModel.Desktop
         protected override void Close()
         {
             // Run any closing logic then call to the base method to actually close the window.
-            this.windowService.ShowMessage("test");
-
+            // this.windowService.ShowMessage("test");
             base.Close();
         }
 
