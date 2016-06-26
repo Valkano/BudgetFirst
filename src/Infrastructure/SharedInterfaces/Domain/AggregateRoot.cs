@@ -105,7 +105,7 @@ namespace BudgetFirst.SharedInterfaces.Domain
         /// </summary>
         /// <typeparam name="TDomainEvent">Type of the event to raise (and handle)</typeparam>
         /// <param name="domainEvent">Event to raise and handle</param>
-        protected void RaiseEvent<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent
+        protected void Update<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent
         {
             domainEvent.AggregateId = this.aggregateId;
             this.HandleEvent(domainEvent);

@@ -55,5 +55,13 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// </summary>
         /// <returns>All events in the store</returns>
         IReadOnlyList<IDomainEvent> GetEvents();
+
+        /// <summary>
+        /// Get all saved events for a specific aggregate.
+        /// Beware: events are referenced directly, do not manipulate them.
+        /// </summary>
+        /// <param name="aggregateId">Aggregate Id</param>
+        /// <returns>Reference to all events for the given aggregate</returns>
+        IReadOnlyList<IDomainEvent> GetEventsFor(Guid aggregateId);
     }
 }
