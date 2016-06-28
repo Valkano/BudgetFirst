@@ -19,10 +19,10 @@ This includes:
 
 ## Continuous Integration
 
-|           | master | xamarin-init |
+|           | master | dev |
 |-----------|:------:|:------------:|
-|  Travis   | [![Build Status](https://travis-ci.org/BudgetFirst/BudgetFirst.svg?branch=master)](https://travis-ci.org/BudgetFirst/BudgetFirst) | [![Build Status](https://travis-ci.org/BudgetFirst/BudgetFirst.svg?branch=xamarin-init)](https://travis-ci.org/BudgetFirst/BudgetFirst)|
-| Appveyor  | [![Build status](https://ci.appveyor.com/api/projects/status/noemsf59unqkdat6/branch/master?svg=true)](https://ci.appveyor.com/project/budgetfirst-cla/budgetfirst/branch/master) | [![Build status](https://ci.appveyor.com/api/projects/status/noemsf59unqkdat6/branch/xamarin-init?svg=true)](https://ci.appveyor.com/project/budgetfirst-cla/budgetfirst/branch/xamarin-init) |
+|  Travis   | [![Build Status](https://travis-ci.org/BudgetFirst/BudgetFirst.svg?branch=master)](https://travis-ci.org/BudgetFirst/BudgetFirst) | [![Build Status](https://travis-ci.org/BudgetFirst/BudgetFirst.svg?branch=dev)](https://travis-ci.org/BudgetFirst/BudgetFirst)|
+| Appveyor  | [![Build status](https://ci.appveyor.com/api/projects/status/noemsf59unqkdat6/branch/master?svg=true)](https://ci.appveyor.com/project/budgetfirst-cla/budgetfirst/branch/master) | [![Build status](https://ci.appveyor.com/api/projects/status/noemsf59unqkdat6/branch/dev?svg=true)](https://ci.appveyor.com/project/budgetfirst-cla/budgetfirst/branch/dev) |
 
 
 

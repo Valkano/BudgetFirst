@@ -1,9 +1,18 @@
-version: 0.1.{build}
+version: 0.2.0.{build}
 configuration:
 - Release
 - Debug
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '0.2'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
 before_build:
 - cmd: nuget restore src/BudgetFirst.sln
 build:
   project: src/BudgetFirst.sln
   verbosity: minimal
+artifacts:
+  - path: src\Presentation\WPF\Presentation.Wpf\bin
+    name: WindowsBinaries
