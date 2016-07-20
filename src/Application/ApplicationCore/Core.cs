@@ -43,37 +43,40 @@ namespace BudgetFirst.ApplicationCore
         /// <summary>
         /// The backing variable for the Singleton instance of <see cref="Core"/>.
         /// </summary>
-        private static Core defaultInstance;
+        private static readonly Core DefaultInstance;
 
         /// <summary>
         /// The Core's Bootstrap.
         /// </summary>
-        private readonly Bootstrap bootstrap = new Bootstrap();
+        private static readonly Bootstrap Bootstrap;
+
+        /// <summary>
+        /// Initialises static members of the <see cref="Core"/> class.
+        /// </summary>
+        static Core()
+        {
+            Bootstrap = new Bootstrap();
+            DefaultInstance = new Core();
+        }
 
         /// <summary>
         /// Prevents a default instance of the <see cref="Core"/> class from being created.
         /// </summary>
         private Core()
         {
-            this.Repositories = new Repositories(this.bootstrap);
-            this.MessageBus = this.bootstrap.MessageBus;
-            this.CommandBus = this.bootstrap.CommandBus;
+            this.Repositories = new Repositories(Bootstrap);
+            this.CommandBus = Bootstrap.CommandBus;
         }
 
         /// <summary>
         /// The singleton instance of <see cref="Core"/>
         /// </summary>
-        public static Core Default => Core.defaultInstance ?? (Core.defaultInstance = new Core());
+        public static Core Default => DefaultInstance;
 
         /// <summary>
         /// Gets the Application's Repositories.
         /// </summary>
         public Repositories Repositories { get; private set; }
-
-        /// <summary>
-        /// Gets the  Application's MessageBus.
-        /// </summary>
-        public IMessageBus MessageBus { get; private set; }
 
         /// <summary>
         /// Gets the  Application's CommandBus

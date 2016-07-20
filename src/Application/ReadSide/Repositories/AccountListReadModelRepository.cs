@@ -34,6 +34,9 @@ namespace BudgetFirst.ReadSide.Repositories
     using System.Text;
     using System.Threading.Tasks;
     using System.Xml.Linq;
+
+    using BudgetFirst.SharedInterfaces.ReadModel;
+
     using ReadModel;
 
     /// <summary>
@@ -42,16 +45,17 @@ namespace BudgetFirst.ReadSide.Repositories
     public class AccountListReadModelRepository 
     {
         /// <summary>
-        /// Single account list contained in this repository
+        /// Read store
         /// </summary>
-        private AccountList accountList;
+        private IReadStore readStore;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="AccountListReadModelRepository"/> class.
         /// </summary>
-        public AccountListReadModelRepository()
+        /// <param name="readStore">Read store</param>
+        public AccountListReadModelRepository(IReadStore readStore)
         {
-            this.accountList = new AccountList();
+            this.readStore = readStore;
         }
 
         /// <summary>
@@ -60,7 +64,7 @@ namespace BudgetFirst.ReadSide.Repositories
         /// <returns>Reference to the account list in the repository, if found. <c>null</c> otherwise.</returns>
         public AccountList Find()
         {
-            return this.accountList;
+            return this.readStore.RetrieveSingleton<AccountList>();
         }
 
         /// <summary>
@@ -69,7 +73,7 @@ namespace BudgetFirst.ReadSide.Repositories
         /// <param name="accountList">Account list to save</param>
         public void Save(AccountList accountList)
         {
-            this.accountList = accountList;
+            this.readStore.StoreSingleton(accountList);
         }
     }
 }

@@ -71,6 +71,12 @@ namespace BudgetFirst.ReadSide.Handlers
         public void Handle(AccountCreated @event)
         {
             var accountList = this.accountListRepository.Find();
+            if (accountList == null)
+            {
+                accountList = new AccountList();
+                this.accountListRepository.Save(accountList);
+            }
+
             var account = this.accountListItemRepository.Find(@event.AggregateId);
             if (account == null)
             {

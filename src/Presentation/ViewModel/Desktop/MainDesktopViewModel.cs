@@ -73,11 +73,16 @@ namespace BudgetFirst.ViewModel.Desktop
         public MainDesktopViewModel(IWindowService windowService)
         {
             this.windowService = windowService;
-            this.AddAccountCommand = new RelayCommand(() => this.AddAccount());
-            this.RenameAccountCommand = new RelayCommand(() => this.RenameAccount());
-            this.BootstrapDomain();
-            var accountListRepo = ApplicationCore.Core.Default.Repositories.AccountListReadModelRepository;
-            this.accountList = accountListRepo.Find();
+            this.commandBus = ApplicationCore.Core.Default.CommandBus;
+            this.InitialiseRelayCommands();
+            this.accountList = ApplicationCore.Core.Default.Repositories.AccountListReadModelRepository.Find();
+
+            // Account list can be null if we haven't loaded any data yet -> we won't be informed about property changes!
+            if (this.accountList == null)
+            {
+                this.accountList = new AccountList();
+                ApplicationCore.Core.Default.Repositories.AccountListReadModelRepository.Save(this.accountList);
+            }
         }
 
         /// <summary>
@@ -135,6 +140,15 @@ namespace BudgetFirst.ViewModel.Desktop
         }
 
         /// <summary>
+        /// Initialise all relay command properties
+        /// </summary>
+        private void InitialiseRelayCommands()
+        {
+            this.AddAccountCommand = new RelayCommand(this.AddAccount);
+            this.RenameAccountCommand = new RelayCommand(this.RenameAccount);
+        }
+
+        /// <summary>
         /// Adds a new account.
         /// </summary>
         private void AddAccount()
@@ -155,15 +169,6 @@ namespace BudgetFirst.ViewModel.Desktop
             var accountRepo = ApplicationCore.Core.Default.Repositories.AccountReadModelRepository;
             var account = accountRepo.Find(this.SelectedAccount.Id);
             account.Name = $"Renamed Account ({this.renameCount++})";
-        }
-
-        /// <summary>
-        /// Initialises the Application Core.
-        /// </summary>
-        private void BootstrapDomain()
-        {
-            // Bootstrap domain and access the message bus and command bus
-            this.commandBus = ApplicationCore.Core.Default.CommandBus;
         }
     }
 }

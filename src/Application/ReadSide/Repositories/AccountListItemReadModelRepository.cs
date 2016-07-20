@@ -34,6 +34,9 @@ namespace BudgetFirst.ReadSide.Repositories
     using System.Text;
     using System.Threading.Tasks;
     using System.Xml.Linq;
+
+    using BudgetFirst.SharedInterfaces.ReadModel;
+
     using ReadModel;
 
     /// <summary>
@@ -42,16 +45,17 @@ namespace BudgetFirst.ReadSide.Repositories
     public class AccountListItemReadModelRepository : IReadModelRepository<AccountListItem>
     {
         /// <summary>
-        /// Identity map (i.e. state)
+        /// Read store
         /// </summary>
-        private Dictionary<Guid, AccountListItem> identityMap;
+        private IReadStore readStore;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="AccountListItemReadModelRepository"/> class.
         /// </summary>
-        public AccountListItemReadModelRepository()
+        /// <param name="readStore">Read store</param>
+        public AccountListItemReadModelRepository(IReadStore readStore)
         {
-            this.identityMap = new Dictionary<Guid, AccountListItem>();
+            this.readStore = readStore;
         }
 
         /// <summary>
@@ -61,13 +65,7 @@ namespace BudgetFirst.ReadSide.Repositories
         /// <returns>Reference to the account list item in the repository, if found. <c>null</c> otherwise.</returns>
         public AccountListItem Find(Guid id)
         {
-            AccountListItem account;
-            if (this.identityMap.TryGetValue(id, out account))
-            {
-                return account;
-            }
-
-            return null;
+            return this.readStore.Retrieve<AccountListItem>(id);
         }
 
         /// <summary>
@@ -76,7 +74,7 @@ namespace BudgetFirst.ReadSide.Repositories
         /// <param name="account">Account list item to save</param>
         public void Save(AccountListItem account)
         {
-            this.identityMap[account.Id] = account;
+            this.readStore.Store(account.Id, account);
         }
     }
 }

@@ -34,6 +34,7 @@ namespace BudgetFirst.ApplicationCore
     using System.Text;
     using Budget.Domain.Interfaces.Events;
     using BudgetFirst.Budget.Domain.Commands.Account;
+    using BudgetFirst.SharedInterfaces.ReadModel;
     using BudgetFirst.Wrappers;
     using Messaging;
     using ReadSide.Handlers;
@@ -56,23 +57,9 @@ namespace BudgetFirst.ApplicationCore
             this.EventStore = this.Container.Resolve<IEventStore>();
             this.MessageBus = this.Container.Resolve<IMessageBus>();
             this.CommandBus = this.Container.Resolve<ICommandBus>();
-            this.RegisterEventHandlers(this.Container, this.MessageBus);
-
-            // Init view model repositories
-            this.AccountReadModelRepository = this.Container.Resolve<AccountReadModelRepository>();
-            this.AccountListReadModelRepository = this.Container.Resolve<AccountListReadModelRepository>();
+            this.RegisterGenerators(this.Container, this.MessageBus);
         }
-
-        /// <summary>
-        /// Gets the account view model repository
-        /// </summary>
-        public AccountReadModelRepository AccountReadModelRepository { get; private set; }
-
-        /// <summary>
-        /// Gets the account list repository
-        /// </summary>
-        public AccountListReadModelRepository AccountListReadModelRepository { get; private set; }
-
+        
         /// <summary>
         /// Gets the Application's MessageBus
         /// </summary>
@@ -102,20 +89,31 @@ namespace BudgetFirst.ApplicationCore
             var simpleInjector = new Container();
 
             // Core messaging infrastructure
+            // These things only exist once, hence singleton
             simpleInjector.Register<IEventStore, EventStore>(Wrappers.Container.Lifestyle.Singleton);
             simpleInjector.Register<ICommandBus, CommandBus>(Wrappers.Container.Lifestyle.Singleton);
             simpleInjector.Register<IMessageBus, MessageBus>(Wrappers.Container.Lifestyle.Singleton);
-
+            
             // Command Handlers
+            // Transient
             simpleInjector.Register<ICommandHandler<CreateAccountCommand>, AccountCommandHandler>();
             simpleInjector.Register<ICommandHandler<ChangeAccountNameCommand>, AccountCommandHandler>();
 
-            // Read side repositories
+            // Read store (for read side repositories) 
+            // same singleton for read and reset
+            var readStore = new ReadStore();
+            simpleInjector.RegisterSingleton<IReadStore>(readStore);
+            simpleInjector.RegisterSingleton<IResetableReadStore>(readStore);
+
+            // Read side repositories. 
+            // While these could be stateless and transient, they are used by the singleton generators
+            // -> Singleton
             simpleInjector.Register<AccountReadModelRepository, AccountReadModelRepository>(Wrappers.Container.Lifestyle.Singleton);
             simpleInjector.Register<AccountListItemReadModelRepository, AccountListItemReadModelRepository>(Wrappers.Container.Lifestyle.Singleton);
             simpleInjector.Register<AccountListReadModelRepository, AccountListReadModelRepository>(Wrappers.Container.Lifestyle.Singleton);
 
             // Generators
+            // Only one instance per generator -> Singleton
             simpleInjector.Register<AccountGenerator, AccountGenerator>(Wrappers.Container.Lifestyle.Singleton);
             simpleInjector.Register<AccountListGenerator, AccountListGenerator>(Wrappers.Container.Lifestyle.Singleton);
 
@@ -127,11 +125,11 @@ namespace BudgetFirst.ApplicationCore
         }
 
         /// <summary>
-        /// Register message bus event handlers (subscribers)
+        /// Register generators
         /// </summary>
         /// <param name="container">Dependency injection container</param>
         /// <param name="messageBus">Message bus</param>
-        private void RegisterEventHandlers(IContainer container, IMessageBus messageBus)
+        private void RegisterGenerators(IContainer container, IMessageBus messageBus)
         {
             {
                 // Account

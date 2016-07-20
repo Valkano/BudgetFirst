@@ -62,6 +62,9 @@
     <Compile Include="Messaging\IEventStore.cs" />
     <Compile Include="Messaging\IAggregateUnitOfWork.cs" />
     <Compile Include="Messaging\IMessageBus.cs" />
+    <Compile Include="ReadModel\IReadStore.cs" />
+    <Compile Include="ReadModel\ReadStore.cs" />
+    <Compile Include="ReadModel\IResetableReadStore.cs" />
     <Compile Include="Serialisation\Serialiser.cs" />
     <Compile Include="Messaging\VectorClock.cs" />
     <Compile Include="Properties\Annotations.cs" />

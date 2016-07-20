@@ -56,11 +56,11 @@ namespace BudgetFirst.ApplicationCore
         /// <summary>
         /// Gets the account read model repository
         /// </summary>
-        public AccountReadModelRepository AccountReadModelRepository => this.bootstrap.AccountReadModelRepository;
+        public AccountReadModelRepository AccountReadModelRepository => this.bootstrap.Container.Resolve<AccountReadModelRepository>();
 
         /// <summary>
         /// Gets the Account List read model Repository
         /// </summary>
-        public AccountListReadModelRepository AccountListReadModelRepository => this.bootstrap.AccountListReadModelRepository;
+        public AccountListReadModelRepository AccountListReadModelRepository => this.bootstrap.Container.Resolve<AccountListReadModelRepository>();
     }
 }
