@@ -27,6 +27,7 @@
 // ===================================================================
 namespace BudgetFirst.Budget.Domain.Commands.Account
 {
+    using BudgetFirst.Budget.Domain.Aggregates;
     using BudgetFirst.Budget.Repositories;
     using BudgetFirst.SharedInterfaces.Commands;
     using BudgetFirst.SharedInterfaces.Messaging;
@@ -57,7 +58,7 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
         /// <param name="aggregateUnitOfWork">The event transaction</param>
         public void Handle(ChangeAccountNameCommand command, IAggregateUnitOfWork aggregateUnitOfWork)
         {
-            Aggregates.Account account = this.repository.Find(command.Id, aggregateUnitOfWork);
+            var account = this.repository.Find(command.Id, aggregateUnitOfWork);
             account.ChangeName(command.Name);
             this.repository.Save(account, aggregateUnitOfWork);
         }
@@ -69,7 +70,7 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
         /// <param name="aggregateUnitOfWork">The event transaction</param>
         public void Handle(CreateAccountCommand command, IAggregateUnitOfWork aggregateUnitOfWork)
         {
-            Aggregates.Account account = new Aggregates.Account(command.Id, command.Name);
+            var account = AccountFactory.Create(command.Id, command.Name);
             this.repository.Save(account, aggregateUnitOfWork);
         }
     }

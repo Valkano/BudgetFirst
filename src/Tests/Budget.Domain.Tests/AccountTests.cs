@@ -45,7 +45,7 @@ namespace BudgetFirst.Budget.Domain.Tests
         [Test]
         public void NewAccountHasName()
         {
-            var account = new Account(new Guid("DB1C3C3E-C8C4-47A0-AD43-F154FDDB0577"), "Test1");
+            var account = AccountFactory.Create(new Guid("DB1C3C3E-C8C4-47A0-AD43-F154FDDB0577"), "Test1");
             Assert.AreEqual("Test1", account.Name);
         }
 
@@ -57,10 +57,10 @@ namespace BudgetFirst.Budget.Domain.Tests
         {
             var accountId = new Guid("A34C7724-F9FE-4A14-89A2-C8F1D662EE2A");
             var eventStore = new EventStore();
-            var prevouslyCreatedAccount = new Account(accountId, "Test2");
+            var prevouslyCreatedAccount = AccountFactory.Create(accountId, "Test2");
             eventStore.Add(prevouslyCreatedAccount.Events);
             
-            var account = new Account(accountId, eventStore.GetEvents());
+            var account = AccountFactory.Load(accountId, eventStore.GetEvents());
 
             Assert.AreEqual("Test2", account.Name);
         }
