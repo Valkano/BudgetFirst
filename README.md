@@ -21,8 +21,8 @@ This includes:
 
 |           | master | dev |
 |-----------|:------:|:------------:|
-|  Travis   | [![Build Status](https://travis-ci.org/BudgetFirst/BudgetFirst.svg?branch=master)](https://travis-ci.org/BudgetFirst/BudgetFirst) | [![Build Status](https://travis-ci.org/BudgetFirst/BudgetFirst.svg?branch=dev)](https://travis-ci.org/BudgetFirst/BudgetFirst)|
-| Appveyor  | [![Build status](https://ci.appveyor.com/api/projects/status/noemsf59unqkdat6/branch/master?svg=true)](https://ci.appveyor.com/project/budgetfirst-cla/budgetfirst/branch/master) | [![Build status](https://ci.appveyor.com/api/projects/status/noemsf59unqkdat6/branch/dev?svg=true)](https://ci.appveyor.com/project/budgetfirst-cla/budgetfirst/branch/dev) |
+|  Travis (Linux/Mono)  | [![Build Status](https://travis-ci.org/BudgetFirst/BudgetFirst.svg?branch=master)](https://travis-ci.org/BudgetFirst/BudgetFirst) | [![Build Status](https://travis-ci.org/BudgetFirst/BudgetFirst.svg?branch=dev)](https://travis-ci.org/BudgetFirst/BudgetFirst)|
+| Appveyor (Windows) | [![Build status](https://ci.appveyor.com/api/projects/status/noemsf59unqkdat6/branch/master?svg=true)](https://ci.appveyor.com/project/budgetfirst-cla/budgetfirst/branch/master) | [![Build status](https://ci.appveyor.com/api/projects/status/noemsf59unqkdat6/branch/dev?svg=true)](https://ci.appveyor.com/project/budgetfirst-cla/budgetfirst/branch/dev) |
 
 
 
