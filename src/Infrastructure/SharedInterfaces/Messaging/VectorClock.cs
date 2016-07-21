@@ -132,7 +132,14 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// </summary>
         /// <param name="key">The device</param>
         /// <returns>The value for the device</returns>
-        public int this[string key] => this.Vector[key];
+        public int this[string key]
+        {
+            get
+            {
+                // Note: my stylecop breaks if this is an expression body.
+                return this.Vector[key];
+            }
+        }
 
         /// <summary>
         /// Create a copy of the current VectorClock and Increment the Vector for the given Device ID by 1 on the new VectorClock
@@ -358,7 +365,6 @@ namespace BudgetFirst.SharedInterfaces.Messaging
             /// <returns>Comparison result</returns>
             public ComparisonResult GetComparisonResult()
             {
-
                 if (this.equal)
                 {
                     // The vectors are the same
