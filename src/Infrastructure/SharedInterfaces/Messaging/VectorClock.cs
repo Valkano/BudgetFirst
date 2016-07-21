@@ -62,7 +62,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
             this.Vector = CloneVector(vector);
             this.Timestamp = DateTime.UtcNow;
         }
-        
+
         /// <summary>
         /// Initialises a new instance of the <see cref="VectorClock"/> class.
         /// Copies an existing vector clock
@@ -203,9 +203,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
              * If at least one deviceId is greater, and at least one other deviceId is less between the two clocks, the events happened simultaneously.
              */
 
-            var equal = true;
-            var greater = true;
-            var smaller = true;
+            var comparison = new VectorComparison();
 
             foreach (var deviceId in this.Keys)
             {
@@ -214,23 +212,20 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                     if (this[deviceId] < clock2[deviceId])
                     {
                         // other clock is ahead for this device, so we're most likely earlier or simultaneous
-                        equal = false;
-                        greater = false;
+                        comparison.SetSmallerOrSimultaneous();
                     }
 
                     if (this[deviceId] > clock2[deviceId])
                     {
                         // other clock is behind for this device, so we're most likely later or simultaneous
-                        equal = false;
-                        smaller = false;
+                        comparison.SetGreaterOrSimultaneous();
                     }
                 }
                 else if (this[deviceId] != 0)
                 {
-                    // other clock doesn't know about this device, so we assume to be later or simultaneous
-                    // TODO: does this assumption hold true? What is this based on?
-                    equal = false;
-                    smaller = false;
+                    // other clock doesn't know about a device in my vector, so we assume to be later or simultaneous
+                    // TODO: does this assumption hold true? What is this based on? Might override other knowledge!
+                    comparison.SetGreaterOrSimultaneous();
                 }
             }
 
@@ -241,30 +236,12 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                 {
                     // We cannot be later because we don't know about those other devices?
                     // So we can only be earlier, or simultaneous
-                    // TODO: does this hold true?
-                    equal = false;
-                    greater = false;
+                    // TODO: does this hold true? Might override other knowledge!
+                    comparison.SetSmallerOrSimultaneous();
                 }
             }
 
-            if (equal)
-            {
-                // The vectors are the same
-                return ComparisonResult.Equal;
-            }
-            else if (greater && !smaller)
-            {
-                return ComparisonResult.Greater;
-            }
-            else if (smaller && !greater)
-            {
-                return ComparisonResult.Smaller;
-            }
-            else
-            {
-                // The events were simultaneous
-                return ComparisonResult.Simultaneous;
-            }
+            return comparison.GetComparisonResult();
         }
 
         /// <summary>
@@ -335,6 +312,72 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         private static Dictionary<string, int> CloneVector(Dictionary<string, int> vector)
         {
             return vector.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        }
+
+        /// <summary>
+        /// Handles computation of vector comparison result
+        /// </summary>
+        private class VectorComparison
+        {
+            /// <summary>
+            /// Indicates that the vectors are equal
+            /// </summary>
+            private bool equal = true;
+
+            /// <summary>
+            /// If the vectors are not equal, indicates that the current vector is greater.
+            /// </summary>
+            private bool greater = true;
+
+            /// <summary>
+            /// If the vectors are not equal, indicates that the current vector is smaller.
+            /// </summary>
+            private bool smaller = true;
+
+            /// <summary>
+            /// The vector is either smaller or simultaneous
+            /// </summary>
+            public void SetSmallerOrSimultaneous()
+            {
+                this.equal = false;
+                this.greater = false;
+            }
+
+            /// <summary>
+            /// The vector is either greater or simultaneous
+            /// </summary>
+            public void SetGreaterOrSimultaneous()
+            {
+                this.equal = false;
+                this.smaller = false;
+            }
+
+            /// <summary>
+            /// Get the comparison result
+            /// </summary>
+            /// <returns>Comparison result</returns>
+            public ComparisonResult GetComparisonResult()
+            {
+
+                if (this.equal)
+                {
+                    // The vectors are the same
+                    return ComparisonResult.Equal;
+                }
+                else if (this.greater && !this.smaller)
+                {
+                    return ComparisonResult.Greater;
+                }
+                else if (this.smaller && !this.greater)
+                {
+                    return ComparisonResult.Smaller;
+                }
+                else
+                {
+                    // The events were simultaneous
+                    return ComparisonResult.Simultaneous;
+                }
+            }
         }
     }
 }

@@ -90,6 +90,12 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         public int CompareTo(object obj)
         {
             var event2 = obj as DomainEvent;
+            if (event2 == null)
+            {
+                return 0;
+            }
+
+            // TODO: ensure an absolute order if the order cannot be determined. Fallback to device id?
             return this.VectorClock.CompareTo(event2.VectorClock);
         }
     }
