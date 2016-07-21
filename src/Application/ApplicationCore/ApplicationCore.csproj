@@ -73,8 +73,6 @@
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
     <Compile Include="Core.cs" />
-    <Compile Include="Messaging\CommandBus.cs" />
-    <Compile Include="Messaging\MessageBus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories.cs" />
   </ItemGroup>

@@ -26,16 +26,11 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.ApplicationCore.Messaging
+namespace BudgetFirst.SharedInterfaces.Commands
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using SharedInterfaces;
-    using SharedInterfaces.Commands;
-    using SharedInterfaces.DependencyInjection;
-    using SharedInterfaces.Messaging;
+    using BudgetFirst.SharedInterfaces.DependencyInjection;
+    using BudgetFirst.SharedInterfaces.EventSourcing;
+    using BudgetFirst.SharedInterfaces.Messaging;
 
     /// <summary>
     /// The command bus accepts commands and forwards them to the corresponding command handler.
@@ -80,6 +75,7 @@ namespace BudgetFirst.ApplicationCore.Messaging
         {
             var eventTransaction = new AggregateUnitOfWork();
             this.InvokeHandler(command, eventTransaction);
+            this.ApplyVectorClock(eventTransaction);
             this.StoreEvents(eventTransaction);
             this.PublishEvents(eventTransaction);
         }
@@ -94,6 +90,22 @@ namespace BudgetFirst.ApplicationCore.Messaging
         {
             var handler = this.dependencyInjectionContainer.Resolve<ICommandHandler<TCommand>>();
             handler.Handle(command, aggregateUnitOfWork);
+        }
+
+        /// <summary>
+        /// Increment the vector clock and apply it to the events
+        /// </summary>
+        /// <param name="aggregateUnitOfWork">Event transaction of unpublished events</param>
+        private void ApplyVectorClock(IAggregateUnitOfWork aggregateUnitOfWork)
+        {
+            // TODO: this should be done inside aggregate root, but we need a concept of a transaction on the vector clock
+            // i.e.: if the handler fails, we must not have touched the vector clock
+            // => clone vector clock and replace when done?
+            foreach (var @event in aggregateUnitOfWork.GetEvents())
+            {
+                // TODO: increment global vector clock
+                // TODO: apply vector clock (clone!)
+            }
         }
 
         /// <summary>

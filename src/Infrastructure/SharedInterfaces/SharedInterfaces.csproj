@@ -48,6 +48,7 @@
     <StyleCopEnabled>false</StyleCopEnabled>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Commands\CommandBus.cs" />
     <Compile Include="Domain\AggregateRoot.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\ICommandBus.cs" />
@@ -55,13 +56,14 @@
     <Compile Include="DependencyInjection\IContainer.cs" />
     <Compile Include="IBootstrap.cs" />
     <Compile Include="Messaging\DomainEvent.cs" />
-    <Compile Include="Messaging\EventStore.cs" />
+    <Compile Include="EventSourcing\EventStore.cs" />
     <Compile Include="Messaging\AggregateUnitOfWork.cs" />
     <Compile Include="Messaging\IDomainEvent.cs" />
     <Compile Include="Messaging\IDomainEventHandler.cs" />
-    <Compile Include="Messaging\IEventStore.cs" />
+    <Compile Include="EventSourcing\IEventStore.cs" />
     <Compile Include="Messaging\IAggregateUnitOfWork.cs" />
     <Compile Include="Messaging\IMessageBus.cs" />
+    <Compile Include="Messaging\MessageBus.cs" />
     <Compile Include="ReadModel\IReadStore.cs" />
     <Compile Include="ReadModel\ReadStore.cs" />
     <Compile Include="ReadModel\IResetableReadStore.cs" />
@@ -74,6 +76,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Persistence\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />

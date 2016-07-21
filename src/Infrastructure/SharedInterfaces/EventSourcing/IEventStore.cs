@@ -25,13 +25,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.SharedInterfaces.Messaging
+namespace BudgetFirst.SharedInterfaces.EventSourcing
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
+    using BudgetFirst.SharedInterfaces.Messaging;
 
     /// <summary>
     /// Represents an event store

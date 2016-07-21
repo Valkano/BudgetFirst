@@ -29,6 +29,7 @@ namespace BudgetFirst.Budget.Domain.Tests
 {
     using System;
     using BudgetFirst.Budget.Domain.Aggregates;
+    using BudgetFirst.SharedInterfaces.EventSourcing;
     using BudgetFirst.SharedInterfaces.Messaging;
     using NUnit.Framework;
 

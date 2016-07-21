@@ -44,6 +44,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// Initialises a new instance of the <see cref="DomainEvent"/> class. 
         /// Initialises the EventId and Timestamp.
         /// </summary>
+        /// <remarks>Should not be called during de-serialisation</remarks>
         public DomainEvent()
         {
             this.EventId = new Guid();

@@ -34,9 +34,10 @@ namespace BudgetFirst.ApplicationCore
     using System.Text;
     using Budget.Domain.Interfaces.Events;
     using BudgetFirst.Budget.Domain.Commands.Account;
+    using BudgetFirst.SharedInterfaces.EventSourcing;
     using BudgetFirst.SharedInterfaces.ReadModel;
     using BudgetFirst.Wrappers;
-    using Messaging;
+
     using ReadSide.Handlers;
     using ReadSide.Repositories;
     using SharedInterfaces.Commands;

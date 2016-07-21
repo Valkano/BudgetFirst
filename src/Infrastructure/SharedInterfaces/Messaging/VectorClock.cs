@@ -31,12 +31,14 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.Serialization;
     using System.Text;
     using System.Threading.Tasks;
 
     /// <summary>
     /// A Vector Clock that can tell the relative order of events on distributed systems.
     /// </summary>
+    [DataContract(Name = "VectorClock", Namespace = "http://budgetfirst.github.io/schemas/2016/07/20/VectorClock")]
     public class VectorClock : IComparable, IReadOnlyDictionary<string, int>
     {
         /// <summary>
@@ -50,26 +52,26 @@ namespace BudgetFirst.SharedInterfaces.Messaging
 
         /// <summary>
         /// Initialises a new instance of the <see cref="VectorClock"/> class.
+        /// For internal use only (and tests)
         /// </summary>
         /// <param name="vector">Initial vector</param>
-        public VectorClock(Dictionary<string, int> vector) : this(vector, true)
+        /// <remarks>Make internal and replace with factory for testing?</remarks>
+        public VectorClock(Dictionary<string, int> vector)
         {
+            // Always clone vector. The overhead of this is not that bad
+            this.Vector = CloneVector(vector);
+            this.Timestamp = DateTime.UtcNow;
         }
-
+        
         /// <summary>
         /// Initialises a new instance of the <see cref="VectorClock"/> class.
+        /// Copies an existing vector clock
         /// </summary>
-        /// <param name="vector">Initial vector</param>
-        /// <param name="copyVector">If the vector should be copied</param>
-        private VectorClock(Dictionary<string, int> vector, bool copyVector)
+        /// <param name="original">Source vector clock to copy/clone</param>
+        private VectorClock(VectorClock original)
         {
-            this.Vector = vector;
-            if (copyVector)
-            {
-                this.Vector = this.CopyVector();
-            }
-
-            this.Timestamp = DateTime.UtcNow;
+            this.Vector = CloneVector(original.Vector);
+            this.Timestamp = original.Timestamp;
         }
 
         /// <summary>
@@ -99,8 +101,9 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         }
 
         /// <summary>
-        /// Gets the timestamp
+        /// Gets the timestamp of the last increment
         /// </summary>
+        [DataMember(Name = "Timestamp")]
         public DateTime Timestamp { get; private set; }
 
         /// <summary>
@@ -121,6 +124,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <summary>
         /// Gets or sets the Vector.
         /// </summary>
+        [DataMember(Name = "Vector")]
         private Dictionary<string, int> Vector { get; set; }
 
         /// <summary>
@@ -128,10 +132,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// </summary>
         /// <param name="key">The device</param>
         /// <returns>The value for the device</returns>
-        public int this[string key]
-        {
-            get { return this.Vector[key]; }
-        }
+        public int this[string key] => this.Vector[key];
 
         /// <summary>
         /// Create a copy of the current VectorClock and Increment the Vector for the given Device ID by 1 on the new VectorClock
@@ -140,7 +141,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <returns>The new incremented VectorClock</returns>
         public VectorClock Increment(string deviceId)
         {
-            Dictionary<string, int> newVector = this.CopyVector();
+            var newVector = CloneVector(this.Vector);
             if (newVector.ContainsKey(deviceId))
             {
                 newVector[deviceId]++;
@@ -150,7 +151,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                 newVector[deviceId] = 1;
             }
 
-            return new VectorClock(newVector, false);
+            return new VectorClock(newVector);
         }
 
         /// <summary>
@@ -161,9 +162,10 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <returns>A new VectorClock with the maximum value for each device.</returns>
         public VectorClock Merge(VectorClock clock2)
         {
-            Dictionary<string, int> mergedVector = this.CopyVector();
+            var mergedVector = CloneVector(this.Vector);
 
-            foreach (string deviceId in this.Vector.Keys)
+            // Get maximum from my vectors
+            foreach (var deviceId in this.Vector.Keys)
             {
                 if (clock2.Vector.ContainsKey(deviceId))
                 {
@@ -175,15 +177,15 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                 }
             }
 
-            foreach (string deviceId in clock2.Vector.Keys)
+            var newDevices = clock2.Vector.Keys.Where(x => !this.Vector.ContainsKey(x));
+
+            // Get remaining vectors for devices we don't know about yet
+            foreach (var deviceId in newDevices)
             {
-                if (!this.Vector.ContainsKey(deviceId))
-                {
-                    mergedVector[deviceId] = clock2.Vector[deviceId];
-                }
+                mergedVector[deviceId] = clock2.Vector[deviceId];
             }
 
-            return new VectorClock(mergedVector, false);
+            return new VectorClock(mergedVector);
         }
 
         /// <summary>
@@ -201,38 +203,45 @@ namespace BudgetFirst.SharedInterfaces.Messaging
              * If at least one deviceId is greater, and at least one other deviceId is less between the two clocks, the events happened simultaneously.
              */
 
-            bool equal = true;
-            bool greater = true;
-            bool smaller = true;
+            var equal = true;
+            var greater = true;
+            var smaller = true;
 
-            foreach (string deviceId in this.Keys)
+            foreach (var deviceId in this.Keys)
             {
                 if (clock2.ContainsKey(deviceId))
                 {
                     if (this[deviceId] < clock2[deviceId])
                     {
+                        // other clock is ahead for this device, so we're most likely earlier or simultaneous
                         equal = false;
                         greater = false;
                     }
 
                     if (this[deviceId] > clock2[deviceId])
                     {
+                        // other clock is behind for this device, so we're most likely later or simultaneous
                         equal = false;
                         smaller = false;
                     }
                 }
                 else if (this[deviceId] != 0)
                 {
+                    // other clock doesn't know about this device, so we assume to be later or simultaneous
+                    // TODO: does this assumption hold true? What is this based on?
                     equal = false;
                     smaller = false;
                 }
             }
 
             // Check if clock2 has any deviceIds that are not present in this VectorClock
-            foreach (string deviceId in clock2.Keys)
+            foreach (var deviceId in clock2.Keys)
             {
                 if (!this.ContainsKey(deviceId) && clock2[deviceId] != 0)
                 {
+                    // We cannot be later because we don't know about those other devices?
+                    // So we can only be earlier, or simultaneous
+                    // TODO: does this hold true?
                     equal = false;
                     greater = false;
                 }
@@ -268,8 +277,8 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// 0 if the order can not be determined(Simultaneous or Equal Vectors and the same timestamp)</returns>
         public int CompareTo(object obj)
         {
-            VectorClock clock2 = obj as VectorClock;
-            ComparisonResult compare = this.CompareVectors(clock2);
+            var clock2 = obj as VectorClock;
+            var compare = this.CompareVectors(clock2);
 
             switch (compare)
             {
@@ -288,7 +297,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <returns>A copy of the current VectorClock</returns>
         public VectorClock Copy()
         {
-            return new VectorClock(this.CopyVector(), false);
+            return new VectorClock(this);
         }
 
         /// <summary>
@@ -319,12 +328,13 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         IEnumerator IEnumerable.GetEnumerator() => (this.Vector as IEnumerable).GetEnumerator();
 
         /// <summary>
-        /// Creates a Dictionary Copy of the IReadOnlyDictionary Vector.
+        /// Creates a dictionary copy/clone of the vector.
         /// </summary>
-        /// <returns>Copy of the vector</returns>
-        private Dictionary<string, int> CopyVector()
+        /// <param name="vector">Vector to clone</param>
+        /// <returns>Copy/clone of the vector</returns>
+        private static Dictionary<string, int> CloneVector(Dictionary<string, int> vector)
         {
-            return this.Vector.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            return vector.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
     }
 }
