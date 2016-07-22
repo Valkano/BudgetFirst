@@ -74,6 +74,8 @@ namespace BudgetFirst.SharedInterfaces.Commands
         public void Submit<TCommand>(TCommand command) where TCommand : ICommand
         {
             var eventTransaction = new AggregateUnitOfWork();
+
+            // TODO: refactoring needed. This code must know that the handler might change the vector clock...
             var previousVectorClock = this.applicationState.VectorClock.Copy();
             try
             {

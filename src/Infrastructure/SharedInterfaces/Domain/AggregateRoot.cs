@@ -121,6 +121,7 @@ namespace BudgetFirst.SharedInterfaces.Domain
         private void ApplyVectorClock<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent
         {
             // TODO: avoid singleton and inject application state through constructor, abstract away through factories then
+            // Generally: vector clock should be moved into unit of work
             domainEvent.VectorClock = SharedSingletons.ApplicationState.VectorClock.IncrementForCurrentDevice();
             SharedSingletons.ApplicationState.VectorClock = domainEvent.VectorClock.Copy();
         }
