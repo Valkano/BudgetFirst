@@ -29,6 +29,7 @@ namespace BudgetFirst.Budget.Domain.Tests
 {
     using System;
     using BudgetFirst.Budget.Domain.Aggregates;
+    using BudgetFirst.SharedInterfaces;
     using BudgetFirst.SharedInterfaces.EventSourcing;
     using BudgetFirst.SharedInterfaces.Messaging;
     using NUnit.Framework;
@@ -36,10 +37,18 @@ namespace BudgetFirst.Budget.Domain.Tests
     /// <summary>
     /// Contains tests for the account aggregate
     /// </summary>
-    /// <remarks>TODO: Switching to a different unit testing framework might be a good idea (multiplatform-support!)</remarks>
     [TestFixture]
     public class AccountTests
     {
+        /// <summary>
+        /// Test setup, runs before each test
+        /// </summary>
+        [SetUp]
+        public void SetUp()
+        {
+            this.SetupApplicationState();
+        }
+
         /// <summary>
         /// A new account must have a correct name
         /// </summary>
@@ -64,6 +73,19 @@ namespace BudgetFirst.Budget.Domain.Tests
             var account = AccountFactory.Load(accountId, eventStore.GetEvents());
 
             Assert.AreEqual("Test2", account.Name);
+        }
+
+        /// <summary>
+        /// Setup the application state
+        /// </summary>
+        private void SetupApplicationState()
+        {
+            SharedSingletons.ApplicationState = new ApplicationState()
+            {
+                DeviceId = new Guid("D7BD15B7-AB64-41FE-994D-5DC8E2E8C9D8"),
+                EventStore = new EventStore(),
+                VectorClock = new VectorClock(),
+            };
         }
     }
 }

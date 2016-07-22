@@ -162,6 +162,15 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         }
 
         /// <summary>
+        /// Create a copy of the current VectorClock and Increment the Vector for the current device Id
+        /// </summary>
+        /// <returns>The new incremented VectorClock</returns>
+        public VectorClock IncrementForCurrentDevice()
+        {
+            return this.Increment(SharedSingletons.ApplicationState.DeviceId.ToString("D"));
+        }
+
+        /// <summary>
         /// Merges the VectorClock with a second VectorClock by returning a new VectorClock
         /// that has maximum vector value for each device.
         /// </summary>
@@ -231,7 +240,6 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                 else if (this[deviceId] != 0)
                 {
                     // other clock doesn't know about a device in my vector, so we assume to be later or simultaneous
-                    // TODO: does this assumption hold true? What is this based on? Might override other knowledge!
                     comparison.SetGreaterOrSimultaneous();
                 }
             }
@@ -243,7 +251,6 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                 {
                     // We cannot be later because we don't know about those other devices?
                     // So we can only be earlier, or simultaneous
-                    // TODO: does this hold true? Might override other knowledge!
                     comparison.SetSmallerOrSimultaneous();
                 }
             }

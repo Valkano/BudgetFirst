@@ -33,6 +33,7 @@ namespace BudgetFirst.ApplicationCore
     using System.Text;
     using System.Threading.Tasks;
     using BudgetFirst.SharedInterfaces.Commands;
+    using BudgetFirst.SharedInterfaces.EventSourcing;
     using BudgetFirst.SharedInterfaces.Messaging;
 
     /// <summary>
@@ -57,6 +58,9 @@ namespace BudgetFirst.ApplicationCore
         {
             Bootstrap = new Bootstrap();
             DefaultInstance = new Core();
+            Bootstrap.ApplicationState.VectorClock = new VectorClock();
+            Bootstrap.ApplicationState.DeviceId = new Guid("A621850A-5B4B-479F-9071-1F3588C144E6");
+            Bootstrap.ApplicationState.EventStore = new EventStore();
         }
 
         /// <summary>

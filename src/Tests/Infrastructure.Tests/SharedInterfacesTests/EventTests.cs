@@ -4,6 +4,10 @@
     using System.Collections.Generic;
     using System.Text;
     using System.Threading;
+
+    using BudgetFirst.SharedInterfaces;
+    using BudgetFirst.SharedInterfaces.EventSourcing;
+
     using NUnit.Framework;
     using SharedInterfaces.Messaging;
 
@@ -50,6 +54,7 @@
         [SetUp]
         public void SetUp()
         {
+            this.SetupApplicationState();
             this.evt6 = new TestEvent(); // Earliest timestamp, but should be last based on VectorClock
             Thread.Sleep(10);
 
@@ -134,6 +139,19 @@
 
             Assert.That(eventList[0] == this.evt3);
             Assert.That(eventList[1] == this.evt4);
+        }
+
+        /// <summary>
+        /// Setup the application state
+        /// </summary>
+        private void SetupApplicationState()
+        {
+            SharedSingletons.ApplicationState = new ApplicationState()
+            {
+                DeviceId = new Guid("D7BD15B7-AB64-41FE-994D-5DC8E2E8C9D8"),
+                EventStore = new EventStore(),
+                VectorClock = new VectorClock(),
+            };
         }
 
         /// <summary>

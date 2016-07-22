@@ -34,6 +34,7 @@ namespace BudgetFirst.ApplicationCore
     using System.Text;
     using Budget.Domain.Interfaces.Events;
     using BudgetFirst.Budget.Domain.Commands.Account;
+    using BudgetFirst.SharedInterfaces;
     using BudgetFirst.SharedInterfaces.EventSourcing;
     using BudgetFirst.SharedInterfaces.ReadModel;
     using BudgetFirst.Wrappers;
@@ -55,7 +56,7 @@ namespace BudgetFirst.ApplicationCore
         public Bootstrap()
         {
             this.Container = this.SetupDependencyInjection();
-            this.EventStore = this.Container.Resolve<IEventStore>();
+            this.ApplicationState = this.Container.Resolve<IApplicationState>();
             this.MessageBus = this.Container.Resolve<IMessageBus>();
             this.CommandBus = this.Container.Resolve<ICommandBus>();
             this.RegisterGenerators(this.Container, this.MessageBus);
@@ -77,9 +78,14 @@ namespace BudgetFirst.ApplicationCore
         public IContainer Container { get; private set; }
 
         /// <summary>
-        /// Gets the Application's EventStore
+        /// Gets the global application state
         /// </summary>
-        public IEventStore EventStore { get; private set; }
+        public IApplicationState ApplicationState { get; private set; }
+
+        /// <summary>
+        /// Gets the application's event store
+        /// </summary>
+        public IEventStore EventStore => this.ApplicationState.EventStore;
         
         /// <summary>
         /// Setup the dependency injection
@@ -89,9 +95,12 @@ namespace BudgetFirst.ApplicationCore
         {
             var simpleInjector = new Container();
 
+            // Application state is a singleton
+            simpleInjector.RegisterSingleton<IApplicationState>(SharedSingletons.ApplicationState);
+
             // Core messaging infrastructure
             // These things only exist once, hence singleton
-            simpleInjector.Register<IEventStore, EventStore>(Wrappers.Container.Lifestyle.Singleton);
+            // event store can no longer be singleton due to save/load
             simpleInjector.Register<ICommandBus, CommandBus>(Wrappers.Container.Lifestyle.Singleton);
             simpleInjector.Register<IMessageBus, MessageBus>(Wrappers.Container.Lifestyle.Singleton);
             

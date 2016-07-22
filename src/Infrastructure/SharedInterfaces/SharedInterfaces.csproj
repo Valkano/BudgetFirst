@@ -48,12 +48,14 @@
     <StyleCopEnabled>false</StyleCopEnabled>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ApplicationState.cs" />
     <Compile Include="Commands\CommandBus.cs" />
     <Compile Include="Domain\AggregateRoot.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\ICommandBus.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="DependencyInjection\IContainer.cs" />
+    <Compile Include="IApplicationState.cs" />
     <Compile Include="IBootstrap.cs" />
     <Compile Include="Messaging\DomainEvent.cs" />
     <Compile Include="EventSourcing\EventStore.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadModel\IReadModel.cs" />
     <Compile Include="ReadModel\ReadModel.cs" />
+    <Compile Include="SharedSingletons.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

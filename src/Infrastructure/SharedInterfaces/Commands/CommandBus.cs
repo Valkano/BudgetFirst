@@ -49,21 +49,21 @@ namespace BudgetFirst.SharedInterfaces.Commands
         private IMessageBus messageBus;
 
         /// <summary>
-        /// Event store for event sourcing
+        /// Application state
         /// </summary>
-        private IEventStore eventStore;
+        private IApplicationState applicationState;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="CommandBus"/> class. 
         /// </summary>
         /// <param name="dependencyInjector">Dependency injection/resolving container</param>
         /// <param name="messageBus">Message bus to publish events to</param>
-        /// <param name="eventStore">Event store to save events to</param>
-        public CommandBus(IContainer dependencyInjector, IMessageBus messageBus, IEventStore eventStore)
+        /// <param name="applicationState">Application state</param>
+        public CommandBus(IContainer dependencyInjector, IMessageBus messageBus, IApplicationState applicationState)
         {
             this.dependencyInjectionContainer = dependencyInjector;
             this.messageBus = messageBus;
-            this.eventStore = eventStore;
+            this.applicationState = applicationState;
         }
 
         /// <summary>
@@ -74,8 +74,18 @@ namespace BudgetFirst.SharedInterfaces.Commands
         public void Submit<TCommand>(TCommand command) where TCommand : ICommand
         {
             var eventTransaction = new AggregateUnitOfWork();
-            this.InvokeHandler(command, eventTransaction);
-            this.ApplyVectorClock(eventTransaction);
+            var previousVectorClock = this.applicationState.VectorClock.Copy();
+            try
+            {
+                this.InvokeHandler(command, eventTransaction);
+            }
+            catch (System.Exception)
+            {
+                // Restore vector clock
+                this.applicationState.VectorClock = previousVectorClock;
+                throw;
+            }
+
             this.StoreEvents(eventTransaction);
             this.PublishEvents(eventTransaction);
         }
@@ -93,28 +103,13 @@ namespace BudgetFirst.SharedInterfaces.Commands
         }
 
         /// <summary>
-        /// Increment the vector clock and apply it to the events
-        /// </summary>
-        /// <param name="aggregateUnitOfWork">Event transaction of unpublished events</param>
-        private void ApplyVectorClock(IAggregateUnitOfWork aggregateUnitOfWork)
-        {
-            // TODO: this should be done inside aggregate root, but we need a concept of a transaction on the vector clock
-            // i.e.: if the handler fails, we must not have touched the vector clock
-            // => clone vector clock and replace when done?
-            foreach (var @event in aggregateUnitOfWork.GetEvents())
-            {
-                // TODO: increment global vector clock
-                // TODO: apply vector clock (clone!)
-            }
-        }
-
-        /// <summary>
         /// Add the events from the transaction to the event store
         /// </summary>
         /// <param name="aggregateUnitOfWork">Event transaction</param>
         private void StoreEvents(IAggregateUnitOfWork aggregateUnitOfWork)
         {
-            this.eventStore.Add(aggregateUnitOfWork.GetEvents());
+            // Note: event store might change during runtime so don't keep a reference to it
+            this.applicationState.EventStore.Add(aggregateUnitOfWork.GetEvents());
         }
 
         /// <summary>

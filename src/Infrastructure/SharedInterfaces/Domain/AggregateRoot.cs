@@ -108,8 +108,21 @@ namespace BudgetFirst.SharedInterfaces.Domain
         protected void Update<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent
         {
             domainEvent.AggregateId = this.aggregateId;
+            this.ApplyVectorClock(domainEvent);
             this.HandleEvent(domainEvent);
             this.events.Add(domainEvent);
+        }
+
+        /// <summary>
+        /// Apply the current vector clock to the event (and increment it)
+        /// </summary>
+        /// <typeparam name="TDomainEvent">Type of the event to raise (and handle)</typeparam>
+        /// <param name="domainEvent">Event to raise and handle</param>
+        private void ApplyVectorClock<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent
+        {
+            // TODO: avoid singleton and inject application state through constructor, abstract away through factories then
+            domainEvent.VectorClock = SharedSingletons.ApplicationState.VectorClock.IncrementForCurrentDevice();
+            SharedSingletons.ApplicationState.VectorClock = domainEvent.VectorClock.Copy();
         }
 
         /// <summary>

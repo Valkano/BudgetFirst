@@ -49,6 +49,8 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         {
             this.EventId = new Guid();
             this.Timestamp = DateTime.UtcNow;
+            this.DeviceId = SharedSingletons.ApplicationState.DeviceId;
+            this.VectorClock = SharedSingletons.ApplicationState.VectorClock.Copy();
         }
 
         /// <summary>
@@ -95,8 +97,15 @@ namespace BudgetFirst.SharedInterfaces.Messaging
                 return 0;
             }
 
-            // TODO: ensure an absolute order if the order cannot be determined. Fallback to device id?
-            return this.VectorClock.CompareTo(event2.VectorClock);
+            var result = this.VectorClock.CompareTo(event2.VectorClock);
+            if (result == 0)
+            {
+                // ensure an absolute order if the order cannot be determined. Fallback to device id
+                // This should not result in 0 because the vector clock must be different for the same device id
+                result = this.DeviceId.CompareTo(event2.DeviceId);
+            }
+
+            return result;
         }
     }
 }

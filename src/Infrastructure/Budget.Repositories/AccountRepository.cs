@@ -33,6 +33,7 @@ namespace BudgetFirst.Budget.Repositories
     using System.Linq;
     using System.Text;
     using BudgetFirst.Budget.Domain.Aggregates;
+    using BudgetFirst.SharedInterfaces;
     using BudgetFirst.SharedInterfaces.EventSourcing;
     using BudgetFirst.SharedInterfaces.Messaging;
 
@@ -49,10 +50,10 @@ namespace BudgetFirst.Budget.Repositories
         /// <summary>
         /// Initialises a new instance of the <see cref="AccountRepository"/> class.
         /// </summary>
-        /// <param name="eventStore">Event store</param>
-        public AccountRepository(IEventStore eventStore)
+        /// <param name="applicationState">Application state</param>
+        public AccountRepository(IApplicationState applicationState)
         {
-            this.eventStore = eventStore;
+            this.eventStore = applicationState.EventStore;
         }
 
         /// <summary>
