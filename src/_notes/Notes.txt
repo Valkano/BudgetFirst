@@ -1,15 +1,4 @@
 TODO:
-* Refactor projects
-	* Merge
-	* Rename
-	* Adjust position in layer
-
-* Do we still need these layers?
-
-
-v0.1
-----
-* Change how event transaction works. Repository should track unit of work instead?
 
 Later optimisations
 -------------------
