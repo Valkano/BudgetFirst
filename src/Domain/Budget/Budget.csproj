@@ -49,7 +49,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\..\Infrastructure\Events\Events.csproj">
+    <ProjectReference Include="..\Events\Events.csproj">
       <Project>{C0B0AF45-F29D-419C-90AE-E9B3719A032A}</Project>
       <Name>Events</Name>
     </ProjectReference>
