@@ -147,6 +147,10 @@
       <Project>{79ede87e-204b-4a9f-b038-dc225a5b999e}</Project>
       <Name>ReadSide</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Infrastructure\SharedInterfaces\SharedInterfaces.csproj">
+      <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
+      <Name>SharedInterfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Infrastructure\Wrappers\Wrappers.csproj">
       <Project>{d7547c5a-dc03-425f-b8fe-fc9febcd1cc5}</Project>
       <Name>Wrappers</Name>

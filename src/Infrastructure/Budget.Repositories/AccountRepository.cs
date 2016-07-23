@@ -43,17 +43,17 @@ namespace BudgetFirst.Budget.Repositories
     public class AccountRepository
     {
         /// <summary>
-        /// Event store
+        /// Current application state
         /// </summary>
-        private readonly IEventStore eventStore;
-        
+        private readonly IApplicationState applicationState;
+
         /// <summary>
         /// Initialises a new instance of the <see cref="AccountRepository"/> class.
         /// </summary>
         /// <param name="applicationState">Application state</param>
         public AccountRepository(IApplicationState applicationState)
         {
-            this.eventStore = applicationState.EventStore;
+            this.applicationState = applicationState;
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace BudgetFirst.Budget.Repositories
                 return fromUnitOfWork;
             }
 
-            var newAccount = AccountFactory.Load(id, this.eventStore.GetEventsFor(id));
+            var newAccount = AccountFactory.Load(id, this.applicationState);
             unitOfWork.Register(newAccount);
             return newAccount;
         }

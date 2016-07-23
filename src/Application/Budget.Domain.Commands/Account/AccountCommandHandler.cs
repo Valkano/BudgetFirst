@@ -29,6 +29,7 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
 {
     using BudgetFirst.Budget.Domain.Aggregates;
     using BudgetFirst.Budget.Repositories;
+    using BudgetFirst.SharedInterfaces;
     using BudgetFirst.SharedInterfaces.Commands;
     using BudgetFirst.SharedInterfaces.Messaging;
 
@@ -43,12 +44,19 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
         private readonly AccountRepository repository;
 
         /// <summary>
+        /// Current application state
+        /// </summary>
+        private readonly IApplicationState applicationState;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="AccountCommandHandler"/> class.
         /// </summary>
         /// <param name="repository">The account repository</param>
-        public AccountCommandHandler(AccountRepository repository)
+        /// <param name="applicationState">Current application state</param>
+        public AccountCommandHandler(AccountRepository repository, IApplicationState applicationState)
         {
             this.repository = repository;
+            this.applicationState = applicationState; // TODO: should be injected on method level
         }
 
         /// <summary>
@@ -70,7 +78,7 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
         /// <param name="aggregateUnitOfWork">The event transaction</param>
         public void Handle(CreateAccountCommand command, IAggregateUnitOfWork aggregateUnitOfWork)
         {
-            var account = AccountFactory.Create(command.Id, command.Name);
+            var account = AccountFactory.Create(command.Id, command.Name, this.applicationState);
             this.repository.Save(account, aggregateUnitOfWork);
         }
     }
