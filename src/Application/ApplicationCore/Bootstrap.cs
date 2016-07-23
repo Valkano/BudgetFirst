@@ -36,6 +36,7 @@ namespace BudgetFirst.ApplicationCore
     using BudgetFirst.Budget.Domain.Commands.Account;
     using BudgetFirst.SharedInterfaces;
     using BudgetFirst.SharedInterfaces.EventSourcing;
+    using BudgetFirst.SharedInterfaces.Persistence;
     using BudgetFirst.SharedInterfaces.ReadModel;
     using BudgetFirst.Wrappers;
 
@@ -56,12 +57,19 @@ namespace BudgetFirst.ApplicationCore
         public Bootstrap()
         {
             this.Container = this.SetupDependencyInjection();
-            this.ApplicationState = this.Container.Resolve<IApplicationState>();
-            this.MessageBus = this.Container.Resolve<IMessageBus>();
-            this.CommandBus = this.Container.Resolve<ICommandBus>();
             this.RegisterGenerators(this.Container, this.MessageBus);
         }
+
+        /// <summary>
+        /// Gets the current device Id
+        /// </summary>
+        public IDeviceId DeviceId { get; private set; }
         
+        /// <summary>
+        /// Gets the current (master) vector clock
+        /// </summary>
+        public MasterVectorClock VectorClock { get; private set; }
+
         /// <summary>
         /// Gets the Application's MessageBus
         /// </summary>
@@ -78,15 +86,10 @@ namespace BudgetFirst.ApplicationCore
         public IContainer Container { get; private set; }
 
         /// <summary>
-        /// Gets the global application state
-        /// </summary>
-        public IApplicationState ApplicationState { get; private set; }
-
-        /// <summary>
         /// Gets the application's event store
         /// </summary>
-        public IEventStore EventStore => this.ApplicationState.EventStore;
-        
+        public EventStore EventStore { get; private set; }
+
         /// <summary>
         /// Setup the dependency injection
         /// </summary>
@@ -95,14 +98,33 @@ namespace BudgetFirst.ApplicationCore
         {
             var simpleInjector = new Container();
 
-            // Application state is a singleton
-            simpleInjector.RegisterSingleton<IApplicationState>(SharedSingletons.ApplicationState);
+            // Event store only exists once (the state can be exchanged at runtime though)
+            this.EventStore = new EventStore();
+            simpleInjector.RegisterSingleton<IEventStore>(this.EventStore);
+            simpleInjector.RegisterSingleton<IReadOnlyEventStore>(this.EventStore);
+
+            // Device Id
+            var deviceId = new DeviceId();
+            this.DeviceId = deviceId;
+            simpleInjector.RegisterSingleton<IDeviceId>(this.DeviceId);
+            simpleInjector.RegisterSingleton<IReadOnlyDeviceId>(this.DeviceId);
+
+            // Vector clock
+            this.VectorClock = new MasterVectorClock(deviceId);
+            simpleInjector.RegisterSingleton<IVectorClock>(this.VectorClock);
 
             // Core messaging infrastructure
-            // These things only exist once, hence singleton
-            // TODO: event store should be singleton again (after extracting its state and allowing modification of the state)
-            simpleInjector.Register<ICommandBus, CommandBus>(Wrappers.Container.Lifestyle.Singleton);
-            simpleInjector.Register<IMessageBus, MessageBus>(Wrappers.Container.Lifestyle.Singleton);
+            this.MessageBus = new MessageBus();
+            simpleInjector.RegisterSingleton<IMessageBus>(this.MessageBus);
+
+            // Initialise the command bus last because it depends on many other objects
+            this.CommandBus = new CommandBus(
+                simpleInjector,
+                this.MessageBus,
+                this.DeviceId,
+                this.VectorClock,
+                this.EventStore);
+            simpleInjector.RegisterSingleton<ICommandBus>(this.CommandBus);
             
             // Command Handlers
             // Transient

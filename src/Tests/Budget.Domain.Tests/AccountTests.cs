@@ -32,6 +32,8 @@ namespace BudgetFirst.Budget.Domain.Tests
     using BudgetFirst.SharedInterfaces;
     using BudgetFirst.SharedInterfaces.EventSourcing;
     using BudgetFirst.SharedInterfaces.Messaging;
+    using BudgetFirst.SharedInterfaces.Persistence;
+
     using NUnit.Framework;
 
     /// <summary>
@@ -41,12 +43,24 @@ namespace BudgetFirst.Budget.Domain.Tests
     public class AccountTests
     {
         /// <summary>
+        /// Unit of work used in tests
+        /// </summary>
+        private IUnitOfWork unitOfWork;
+
+        /// <summary>
         /// Test setup, runs before each test
         /// </summary>
         [SetUp]
         public void SetUp()
         {
-            this.SetupApplicationState();
+            var deviceId = new DeviceId();
+            deviceId.SetDeviceId(new Guid("D7BD15B7-AB64-41FE-994D-5DC8E2E8C9D8"));
+              
+            var vectorClock = new MasterVectorClock(deviceId);
+            var eventStore = new EventStore();
+            var messageBus = new MessageBus();
+
+            this.unitOfWork = new UnitOfWork(deviceId, vectorClock, eventStore, messageBus);
         }
 
         /// <summary>
@@ -55,14 +69,7 @@ namespace BudgetFirst.Budget.Domain.Tests
         [Test]
         public void NewAccountHasName()
         {
-            var applicationState = new ApplicationState()
-            {
-                DeviceId = new Guid("D7BD15B7-AB64-41FE-994D-5DC8E2E8C9D8"),
-                EventStore = new EventStore(),
-                VectorClock = new VectorClock(),
-            };
-
-            var account = AccountFactory.Create(new Guid("DB1C3C3E-C8C4-47A0-AD43-F154FDDB0577"), "Test1", applicationState);
+            var account = AccountFactory.Create(new Guid("DB1C3C3E-C8C4-47A0-AD43-F154FDDB0577"), "Test1", this.unitOfWork);
             Assert.AreEqual("Test1", account.Name);
         }
 
@@ -72,34 +79,12 @@ namespace BudgetFirst.Budget.Domain.Tests
         [Test]
         public void ReconstitutedNewAccountHasCorrectName()
         {
-            var applicationState = new ApplicationState()
-            {
-                DeviceId = new Guid("D7BD15B7-AB64-41FE-994D-5DC8E2E8C9D8"),
-                EventStore = new EventStore(),
-                VectorClock = new VectorClock(),
-            };
-
             var accountId = new Guid("A34C7724-F9FE-4A14-89A2-C8F1D662EE2A");
-            var eventStore = applicationState.EventStore;
-            var prevouslyCreatedAccount = AccountFactory.Create(accountId, "Test2", applicationState);
-            eventStore.Add(prevouslyCreatedAccount.Events);
+            var prevouslyCreatedAccount = AccountFactory.Create(accountId, "Test2", this.unitOfWork);
             
-            var account = AccountFactory.Load(accountId, applicationState);
+            var account = AccountFactory.Load(accountId, this.unitOfWork);
 
             Assert.AreEqual("Test2", account.Name);
-        }
-
-        /// <summary>
-        /// Setup the application state
-        /// </summary>
-        private void SetupApplicationState()
-        {
-            SharedSingletons.ApplicationState = new ApplicationState()
-            {
-                DeviceId = new Guid("D7BD15B7-AB64-41FE-994D-5DC8E2E8C9D8"),
-                EventStore = new EventStore(),
-                VectorClock = new VectorClock(),
-            };
         }
     }
 }

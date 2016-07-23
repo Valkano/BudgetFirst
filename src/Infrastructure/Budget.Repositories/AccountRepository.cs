@@ -43,48 +43,23 @@ namespace BudgetFirst.Budget.Repositories
     public class AccountRepository
     {
         /// <summary>
-        /// Current application state
-        /// </summary>
-        private readonly IApplicationState applicationState;
-
-        /// <summary>
         /// Initialises a new instance of the <see cref="AccountRepository"/> class.
         /// </summary>
-        /// <param name="applicationState">Application state</param>
-        public AccountRepository(IApplicationState applicationState)
+        public AccountRepository()
         {
-            this.applicationState = applicationState;
         }
 
         /// <summary>
         /// Find (rehydrate) an account aggregate.
+        /// <para>Note: all changes to the account are directly written to the unit of work.</para>
         /// </summary>
         /// <param name="id">Account Id</param>
         /// <param name="unitOfWork">Unit of work</param>
-        /// <returns>Rehydrated aggregate</returns>
-        /// <remarks>TODO: Could it happen that there are new events for the aggregate that are not on the aggregate in our unit of work?</remarks>
-        public Account Find(Guid id, IAggregateUnitOfWork unitOfWork)
+        /// <returns><para>Rehydrated aggregate. </para>
+        /// <para>Note: all changes to the account are directly written to the unit of work.</para></returns>
+        public Account Find(Guid id, IUnitOfWork unitOfWork)
         {
-            // This assumes that the aggregate in the unit of work is up-to-date
-            var fromUnitOfWork = unitOfWork.Get<Account>(id);
-            if (fromUnitOfWork != null)
-            {
-                return fromUnitOfWork;
-            }
-
-            var newAccount = AccountFactory.Load(id, this.applicationState);
-            unitOfWork.Register(newAccount);
-            return newAccount;
-        }
-
-        /// <summary>
-        /// Save the (new) account (in the unit of work)
-        /// </summary>
-        /// <param name="account">Account to save</param>
-        /// <param name="unitOfWork">Unit of work to use</param>
-        public void Save(Account account, IAggregateUnitOfWork unitOfWork)
-        {
-            unitOfWork.Register(account);
+            return AccountFactory.Load(id, unitOfWork);
         }
     }
 }

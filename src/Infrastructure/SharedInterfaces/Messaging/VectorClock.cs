@@ -144,7 +144,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <summary>
         /// Create a copy of the current VectorClock and Increment the Vector for the given Device ID by 1 on the new VectorClock
         /// </summary>
-        /// <param name="deviceId">The deviceId to increment.</param>
+        /// <param name="deviceId">The readOnlyDeviceId to increment.</param>
         /// <returns>The new incremented VectorClock</returns>
         public VectorClock Increment(string deviceId)
         {
@@ -159,15 +159,6 @@ namespace BudgetFirst.SharedInterfaces.Messaging
             }
 
             return new VectorClock(newVector);
-        }
-
-        /// <summary>
-        /// Create a copy of the current VectorClock and Increment the Vector for the current device Id
-        /// </summary>
-        /// <returns>The new incremented VectorClock</returns>
-        public VectorClock IncrementForCurrentDevice()
-        {
-            return this.Increment(SharedSingletons.ApplicationState.DeviceId.ToString("D"));
         }
 
         /// <summary>
@@ -212,11 +203,11 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <returns>A ComparisonResult enum with the result of the comparison.</returns>
         public ComparisonResult CompareVectors(VectorClock clock2)
         {
-            /* We check every deviceId that is a key in this vector clock against every deviceId in clock2.
-             * If all deviceId values in both clocks are equal they are the same clock(equal).  This result should never happen in BudgetFirst since we always increment the clock for each event.
-             * If every deviceId value in this clock is less than the deviceId in clock2 then this VectorClock came before clock2. Some of the deviceIds can be equal but at least one must be less for this case.
-             * If every deviceId value in this clock is greater than the deviceId in clock2 then this VectorClock came after clock2.   Some of the deviceIds can be equal but at least one must be greater for this case.
-             * If at least one deviceId is greater, and at least one other deviceId is less between the two clocks, the events happened simultaneously.
+            /* We check every readOnlyDeviceId that is a key in this vector clock against every readOnlyDeviceId in clock2.
+             * If all readOnlyDeviceId values in both clocks are equal they are the same clock(equal).  This result should never happen in BudgetFirst since we always increment the clock for each event.
+             * If every readOnlyDeviceId value in this clock is less than the readOnlyDeviceId in clock2 then this VectorClock came before clock2. Some of the deviceIds can be equal but at least one must be less for this case.
+             * If every readOnlyDeviceId value in this clock is greater than the readOnlyDeviceId in clock2 then this VectorClock came after clock2.   Some of the deviceIds can be equal but at least one must be greater for this case.
+             * If at least one readOnlyDeviceId is greater, and at least one other readOnlyDeviceId is less between the two clocks, the events happened simultaneously.
              */
 
             var comparison = new VectorComparison();

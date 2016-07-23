@@ -33,18 +33,13 @@ namespace BudgetFirst.SharedInterfaces.Domain
     using System.Text;
     using System.Threading.Tasks;
     using BudgetFirst.SharedInterfaces.Messaging;
+    using BudgetFirst.SharedInterfaces.Persistence;
 
     /// <summary>
     /// Represents an aggregate root
     /// </summary>
     public abstract class AggregateRoot
     {
-        /// <summary>
-        /// Unpublished events
-        /// </summary>
-        /// <remarks>Track events for event sourcing in the base class to avoid polluting domain model with infrastructure code</remarks>
-        private readonly IList<IDomainEvent> events;
-
         /// <summary>
         /// Aggregate Id
         /// </summary>
@@ -53,24 +48,25 @@ namespace BudgetFirst.SharedInterfaces.Domain
         /// <summary>
         /// Event handlers
         /// </summary>
-        private readonly Dictionary<Type, Action<IDomainEvent>> eventHandlers;
+        private readonly Dictionary<Type, Action<DomainEvent>> eventHandlers;
+
+        /// <summary>
+        /// Current unit of work
+        /// </summary>
+        private readonly IUnitOfWork unitOfWork;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="AggregateRoot"/> class.
         /// Can be used to represent rehydrated as well as new aggregates. Each aggregate must have a unique Id.
         /// </summary>
         /// <param name="id">Id of the aggregate</param>
-        protected AggregateRoot(Guid id)
+        /// <param name="unitOfWork">Current unit of work</param>
+        protected AggregateRoot(Guid id, IUnitOfWork unitOfWork)
         {
             this.aggregateId = id;
-            this.events = new List<IDomainEvent>();
-            this.eventHandlers = new Dictionary<Type, Action<IDomainEvent>>();
+            this.eventHandlers = new Dictionary<Type, Action<DomainEvent>>();
+            this.unitOfWork = unitOfWork;
         }
-
-        /// <summary>
-        /// Gets the list of unpublished events that this aggregate has raised
-        /// </summary>
-        public IEnumerable<IDomainEvent> Events => this.events;
 
         /// <summary>
         /// Aggregate Id
@@ -82,7 +78,7 @@ namespace BudgetFirst.SharedInterfaces.Domain
         /// </summary>
         /// <typeparam name="TDomainEvent">Type of event to handle</typeparam>
         /// <param name="handler">Event handler for the event</param>
-        protected void Handles<TDomainEvent>(Action<TDomainEvent> handler) where TDomainEvent : IDomainEvent
+        protected void Handles<TDomainEvent>(Action<TDomainEvent> handler) where TDomainEvent : DomainEvent
         {
             this.eventHandlers[typeof(TDomainEvent)] = @event => handler.Invoke((TDomainEvent)@event);
         }
@@ -91,7 +87,7 @@ namespace BudgetFirst.SharedInterfaces.Domain
         /// Load the state from history
         /// </summary>
         /// <param name="domainEvents">List of domain events</param>
-        protected void LoadFrom(IEnumerable<IDomainEvent> domainEvents)
+        protected void LoadFrom(IEnumerable<DomainEvent> domainEvents)
         {
             foreach (var domainEvent in domainEvents.Where(aggregate => aggregate.AggregateId == this.aggregateId))
             {
@@ -108,10 +104,10 @@ namespace BudgetFirst.SharedInterfaces.Domain
         protected void Update<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent
         {
             domainEvent.AggregateId = this.aggregateId;
-            domainEvent.DeviceId = SharedSingletons.ApplicationState.DeviceId; // TODO: inject state or get it via other means
+            domainEvent.DeviceId = this.unitOfWork.ReadOnlyDeviceId.GetDeviceId();
             this.ApplyVectorClock(domainEvent);
             this.HandleEvent(domainEvent);
-            this.events.Add(domainEvent);
+            this.unitOfWork.NewEvents.Add(domainEvent);
         }
 
         /// <summary>
@@ -121,10 +117,8 @@ namespace BudgetFirst.SharedInterfaces.Domain
         /// <param name="domainEvent">Event to raise and handle</param>
         private void ApplyVectorClock<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent
         {
-            // TODO: avoid singleton and inject application state through constructor, abstract away through factories then
-            // Generally: vector clock should be moved into unit of work
-            domainEvent.VectorClock = SharedSingletons.ApplicationState.VectorClock.IncrementForCurrentDevice();
-            SharedSingletons.ApplicationState.VectorClock = domainEvent.VectorClock.Copy();
+            this.unitOfWork.VectorClock.Increment();
+            domainEvent.VectorClock = this.unitOfWork.VectorClock.GetVectorClock();
         }
 
         /// <summary>
@@ -132,7 +126,7 @@ namespace BudgetFirst.SharedInterfaces.Domain
         /// </summary>
         /// <typeparam name="TDomainEvent">Type of the event to handle</typeparam>
         /// <param name="domainEvent">Event to handle</param>
-        private void HandleEvent<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : IDomainEvent
+        private void HandleEvent<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent
         {
             // Assumption: an aggregate must always be able to handle all events that it raised in the past.
             var handlingAction = this.eventHandlers[domainEvent.GetType()];

@@ -37,7 +37,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     /// Defines a domain event handler, intended for read side.
     /// </summary>
     /// <typeparam name="TDomainEvent">Type of domain event to handle</typeparam>
-    public interface IDomainEventHandler<TDomainEvent> where TDomainEvent : IDomainEvent
+    public interface IDomainEventHandler<TDomainEvent> where TDomainEvent : DomainEvent
     {
         /// <summary>
         /// Handle the domain event

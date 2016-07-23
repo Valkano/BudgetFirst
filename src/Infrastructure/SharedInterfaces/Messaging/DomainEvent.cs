@@ -38,7 +38,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     /// An event, which is raised by an aggregate
     /// </summary>
     [DataContract(Name = "DomainEvent", Namespace = "http://budgetfirst.github.io/schemas/2016/04/23/DomainEvent")]
-    public abstract class DomainEvent : IDomainEvent
+    public abstract class DomainEvent : IComparable
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="DomainEvent"/> class. 
@@ -61,7 +61,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// <summary>
         /// Gets or sets the Id of the device that the event happened on
         /// </summary>
-        [DataMember(Name = "DeviceId")]
+        [DataMember(Name = "readOnlyDeviceId")]
         public Guid DeviceId { get; set; }
 
         /// <summary>

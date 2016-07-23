@@ -38,32 +38,18 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
     /// <summary>
     /// Represents an event store
     /// </summary>
-    public interface IEventStore
+    public interface IEventStore : IReadOnlyEventStore
     {
         /// <summary>
         /// Add a single event
         /// </summary>
         /// <param name="domainEvent">Event to add</param>
-        void Add(IDomainEvent domainEvent);
+        void Add(DomainEvent domainEvent);
 
         /// <summary>
         /// Add multiple events
         /// </summary>
         /// <param name="domainEvents">Events to add</param>
-        void Add(IEnumerable<IDomainEvent> domainEvents);
-
-        /// <summary>
-        /// Get all events in the store
-        /// </summary>
-        /// <returns>All events in the store</returns>
-        IReadOnlyList<IDomainEvent> GetEvents();
-
-        /// <summary>
-        /// Get all saved events for a specific aggregate.
-        /// Beware: events are referenced directly, do not manipulate them.
-        /// </summary>
-        /// <param name="aggregateId">Aggregate Id</param>
-        /// <returns>Reference to all events for the given aggregate</returns>
-        IReadOnlyList<IDomainEvent> GetEventsFor(Guid aggregateId);
+        void Add(IEnumerable<DomainEvent> domainEvents);
     }
 }

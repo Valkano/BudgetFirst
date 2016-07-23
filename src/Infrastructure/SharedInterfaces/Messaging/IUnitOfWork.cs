@@ -32,6 +32,9 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
+    using BudgetFirst.SharedInterfaces.Persistence;
+
     using Domain;
 
     /// <summary>
@@ -39,28 +42,28 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     /// Should only be used on a single aggregate per unit of work.
     /// Combine multiple unit of works for multiple aggregates in a saga.
     /// </summary>
-    public interface IAggregateUnitOfWork
+    public interface IUnitOfWork
     {
         /// <summary>
-        /// Get all events in this unit of work, from all aggregates.
-        /// Event order is only guaranteed per aggregate. You should not use a unit of work over multiple aggregates
+        /// Gets the device Id
         /// </summary>
-        /// <returns>All events in the transaction</returns>
-        IReadOnlyList<IDomainEvent> GetEvents();
+        IReadOnlyDeviceId ReadOnlyDeviceId { get; }
 
         /// <summary>
-        /// Register an aggregate in the unit of work.
-        /// Do not register multiple aggregates per unit of work.
+        /// Gets the vector clock
         /// </summary>
-        /// <param name="aggregate">Aggregate to register in unit of work</param>
-        void Register(AggregateRoot aggregate);
+        IVectorClock VectorClock { get; }
 
         /// <summary>
-        /// Retrieve an aggregate from the current unit of work
+        /// Gets the list of new events in this unit of work (not all events from the event store!)
         /// </summary>
-        /// <typeparam name="TAggregate">Aggregate type</typeparam>
-        /// <param name="id">Aggregate id</param>
-        /// <returns>Aggregate from unit of work, or <c>null</c> if not present in unit of work</returns>
-        TAggregate Get<TAggregate>(Guid id) where TAggregate : AggregateRoot;
+        IList<DomainEvent> NewEvents { get; }
+
+        /// <summary>
+        /// Get ALL events for the aggregate - includes new events from the unit of work and events from the event store.
+        /// </summary>
+        /// <param name="aggregateId">Aggregate id</param>
+        /// <returns>All events (from store and unit of work) for the aggregate</returns>
+        IReadOnlyList<DomainEvent> GetEventsForAggregate(Guid aggregateId);
     }
 }

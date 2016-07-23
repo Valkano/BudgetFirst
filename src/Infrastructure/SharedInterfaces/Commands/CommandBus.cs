@@ -31,6 +31,7 @@ namespace BudgetFirst.SharedInterfaces.Commands
     using BudgetFirst.SharedInterfaces.DependencyInjection;
     using BudgetFirst.SharedInterfaces.EventSourcing;
     using BudgetFirst.SharedInterfaces.Messaging;
+    using BudgetFirst.SharedInterfaces.Persistence;
 
     /// <summary>
     /// The command bus accepts commands and forwards them to the corresponding command handler.
@@ -49,21 +50,40 @@ namespace BudgetFirst.SharedInterfaces.Commands
         private IMessageBus messageBus;
 
         /// <summary>
-        /// Application state
+        /// Current device Id
         /// </summary>
-        private IApplicationState applicationState;
+        private IReadOnlyDeviceId readOnlyDeviceId;
+
+        /// <summary>
+        /// Current vector clock
+        /// </summary>
+        private IVectorClock vectorClock;
+
+        /// <summary>
+        /// Current event store
+        /// </summary>
+        private IEventStore eventStore;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="CommandBus"/> class. 
         /// </summary>
         /// <param name="dependencyInjector">Dependency injection/resolving container</param>
         /// <param name="messageBus">Message bus to publish events to</param>
-        /// <param name="applicationState">Application state</param>
-        public CommandBus(IContainer dependencyInjector, IMessageBus messageBus, IApplicationState applicationState)
+        /// <param name="readOnlyDeviceId">Device id</param>
+        /// <param name="vectorClock">current vector clock</param>
+        /// <param name="eventStore">Event store</param>
+        public CommandBus(
+            IContainer dependencyInjector,
+            IMessageBus messageBus,
+            IReadOnlyDeviceId readOnlyDeviceId,
+            IVectorClock vectorClock,
+            IEventStore eventStore)
         {
             this.dependencyInjectionContainer = dependencyInjector;
             this.messageBus = messageBus;
-            this.applicationState = applicationState;
+            this.readOnlyDeviceId = readOnlyDeviceId;
+            this.vectorClock = vectorClock;
+            this.eventStore = eventStore;
         }
 
         /// <summary>
@@ -73,23 +93,9 @@ namespace BudgetFirst.SharedInterfaces.Commands
         /// <param name="command">Command to be executed</param>
         public void Submit<TCommand>(TCommand command) where TCommand : ICommand
         {
-            var eventTransaction = new AggregateUnitOfWork();
-
-            // TODO: refactoring needed. This code must know that the handler might change the vector clock...
-            var previousVectorClock = this.applicationState.VectorClock.Copy();
-            try
-            {
-                this.InvokeHandler(command, eventTransaction);
-                this.StoreEvents(eventTransaction);
-            }
-            catch (System.Exception)
-            {
-                // Restore vector clock
-                this.applicationState.VectorClock = previousVectorClock;
-                throw;
-            }
-
-            this.PublishEvents(eventTransaction);
+            var unitOfWork = new UnitOfWork(this.readOnlyDeviceId, this.vectorClock, this.eventStore, this.messageBus);
+            this.InvokeHandler(command, unitOfWork);
+            unitOfWork.Commit(); // handles saving, publishing, vector clock etc.
         }
 
         /// <summary>
@@ -97,34 +103,11 @@ namespace BudgetFirst.SharedInterfaces.Commands
         /// </summary>
         /// <typeparam name="TCommand">Command type</typeparam>
         /// <param name="command">Command to execute</param>
-        /// <param name="aggregateUnitOfWork">Event transaction to track unpublished events</param>
-        private void InvokeHandler<TCommand>(TCommand command, IAggregateUnitOfWork aggregateUnitOfWork) where TCommand : ICommand
+        /// <param name="unitOfWork">Event transaction to track unpublished events</param>
+        private void InvokeHandler<TCommand>(TCommand command, IUnitOfWork unitOfWork) where TCommand : ICommand
         {
             var handler = this.dependencyInjectionContainer.Resolve<ICommandHandler<TCommand>>();
-            handler.Handle(command, aggregateUnitOfWork);
-        }
-
-        /// <summary>
-        /// Add the events from the transaction to the event store
-        /// </summary>
-        /// <param name="aggregateUnitOfWork">Event transaction</param>
-        private void StoreEvents(IAggregateUnitOfWork aggregateUnitOfWork)
-        {
-            // Note: event store might change during runtime so don't keep a reference to it
-            this.applicationState.EventStore.Add(aggregateUnitOfWork.GetEvents());
-        }
-
-        /// <summary>
-        /// Publish the events from the transaction
-        /// </summary>
-        /// <param name="aggregateUnitOfWork">Event transaction containing the new events</param>
-        private void PublishEvents(IAggregateUnitOfWork aggregateUnitOfWork)
-        {
-            var newEvents = aggregateUnitOfWork.GetEvents();
-            foreach (var newEvent in newEvents)
-            {
-                this.messageBus.Publish(newEvent);
-            }
+            handler.Handle(command, unitOfWork);
         }
     }
 }

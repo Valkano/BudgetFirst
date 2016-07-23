@@ -16,22 +16,22 @@
         /// </summary>
         /// <param name="id">Account id</param>
         /// <param name="name">Account name</param>
-        /// <param name="applicationState">Current application state</param>
+        /// <param name="unitOfWork">Current unit of work</param>
         /// <returns>A new account</returns>
-        public static Account Create(Guid id, string name, IApplicationState applicationState)
+        public static Account Create(Guid id, string name, IUnitOfWork unitOfWork)
         {
-            return new Account(id, name);
+            return new Account(id, name, unitOfWork);
         }
 
         /// <summary>
         /// Load account from (event) history
         /// </summary>
         /// <param name="id">Account id</param>
-        /// <param name="applicationState">Current application state</param>
+        /// <param name="unitOfWork">Current unit of work</param>
         /// <returns>An existing account, loaded from the event history</returns>
-        public static Account Load(Guid id, IApplicationState applicationState)
+        public static Account Load(Guid id, IUnitOfWork unitOfWork)
         {
-            return new Account(id, applicationState.EventStore.GetEventsFor(id));
+            return new Account(id, unitOfWork);
         }
     }
 }

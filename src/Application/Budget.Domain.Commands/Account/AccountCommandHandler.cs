@@ -32,6 +32,7 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
     using BudgetFirst.SharedInterfaces;
     using BudgetFirst.SharedInterfaces.Commands;
     using BudgetFirst.SharedInterfaces.Messaging;
+    using BudgetFirst.SharedInterfaces.Persistence;
 
     /// <summary>
     /// Handles commands related to Accounts
@@ -42,44 +43,35 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
         /// The Account repository
         /// </summary>
         private readonly AccountRepository repository;
-
-        /// <summary>
-        /// Current application state
-        /// </summary>
-        private readonly IApplicationState applicationState;
-
+        
         /// <summary>
         /// Initialises a new instance of the <see cref="AccountCommandHandler"/> class.
         /// </summary>
         /// <param name="repository">The account repository</param>
-        /// <param name="applicationState">Current application state</param>
-        public AccountCommandHandler(AccountRepository repository, IApplicationState applicationState)
+        public AccountCommandHandler(AccountRepository repository)
         {
             this.repository = repository;
-            this.applicationState = applicationState; // TODO: should be injected on method level
         }
 
         /// <summary>
         /// Handles the ChangeAccountName command
         /// </summary>
         /// <param name="command">The ChangeAccountNameCommand</param>
-        /// <param name="aggregateUnitOfWork">The event transaction</param>
-        public void Handle(ChangeAccountNameCommand command, IAggregateUnitOfWork aggregateUnitOfWork)
+        /// <param name="unitOfWork">The event transaction</param>
+        public void Handle(ChangeAccountNameCommand command, IUnitOfWork unitOfWork)
         {
-            var account = this.repository.Find(command.Id, aggregateUnitOfWork);
+            var account = this.repository.Find(command.Id, unitOfWork);
             account.ChangeName(command.Name);
-            this.repository.Save(account, aggregateUnitOfWork);
         }
 
         /// <summary>
         /// Handles the CreateAccountName command
         /// </summary>
         /// <param name="command">The CreateAccountNameCommand</param>
-        /// <param name="aggregateUnitOfWork">The event transaction</param>
-        public void Handle(CreateAccountCommand command, IAggregateUnitOfWork aggregateUnitOfWork)
+        /// <param name="unitOfWork">The event transaction</param>
+        public void Handle(CreateAccountCommand command, IUnitOfWork unitOfWork)
         {
-            var account = AccountFactory.Create(command.Id, command.Name, this.applicationState);
-            this.repository.Save(account, aggregateUnitOfWork);
+            var account = AccountFactory.Create(command.Id, command.Name, unitOfWork);
         }
     }
 }

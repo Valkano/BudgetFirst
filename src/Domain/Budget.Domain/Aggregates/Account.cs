@@ -31,6 +31,9 @@ namespace BudgetFirst.Budget.Domain.Aggregates
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+
+    using BudgetFirst.SharedInterfaces.Persistence;
+
     using Interfaces.Events;
     using SharedInterfaces.Domain;
     using SharedInterfaces.Messaging;
@@ -46,8 +49,9 @@ namespace BudgetFirst.Budget.Domain.Aggregates
         /// </summary>
         /// <param name="id">Account id</param>
         /// <param name="name">Account name</param>
-        internal Account(Guid id, string name) : this(id)
-        {            
+        /// <param name="unitOfWork">Unit of work</param>
+        internal Account(Guid id, string name, IUnitOfWork unitOfWork) : this(id, unitOfWork, false)
+        {
             this.Update(new AccountCreated(name));
         }
 
@@ -55,11 +59,10 @@ namespace BudgetFirst.Budget.Domain.Aggregates
         /// Initialises a new instance of the <see cref="Account"/> class.
         /// Load account from history
         /// </summary>
-        /// <param name="id">Account id</param>
-        /// <param name="history">Event history</param>
-        internal Account(Guid id, IEnumerable<IDomainEvent> history) : this(id)
+        /// <param name="id">Account Id</param>
+        /// <param name="unitOfWork">Unit of work</param>
+        internal Account(Guid id, IUnitOfWork unitOfWork) : this(id, unitOfWork, true)
         {
-            this.LoadFrom(history);
         }
 
         /// <summary>
@@ -67,10 +70,18 @@ namespace BudgetFirst.Budget.Domain.Aggregates
         /// Serves as a base for all <see cref="Account"/> constructors.
         /// </summary>
         /// <param name="id">Account Id</param>
-        private Account(Guid id) : base(id)
+        /// <param name="unitOfWork">Unit of work</param>
+        /// <param name="loadFromHistory">Load the aggregate state from history</param>
+        /// <remarks>Load from history cannot be part of the base class because we must define the event handlers first</remarks>
+        private Account(Guid id, IUnitOfWork unitOfWork, bool loadFromHistory) : base(id, unitOfWork)
         {
             this.Handles<AccountCreated>(this.When);
             this.Handles<AccountNameChanged>(this.When);
+
+            if (loadFromHistory)
+            {
+                this.LoadFrom(unitOfWork.GetEventsForAggregate(id));
+            }
         }
 
         /// <summary>

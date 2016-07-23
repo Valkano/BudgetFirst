@@ -35,6 +35,7 @@ namespace BudgetFirst.ApplicationCore
     using BudgetFirst.SharedInterfaces.Commands;
     using BudgetFirst.SharedInterfaces.EventSourcing;
     using BudgetFirst.SharedInterfaces.Messaging;
+    using BudgetFirst.SharedInterfaces.ReadModel;
 
     /// <summary>
     /// Represents the Application's core functionality as a Singleton.
@@ -54,10 +55,11 @@ namespace BudgetFirst.ApplicationCore
         {
             this.bootstrap = new Bootstrap();
 
-            // TODO: initialisation of state
-            this.bootstrap.ApplicationState.VectorClock = new VectorClock();
-            this.bootstrap.ApplicationState.DeviceId = new Guid("A621850A-5B4B-479F-9071-1F3588C144E6");
-            this.bootstrap.ApplicationState.EventStore = new EventStore();
+            // TODO: initialisation of state; restore read models from event store
+            // TODO: event store state
+            // this.bootstrap.EventStore.SetState();
+            this.bootstrap.VectorClock.SetState(new VectorClock());
+            this.bootstrap.DeviceId.SetDeviceId(new Guid("A621850A-5B4B-479F-9071-1F3588C144E6"));
 
             this.Repositories = new Repositories(this.bootstrap);
             this.CommandBus = this.bootstrap.CommandBus;
@@ -72,5 +74,18 @@ namespace BudgetFirst.ApplicationCore
         /// Gets the  Application's CommandBus
         /// </summary>
         public ICommandBus CommandBus { get; private set; }
+
+        /// <summary>
+        /// Reset the current state and replay all events
+        /// </summary>
+        internal void ResetState()
+        {
+            // TODO: broadcast reset after it is done
+            this.bootstrap.Container.Resolve<IResetableReadStore>().Clear();
+            foreach (var @event in this.bootstrap.EventStore.GetEvents())
+            {
+                this.bootstrap.MessageBus.Publish(@event);
+            }
+        }
     }
 }

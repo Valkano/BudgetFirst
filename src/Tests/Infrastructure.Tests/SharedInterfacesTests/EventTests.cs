@@ -7,6 +7,7 @@
 
     using BudgetFirst.SharedInterfaces;
     using BudgetFirst.SharedInterfaces.EventSourcing;
+    using BudgetFirst.SharedInterfaces.Persistence;
 
     using NUnit.Framework;
     using SharedInterfaces.Messaging;
@@ -17,6 +18,11 @@
     [TestFixture]
     public class EventTests
     {
+        /// <summary>
+        /// Unit of work used in tests
+        /// </summary>
+        private IUnitOfWork unitOfWork;
+
         /// <summary>
         /// Device 1, first event
         /// </summary>
@@ -95,7 +101,7 @@
         [Test]
         public void OrderEvents()
         {
-            List<IDomainEvent> eventList = new List<IDomainEvent>();
+            var eventList = new List<DomainEvent>();
             eventList.Add(this.evt5);
             eventList.Add(this.evt4);
             eventList.Add(this.evt3);
@@ -116,7 +122,7 @@
         [Test]
         public void VectorClockTakesPrecedence()
         {
-            List<IDomainEvent> eventList = new List<IDomainEvent>();
+            var eventList = new List<DomainEvent>();
             eventList.Add(this.evt6); // Earlier timestamp but later vectorclock
             eventList.Add(this.evt1);
 
@@ -132,7 +138,7 @@
         public void SimultaneousEventsLastWins()
         {
             Assert.That(this.evt3.VectorClock.CompareVectors(this.evt4.VectorClock) == VectorClock.ComparisonResult.Simultaneous);
-            List<IDomainEvent> eventList = new List<IDomainEvent>();
+            var eventList = new List<DomainEvent>();
             eventList.Add(this.evt4); // Earlier timestamp
             eventList.Add(this.evt3);
             eventList.Sort();
@@ -146,12 +152,14 @@
         /// </summary>
         private void SetupApplicationState()
         {
-            SharedSingletons.ApplicationState = new ApplicationState()
-            {
-                DeviceId = new Guid("D7BD15B7-AB64-41FE-994D-5DC8E2E8C9D8"),
-                EventStore = new EventStore(),
-                VectorClock = new VectorClock(),
-            };
+            var deviceId = new DeviceId();
+            deviceId.SetDeviceId(new Guid("D7BD15B7-AB64-41FE-994D-5DC8E2E8C9D8"));
+
+            var vectorClock = new MasterVectorClock(deviceId);
+            var eventStore = new EventStore();
+            var messageBus = new MessageBus();
+
+            this.unitOfWork = new UnitOfWork(deviceId, vectorClock, eventStore, messageBus);
         }
 
         /// <summary>

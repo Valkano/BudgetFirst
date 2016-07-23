@@ -34,6 +34,7 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
     using System.Threading.Tasks;
 
     using BudgetFirst.SharedInterfaces.Messaging;
+    using BudgetFirst.SharedInterfaces.Persistence;
 
     /// <summary>
     /// A simple event store
@@ -44,21 +45,35 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
         /// <summary>
         /// All saved events
         /// </summary>
-        private List<IDomainEvent> store = new List<IDomainEvent>();
+        private EventStoreState state = new EventStoreState();
 
         /// <summary>
         /// Lookup which groups the events in the store by aggregate
         /// </summary>
-        private Dictionary<Guid, List<IDomainEvent>> lookup = new Dictionary<Guid, List<IDomainEvent>>();
+        private Dictionary<Guid, List<DomainEvent>> lookup = new Dictionary<Guid, List<DomainEvent>>();
+
+        /// <summary>
+        /// Set the current state
+        /// </summary>
+        /// <param name="eventStoreState">Event store state</param>
+        public void SetState(EventStoreState eventStoreState)
+        {
+            if (eventStoreState == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            this.state = eventStoreState;
+        }
 
         /// <summary>
         /// Get all saved events.
         /// Beware: events are referenced directly, do not manipulate them.
         /// </summary>
         /// <returns>References to all saved events</returns>
-        public IReadOnlyList<IDomainEvent> GetEvents()
+        public IReadOnlyList<DomainEvent> GetEvents()
         {
-            return this.store;
+            return this.state.Events;
         }
 
         /// <summary>
@@ -67,9 +82,9 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
         /// </summary>
         /// <param name="aggregateId">Aggregate Id</param>
         /// <returns>Reference to all events for the given aggregate</returns>
-        public IReadOnlyList<IDomainEvent> GetEventsFor(Guid aggregateId)
+        public IReadOnlyList<DomainEvent> GetEventsFor(Guid aggregateId)
         {
-            List<IDomainEvent> events = null;
+            List<DomainEvent> events = null;
             this.lookup.TryGetValue(aggregateId, out events);
             return events;
         }
@@ -78,7 +93,7 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
         /// Save multiple events
         /// </summary>
         /// <param name="domainEvents">Events to save</param>
-        public void Add(IEnumerable<IDomainEvent> domainEvents)
+        public void Add(IEnumerable<DomainEvent> domainEvents)
         {
             var newEvents = domainEvents.ToList();
             foreach (var @event in newEvents)
@@ -86,7 +101,7 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
                 this.CheckValidity(@event);    
             }
 
-            this.store.AddRange(newEvents);
+            this.state.Events.AddRange(newEvents);
             this.AddToLookup(newEvents);
         }
         
@@ -94,10 +109,10 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
         /// Save a single event
         /// </summary>
         /// <param name="domainEvent">Event to save</param>
-        public void Add(IDomainEvent domainEvent)
+        public void Add(DomainEvent domainEvent)
         {
             this.CheckValidity(domainEvent);
-            this.store.Add(domainEvent);
+            this.state.Events.Add(domainEvent);
             this.AddToLookup(domainEvent);
         }
         
@@ -106,7 +121,7 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
         /// </summary>
         /// <param name="event">Event to check</param>
         /// <exception cref="DomainEventIncompleteException">The domain event is incomplete/invalid and cannot be added to the event store.</exception>
-        private void CheckValidity(IDomainEvent @event)
+        private void CheckValidity(DomainEvent @event)
         {
             if (!@event.IsValid())
             {
@@ -118,7 +133,7 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
         /// Add multiple events to the lookup
         /// </summary>
         /// <param name="newEvents">New events to add</param>
-        private void AddToLookup(IEnumerable<IDomainEvent> newEvents)
+        private void AddToLookup(IEnumerable<DomainEvent> newEvents)
         {
             foreach (var e in newEvents.GroupBy(x => x.AggregateId))
             {
@@ -131,7 +146,7 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
         /// Add a single event to the lookup
         /// </summary>
         /// <param name="domainEvent">Event to add</param>
-        private void AddToLookup(IDomainEvent domainEvent)
+        private void AddToLookup(DomainEvent domainEvent)
         {
             this.EnsureLookupKeyExists(domainEvent.AggregateId);
             this.lookup[domainEvent.AggregateId].Add(domainEvent);
@@ -145,7 +160,7 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
         {
             if (!this.lookup.ContainsKey(key))
             {
-                this.lookup[key] = new List<IDomainEvent>();
+                this.lookup[key] = new List<DomainEvent>();
             }
         }
     }
