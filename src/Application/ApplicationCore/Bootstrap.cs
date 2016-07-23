@@ -34,18 +34,18 @@ namespace BudgetFirst.ApplicationCore
     using System.Text;
     using Budget.Domain.Interfaces.Events;
 
+    using BudgetFirst.Infrastructure.ApplicationState;
+    using BudgetFirst.Infrastructure.Commands;
+    using BudgetFirst.Infrastructure.DependencyInjection;
+    using BudgetFirst.Infrastructure.EventSourcing;
+    using BudgetFirst.Infrastructure.Messaging;
+    using BudgetFirst.Infrastructure.ReadModel;
     using BudgetFirst.SharedInterfaces;
-    using BudgetFirst.SharedInterfaces.ApplicationState;
-    using BudgetFirst.SharedInterfaces.EventSourcing;
-    using BudgetFirst.SharedInterfaces.ReadModel;
     using BudgetFirst.Wrappers;
     using BudgetFirst.WriteSide.Account;
 
     using ReadSide.Handlers;
     using ReadSide.Repositories;
-    using SharedInterfaces.Commands;
-    using SharedInterfaces.DependencyInjection;
-    using SharedInterfaces.Messaging;
 
     /// <summary>
     /// Sets up dependency injection, message handler registration etc.

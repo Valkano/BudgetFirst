@@ -151,9 +151,9 @@
       <Project>{5c3f50fd-395c-4c4f-91db-25a5ffdcc0c7}</Project>
       <Name>ViewModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Infrastructure\SharedInterfaces\SharedInterfaces.csproj">
+    <ProjectReference Include="..\..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
-      <Name>SharedInterfaces</Name>
+      <Name>Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Infrastructure\Wrappers\Wrappers.csproj">
       <Project>{d7547c5a-dc03-425f-b8fe-fc9febcd1cc5}</Project>

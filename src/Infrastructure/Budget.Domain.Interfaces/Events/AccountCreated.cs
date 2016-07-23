@@ -31,7 +31,7 @@ namespace BudgetFirst.Budget.Domain.Interfaces.Events
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using BudgetFirst.SharedInterfaces.Messaging;
+    using BudgetFirst.Infrastructure.Messaging;
 
     /// <summary>
     /// A new account was created

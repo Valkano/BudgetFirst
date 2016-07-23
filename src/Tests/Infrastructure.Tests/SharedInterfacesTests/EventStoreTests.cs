@@ -5,8 +5,8 @@
     using System.Linq;
     using System.Text;
 
-    using BudgetFirst.SharedInterfaces.EventSourcing;
-    using BudgetFirst.SharedInterfaces.Messaging;
+    using BudgetFirst.Infrastructure.EventSourcing;
+    using BudgetFirst.Infrastructure.Messaging;
 
     using NUnit.Framework;
 

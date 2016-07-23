@@ -32,10 +32,11 @@ namespace BudgetFirst.Budget.Domain.Aggregates
     using System.Linq;
     using System.Text;
 
-    using Interfaces.Events;
-    using SharedInterfaces.Domain;
-    using SharedInterfaces.Messaging;
+    using BudgetFirst.Infrastructure.Domain;
+    using BudgetFirst.Infrastructure.Messaging;
 
+    using Interfaces.Events;
+    
     /// <summary>
     /// An account, as in bank account, wallet etc.
     /// </summary>

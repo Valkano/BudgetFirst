@@ -29,8 +29,8 @@ namespace BudgetFirst.WriteSide.Account
 {
     using BudgetFirst.Budget.Domain.Aggregates;
     using BudgetFirst.Budget.Repositories;
-    using BudgetFirst.SharedInterfaces.Commands;
-    using BudgetFirst.SharedInterfaces.Messaging;
+    using BudgetFirst.Infrastructure.Commands;
+    using BudgetFirst.Infrastructure.Messaging;
 
     /// <summary>
     /// Handles commands related to Accounts

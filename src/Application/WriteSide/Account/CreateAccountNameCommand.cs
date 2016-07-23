@@ -29,7 +29,7 @@ namespace BudgetFirst.WriteSide.Account
 {
     using System;
 
-    using BudgetFirst.SharedInterfaces.Commands;
+    using BudgetFirst.Infrastructure.Commands;
 
     /// <summary>
     /// Change account name

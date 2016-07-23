@@ -5,7 +5,8 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using SharedInterfaces.ReadModel;
+
+    using BudgetFirst.Infrastructure.ReadModel;
 
     /// <summary>
     /// Represents a read model repository

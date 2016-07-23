@@ -33,9 +33,7 @@ namespace BudgetFirst.Budget.Repositories
     using System.Linq;
     using System.Text;
     using BudgetFirst.Budget.Domain.Aggregates;
-    using BudgetFirst.SharedInterfaces;
-    using BudgetFirst.SharedInterfaces.EventSourcing;
-    using BudgetFirst.SharedInterfaces.Messaging;
+    using BudgetFirst.Infrastructure.Messaging;
 
     /// <summary>
     /// Repository for <see cref="Account"/> aggregates

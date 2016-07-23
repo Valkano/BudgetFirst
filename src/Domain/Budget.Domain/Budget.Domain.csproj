@@ -53,9 +53,9 @@
       <Project>{C0B0AF45-F29D-419C-90AE-E9B3719A032A}</Project>
       <Name>Budget.Domain.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Infrastructure\SharedInterfaces\SharedInterfaces.csproj">
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{E6091DB1-C9F7-42DB-B4D5-E31FB6A5A6DA}</Project>
-      <Name>SharedInterfaces</Name>
+      <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

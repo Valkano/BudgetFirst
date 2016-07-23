@@ -26,7 +26,7 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
     using System.Runtime.Serialization;
     using System.Text;
 
-    using BudgetFirst.SharedInterfaces.Serialisation;
+    using BudgetFirst.Infrastructure.Serialisation;
 
     using NUnit.Framework;
 

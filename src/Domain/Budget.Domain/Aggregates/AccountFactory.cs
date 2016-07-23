@@ -3,9 +3,8 @@
     using System;
     using System.Collections.Generic;
 
-    using BudgetFirst.SharedInterfaces;
-    using BudgetFirst.SharedInterfaces.Messaging;
-
+    using BudgetFirst.Infrastructure.Messaging;
+    
     /// <summary>
     /// Factory for <see cref="Account">accounts</see>
     /// </summary>

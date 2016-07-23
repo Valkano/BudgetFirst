@@ -32,10 +32,10 @@ namespace BudgetFirst.ApplicationCore
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using BudgetFirst.SharedInterfaces.Commands;
-    using BudgetFirst.SharedInterfaces.EventSourcing;
-    using BudgetFirst.SharedInterfaces.Messaging;
-    using BudgetFirst.SharedInterfaces.ReadModel;
+
+    using BudgetFirst.Infrastructure.Commands;
+    using BudgetFirst.Infrastructure.Messaging;
+    using BudgetFirst.Infrastructure.ReadModel;
 
     /// <summary>
     /// Represents the Application's core functionality as a Singleton.

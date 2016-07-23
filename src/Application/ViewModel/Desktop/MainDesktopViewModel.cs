@@ -30,8 +30,6 @@ namespace BudgetFirst.ViewModel.Desktop
     using System;
 
     using BudgetFirst.ReadSide.ReadModel;
-    using BudgetFirst.SharedInterfaces.Commands;
-    using BudgetFirst.SharedInterfaces.Messaging;
     using BudgetFirst.ViewModel.Services;
     using BudgetFirst.ViewModel.Shared;
     using BudgetFirst.WriteSide.Account;

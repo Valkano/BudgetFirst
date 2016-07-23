@@ -35,7 +35,6 @@ namespace BudgetFirst.ReadSide.ReadModel
     using System.Linq;
     using System.Runtime.InteropServices;
     using System.Text;
-    using SharedInterfaces.ReadModel;
 
     /// <summary>
     /// Account list read model

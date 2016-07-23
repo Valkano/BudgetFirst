@@ -35,7 +35,7 @@ namespace BudgetFirst.ReadSide.Repositories
     using System.Threading.Tasks;
     using System.Xml.Linq;
 
-    using BudgetFirst.SharedInterfaces.ReadModel;
+    using BudgetFirst.Infrastructure.ReadModel;
 
     using ReadModel;
 

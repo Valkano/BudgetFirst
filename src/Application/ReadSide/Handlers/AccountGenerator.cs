@@ -30,11 +30,13 @@ namespace BudgetFirst.ReadSide.Handlers
 {
     using System;
     using Budget.Domain.Interfaces.Events;
-    using BudgetFirst.SharedInterfaces.Commands;
+
+    using BudgetFirst.Infrastructure.Commands;
+    using BudgetFirst.Infrastructure.Messaging;
+
     using ReadModel;
     using Repositories;
-    using SharedInterfaces.Messaging;
-    
+
     /// <summary>
     /// Generator for accounts
     /// </summary>

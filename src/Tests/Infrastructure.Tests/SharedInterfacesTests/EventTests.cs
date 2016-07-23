@@ -5,12 +5,12 @@
     using System.Text;
     using System.Threading;
 
+    using BudgetFirst.Infrastructure.ApplicationState;
+    using BudgetFirst.Infrastructure.EventSourcing;
+    using BudgetFirst.Infrastructure.Messaging;
     using BudgetFirst.SharedInterfaces;
-    using BudgetFirst.SharedInterfaces.ApplicationState;
-    using BudgetFirst.SharedInterfaces.EventSourcing;
 
     using NUnit.Framework;
-    using SharedInterfaces.Messaging;
 
     /// <summary>
     /// Test fixture for events and vector clocks

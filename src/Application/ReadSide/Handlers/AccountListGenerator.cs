@@ -34,9 +34,11 @@ namespace BudgetFirst.ReadSide.Handlers
     using System.Text;
     using System.Threading.Tasks;
     using Budget.Domain.Interfaces.Events;
+
+    using BudgetFirst.Infrastructure.Messaging;
+
     using ReadModel;
     using Repositories;
-    using SharedInterfaces.Messaging;
 
     /// <summary>
     /// Generator for account lists

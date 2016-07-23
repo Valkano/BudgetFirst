@@ -29,7 +29,8 @@ namespace BudgetFirst.Wrappers
 {
     using System;
     using System.Collections.Generic;
-    using BudgetFirst.SharedInterfaces.DependencyInjection;
+
+    using BudgetFirst.Infrastructure.DependencyInjection;
 
     /// <summary>
     /// A wrapper around the SimpleInjector container.

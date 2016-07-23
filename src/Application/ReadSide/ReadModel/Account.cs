@@ -33,10 +33,9 @@ namespace BudgetFirst.ReadSide.ReadModel
     using System.Linq;
     using System.Text;
     using BudgetFirst.Budget.Domain.Interfaces.Events;
-    using BudgetFirst.SharedInterfaces.Commands;
+    using BudgetFirst.Infrastructure.Commands;
+    using BudgetFirst.Infrastructure.ReadModel;
     using BudgetFirst.WriteSide.Account;
-
-    using SharedInterfaces.ReadModel;
 
     /// <summary>
     /// Account read model

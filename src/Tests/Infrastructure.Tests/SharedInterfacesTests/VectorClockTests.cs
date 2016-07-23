@@ -5,8 +5,10 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
+    using BudgetFirst.Infrastructure.Messaging;
+
     using NUnit.Framework;
-    using SharedInterfaces.Messaging;
 
     /// <summary>
     /// Contains tests for vector clocks
