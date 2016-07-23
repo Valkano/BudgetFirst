@@ -49,9 +49,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\..\Infrastructure\Budget.Domain.Interfaces\Budget.Domain.Interfaces.csproj">
+    <ProjectReference Include="..\..\Infrastructure\Events\Events.csproj">
       <Project>{C0B0AF45-F29D-419C-90AE-E9B3719A032A}</Project>
-      <Name>Budget.Domain.Interfaces</Name>
+      <Name>Events</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{E6091DB1-C9F7-42DB-B4D5-E31FB6A5A6DA}</Project>

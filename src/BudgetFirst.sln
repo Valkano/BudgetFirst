@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.Wpf", "Present
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure\Infrastructure.csproj", "{E6091DB1-C9F7-42DB-B4D5-E31FB6A5A6DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budget.Domain.Interfaces", "Infrastructure\Budget.Domain.Interfaces\Budget.Domain.Interfaces.csproj", "{C0B0AF45-F29D-419C-90AE-E9B3719A032A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events", "Infrastructure\Events\Events.csproj", "{C0B0AF45-F29D-419C-90AE-E9B3719A032A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_notes", "_notes", "{CFDF83B1-E7D8-4702-A884-4C52285A3A38}"
 	ProjectSection(SolutionItems) = preProject

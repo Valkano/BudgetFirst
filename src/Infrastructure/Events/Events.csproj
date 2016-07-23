@@ -8,8 +8,8 @@
     <ProjectGuid>{C0B0AF45-F29D-419C-90AE-E9B3719A032A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BudgetFirst.Budget.Domain.Interfaces</RootNamespace>
-    <AssemblyName>BudgetFirst.Budget.Domain.Interfaces</AssemblyName>
+    <RootNamespace>BudgetFirst.Events</RootNamespace>
+    <AssemblyName>BudgetFirst.Events</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
