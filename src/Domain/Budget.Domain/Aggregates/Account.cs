@@ -32,8 +32,6 @@ namespace BudgetFirst.Budget.Domain.Aggregates
     using System.Linq;
     using System.Text;
 
-    using BudgetFirst.SharedInterfaces.Persistence;
-
     using Interfaces.Events;
     using SharedInterfaces.Domain;
     using SharedInterfaces.Messaging;

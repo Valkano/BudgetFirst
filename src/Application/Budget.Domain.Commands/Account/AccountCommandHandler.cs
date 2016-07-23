@@ -32,7 +32,6 @@ namespace BudgetFirst.Budget.Domain.Commands.Account
     using BudgetFirst.SharedInterfaces;
     using BudgetFirst.SharedInterfaces.Commands;
     using BudgetFirst.SharedInterfaces.Messaging;
-    using BudgetFirst.SharedInterfaces.Persistence;
 
     /// <summary>
     /// Handles commands related to Accounts

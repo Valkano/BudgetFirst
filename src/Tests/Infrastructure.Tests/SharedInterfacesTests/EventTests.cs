@@ -6,8 +6,8 @@
     using System.Threading;
 
     using BudgetFirst.SharedInterfaces;
+    using BudgetFirst.SharedInterfaces.ApplicationState;
     using BudgetFirst.SharedInterfaces.EventSourcing;
-    using BudgetFirst.SharedInterfaces.Persistence;
 
     using NUnit.Framework;
     using SharedInterfaces.Messaging;

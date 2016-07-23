@@ -33,7 +33,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
     using System.Text;
     using System.Threading.Tasks;
 
-    using BudgetFirst.SharedInterfaces.Persistence;
+    using BudgetFirst.SharedInterfaces.ApplicationState;
 
     using Domain;
 

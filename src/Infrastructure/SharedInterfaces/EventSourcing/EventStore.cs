@@ -34,7 +34,6 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
     using System.Threading.Tasks;
 
     using BudgetFirst.SharedInterfaces.Messaging;
-    using BudgetFirst.SharedInterfaces.Persistence;
 
     /// <summary>
     /// A simple event store

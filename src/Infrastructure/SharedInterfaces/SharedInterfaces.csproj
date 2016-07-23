@@ -64,13 +64,13 @@
     <Compile Include="Messaging\IUnitOfWork.cs" />
     <Compile Include="Messaging\IMessageBus.cs" />
     <Compile Include="Messaging\MessageBus.cs" />
-    <Compile Include="Persistence\IDeviceId.cs" />
-    <Compile Include="Persistence\DeviceId.cs" />
-    <Compile Include="Persistence\EventStoreState.cs" />
-    <Compile Include="Persistence\IReadOnlyDeviceId.cs" />
+    <Compile Include="ApplicationState\IDeviceId.cs" />
+    <Compile Include="ApplicationState\DeviceId.cs" />
+    <Compile Include="EventSourcing\EventStoreState.cs" />
+    <Compile Include="ApplicationState\IReadOnlyDeviceId.cs" />
     <Compile Include="EventSourcing\IReadOnlyEventStore.cs" />
-    <Compile Include="Persistence\IVectorClock.cs" />
-    <Compile Include="Persistence\MasterVectorClock.cs" />
+    <Compile Include="ApplicationState\IVectorClock.cs" />
+    <Compile Include="ApplicationState\MasterVectorClock.cs" />
     <Compile Include="ReadModel\IReadStore.cs" />
     <Compile Include="ReadModel\ReadStore.cs" />
     <Compile Include="ReadModel\IResetableReadStore.cs" />
@@ -84,9 +84,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ApplicationState\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -1,4 +1,4 @@
-﻿namespace BudgetFirst.SharedInterfaces.Persistence
+﻿namespace BudgetFirst.SharedInterfaces.ApplicationState
 {
     using System;
 

@@ -28,10 +28,10 @@
 
 namespace BudgetFirst.SharedInterfaces.Commands
 {
+    using BudgetFirst.SharedInterfaces.ApplicationState;
     using BudgetFirst.SharedInterfaces.DependencyInjection;
     using BudgetFirst.SharedInterfaces.EventSourcing;
     using BudgetFirst.SharedInterfaces.Messaging;
-    using BudgetFirst.SharedInterfaces.Persistence;
 
     /// <summary>
     /// The command bus accepts commands and forwards them to the corresponding command handler.

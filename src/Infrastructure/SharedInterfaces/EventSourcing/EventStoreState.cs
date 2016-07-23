@@ -1,10 +1,9 @@
-﻿namespace BudgetFirst.SharedInterfaces.Persistence
+﻿namespace BudgetFirst.SharedInterfaces.EventSourcing
 {
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
 
-    using BudgetFirst.SharedInterfaces.EventSourcing;
     using BudgetFirst.SharedInterfaces.Messaging;
 
     /// <summary>

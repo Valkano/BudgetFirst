@@ -33,7 +33,6 @@ namespace BudgetFirst.SharedInterfaces.Domain
     using System.Text;
     using System.Threading.Tasks;
     using BudgetFirst.SharedInterfaces.Messaging;
-    using BudgetFirst.SharedInterfaces.Persistence;
 
     /// <summary>
     /// Represents an aggregate root
