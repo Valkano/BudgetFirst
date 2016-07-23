@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budget.Domain", "Domain\Budget.Domain\Budget.Domain.csproj", "{C5A29F5E-5669-41BB-AA7B-6943ED5CFBCE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budget", "Domain\Budget\Budget.csproj", "{C5A29F5E-5669-41BB-AA7B-6943ED5CFBCE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{595B8DD2-D829-4340-90AD-17AA5AF2E9D2}"
 EndProject
