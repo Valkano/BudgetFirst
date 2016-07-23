@@ -21,6 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budget.Domain.Interfaces", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_notes", "_notes", "{CFDF83B1-E7D8-4702-A884-4C52285A3A38}"
 	ProjectSection(SolutionItems) = preProject
+		Folders and layers.txt = Folders and layers.txt
 		_notes\Notes.txt = _notes\Notes.txt
 		_notes\Third party modules that we still have to credit.txt = _notes\Third party modules that we still have to credit.txt
 	EndProjectSection
