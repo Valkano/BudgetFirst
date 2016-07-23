@@ -34,6 +34,7 @@ namespace BudgetFirst.ViewModel
     using System.Text;
     using System.Threading.Tasks;
 
+    using BudgetFirst.ApplicationCore.PlatformSpecific;
     using BudgetFirst.Wrappers;
 
     using Desktop;
@@ -44,25 +45,18 @@ namespace BudgetFirst.ViewModel
     public class ViewModelContainer
     {
         /// <summary>
-        /// The default instance of the <see cref="ViewModelContainer"/>
+        /// Initialises a new instance of the <see cref="ViewModelContainer"/> class.
         /// </summary>
-        private static ViewModelContainer defaultInstance;
-
-        /// <summary>
-        /// Prevents a default instance of the <see cref="ViewModelContainer"/> class from being created.
-        /// </summary>
-        private ViewModelContainer()
+        /// <param name="deviceSettings">Platform-specific device settings</param>
+        /// <param name="persistableApplicationStateRepository">Platform-specific repository for application state</param>
+        public ViewModelContainer(IDeviceSettings deviceSettings, IPersistableApplicationStateRepository persistableApplicationStateRepository)
         {
             this.Container = new BudgetFirst.Wrappers.Container();
 
             this.Container.Register<MainDesktopViewModel>(Container.Lifestyle.Singleton);
+            this.Container.RegisterSingleton<IDeviceSettings>(deviceSettings);
+            this.Container.RegisterSingleton<IPersistableApplicationStateRepository>(persistableApplicationStateRepository);
         }
-
-        /// <summary>
-        /// Gets the default instance of the <see cref="ViewModelContainer"/>
-        /// </summary>
-        public static ViewModelContainer Default
-            => ViewModelContainer.defaultInstance ?? (ViewModelContainer.defaultInstance = new ViewModelContainer());
 
         /// <summary>
         /// Gets the SimpleInjector Container.

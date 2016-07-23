@@ -34,6 +34,7 @@ namespace BudgetFirst.ApplicationCore
     using System.Text;
     using System.Threading.Tasks;
 
+    using BudgetFirst.ApplicationCore.PlatformSpecific;
     using BudgetFirst.Infrastructure.Commands;
     using BudgetFirst.Infrastructure.Messaging;
     using BudgetFirst.Infrastructure.ReadModel;
@@ -49,18 +50,33 @@ namespace BudgetFirst.ApplicationCore
         private readonly Bootstrap bootstrap;
 
         /// <summary>
+        /// Access to the device settings
+        /// </summary>
+        private readonly PlatformSpecific.IDeviceSettings deviceSettings;
+
+        /// <summary>
+        /// Access to the application state
+        /// </summary>
+        private readonly PlatformSpecific.IPersistableApplicationStateRepository persistableApplicationStateRepository;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="Core"/> class.
         /// Prevents a default instance of the <see cref="Core"/> class from being created.
         /// </summary>
-        internal Core()
+        /// <param name="deviceSettings">Platform-specific device settings</param>
+        /// <param name="persistableApplicationStateRepository">Platform-specific repository for the application state</param>
+        internal Core(IDeviceSettings deviceSettings, IPersistableApplicationStateRepository persistableApplicationStateRepository)
         {
+            this.deviceSettings = deviceSettings;
+            this.persistableApplicationStateRepository = persistableApplicationStateRepository;
+
             this.bootstrap = new Bootstrap();
 
             // TODO: initialisation of state; restore read models from event store
             // TODO: event store state
             // this.bootstrap.EventStore.SetState();
             this.bootstrap.VectorClock.SetState(new VectorClock());
-            this.bootstrap.DeviceId.SetDeviceId(new Guid("A621850A-5B4B-479F-9071-1F3588C144E6"));
+            this.bootstrap.DeviceId.SetDeviceId(deviceSettings.GetDeviceId());
 
             this.Repositories = new Repositories(this.bootstrap);
             this.CommandBus = this.bootstrap.CommandBus;

@@ -26,31 +26,25 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Events.Events
+namespace BudgetFirst.Presentation.Wpf.PlatformSpecific
 {
-    using System.Runtime.Serialization;
+    using System;
 
-    using BudgetFirst.Infrastructure.Messaging;
+    using BudgetFirst.ApplicationCore.PlatformSpecific;
 
     /// <summary>
-    /// The name of an account was changed
+    /// Contains the device settings for the Windows platform
     /// </summary>
-    [DataContract(Name = "AccountNameChanged", Namespace = "http://budgetfirst.github.io/schemas/2016/07/23/Events/Account/NameChanged")]
-    public class AccountNameChanged : DomainEvent
+    public class WindowsDeviceSettings : IDeviceSettings
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="AccountNameChanged"/> class.
+        /// Get the current device Id
         /// </summary>
-        /// <param name="name">Account name</param>
-        public AccountNameChanged(string name)
+        /// <returns>Current device Id</returns>
+        public Guid GetDeviceId()
         {
-            this.Name = name;
+            // TODO: actual lookup and creation if it does not yet exist (first: lookup in settings if portable; if portable: load from local settings - else load from user settings)
+            return new Guid("868BBDFD-CEB4-4EE0-8D82-47AE7A3A5219");
         }
-
-        /// <summary>
-        /// Gets the new account name
-        /// </summary>
-        [DataMember(Name = "Name")]
-        public string Name { get; private set; }
     }
 }

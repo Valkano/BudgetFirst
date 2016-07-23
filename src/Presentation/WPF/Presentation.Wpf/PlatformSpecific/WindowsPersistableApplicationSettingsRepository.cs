@@ -26,31 +26,31 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Events.Events
+namespace BudgetFirst.Presentation.Wpf.PlatformSpecific
 {
-    using System.Runtime.Serialization;
-
+    using BudgetFirst.ApplicationCore;
+    using BudgetFirst.ApplicationCore.PlatformSpecific;
+    using BudgetFirst.Infrastructure.EventSourcing;
     using BudgetFirst.Infrastructure.Messaging;
 
     /// <summary>
-    /// The name of an account was changed
+    /// Provides access to the application settings on windows platform
     /// </summary>
-    [DataContract(Name = "AccountNameChanged", Namespace = "http://budgetfirst.github.io/schemas/2016/07/23/Events/Account/NameChanged")]
-    public class AccountNameChanged : DomainEvent
+    public class WindowsPersistableApplicationSettingsRepository : IPersistableApplicationStateRepository
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="AccountNameChanged"/> class.
+        /// Get the current application state from disk
         /// </summary>
-        /// <param name="name">Account name</param>
-        public AccountNameChanged(string name)
+        /// <param name="path">Path to the file</param>
+        /// <returns>Application state, if it could be loaded</returns>
+        public PersistableApplicationState Get(string path)
         {
-            this.Name = name;
+            // TODO: implement actual loading
+            return new PersistableApplicationState()
+            {
+                EventStoreState = new EventStoreState(),
+                VectorClock = new VectorClock(),
+            };
         }
-
-        /// <summary>
-        /// Gets the new account name
-        /// </summary>
-        [DataMember(Name = "Name")]
-        public string Name { get; private set; }
     }
 }

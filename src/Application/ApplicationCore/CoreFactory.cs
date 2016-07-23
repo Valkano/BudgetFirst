@@ -28,6 +28,8 @@
 
 namespace BudgetFirst.ApplicationCore
 {
+    using BudgetFirst.ApplicationCore.PlatformSpecific;
+
     /// <summary>
     /// Factory for application core
     /// </summary>
@@ -37,9 +39,11 @@ namespace BudgetFirst.ApplicationCore
         /// Create a new budget
         /// </summary>
         /// <returns>New application core for new budget</returns>
-        public static Core CreateNewBudget()
+        /// <param name="deviceSettings">Platform-specific device settings</param>
+        /// <param name="persistableApplicationStateRepository">Platform-specific repository for the application state</param>
+        public static Core CreateNewBudget(IDeviceSettings deviceSettings, IPersistableApplicationStateRepository persistableApplicationStateRepository)
         {
-            return new Core();
+            return new Core(deviceSettings, persistableApplicationStateRepository);
         }
     }
 }

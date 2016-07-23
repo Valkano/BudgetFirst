@@ -7,6 +7,9 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
+
+    using BudgetFirst.Presentation.Wpf.PlatformSpecific;
+
     using Services;
     using ViewModel;
     using ViewModel.Desktop;
@@ -29,16 +32,22 @@
         private Window mainWindow;
 
         /// <summary>
+        /// View model container
+        /// </summary>
+        private ViewModelContainer container;
+
+        /// <summary>
         /// A method that is called when the application starts.
         /// </summary>
         /// <param name="e">The <see cref="StartupEventArgs"/>.</param>
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            this.container = new ViewModelContainer(new WindowsDeviceSettings(), new WindowsPersistableApplicationSettingsRepository());
             this.RegisterServices();
 
-            this.mainViewModel = ViewModelContainer.Default.Resolve<MainDesktopViewModel>();
-            IWindowService windowService = ViewModelContainer.Default.Resolve<IWindowService>();
+            this.mainViewModel = this.container.Resolve<MainDesktopViewModel>();
+            var windowService = this.container.Resolve<IWindowService>();
 
             this.mainWindow = (Window)windowService.ShowWindow(this.mainViewModel);
             this.mainWindow.Closed += this.MainWindow_Closed;
@@ -61,7 +70,7 @@
         {
             WpfWindowService.RegisterWindow<MainDesktopViewModel, MainWindow>();
 
-            ViewModelContainer.Default.Container.Register<IWindowService, WpfWindowService>(Wrappers.Container.Lifestyle.Singleton);
+            this.container.Container.Register<IWindowService, WpfWindowService>(Wrappers.Container.Lifestyle.Singleton);
         }
     }
 }

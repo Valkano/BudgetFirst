@@ -28,11 +28,14 @@
 
 namespace BudgetFirst.Events.Events
 {
+    using System.Runtime.Serialization;
+
     using BudgetFirst.Infrastructure.Messaging;
 
     /// <summary>
     /// A new account was created
     /// </summary>
+    [DataContract(Name = "AccountCreated", Namespace = "http://budgetfirst.github.io/schemas/2016/07/23/Events/Account/Created")]
     public class AccountCreated : DomainEvent
     {
         /// <summary>
@@ -47,6 +50,7 @@ namespace BudgetFirst.Events.Events
         /// <summary>
         /// Gets the account name
         /// </summary>
+        [DataMember(Name = "Name")]
         public string Name { get; private set; }
     }
 }

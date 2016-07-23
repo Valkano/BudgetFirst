@@ -30,6 +30,7 @@ namespace BudgetFirst.ViewModel.Desktop
 {
     using System;
 
+    using BudgetFirst.ApplicationCore.PlatformSpecific;
     using BudgetFirst.ReadSide.ReadModel;
     using BudgetFirst.ViewModel.Services;
     using BudgetFirst.ViewModel.Shared;
@@ -71,10 +72,12 @@ namespace BudgetFirst.ViewModel.Desktop
         /// Initialises a new instance of the <see cref="MainDesktopViewModel"/> class.
         /// </summary>
         /// <param name="windowService">The platform's window service.</param>
-        public MainDesktopViewModel(IWindowService windowService)
+        /// <param name="deviceSettings">Platform-specific device settings</param>
+        /// <param name="persistableApplicationStateRepository">Platform-specific repository for the application state</param>
+        public MainDesktopViewModel(IWindowService windowService, IDeviceSettings deviceSettings, IPersistableApplicationStateRepository persistableApplicationStateRepository)
         {
             this.windowService = windowService;
-            this.applicationCore = ApplicationCore.CoreFactory.CreateNewBudget();
+            this.applicationCore = ApplicationCore.CoreFactory.CreateNewBudget(deviceSettings, persistableApplicationStateRepository);
             this.InitialiseRelayCommands();
             this.accountList = this.applicationCore.Repositories.AccountListReadModelRepository.Find();
 

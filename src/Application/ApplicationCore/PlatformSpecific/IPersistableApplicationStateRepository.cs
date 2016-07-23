@@ -26,31 +26,18 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Events.Events
+namespace BudgetFirst.ApplicationCore.PlatformSpecific
 {
-    using System.Runtime.Serialization;
-
-    using BudgetFirst.Infrastructure.Messaging;
-
     /// <summary>
-    /// The name of an account was changed
+    /// Multiplatform repository for the persistable application state
     /// </summary>
-    [DataContract(Name = "AccountNameChanged", Namespace = "http://budgetfirst.github.io/schemas/2016/07/23/Events/Account/NameChanged")]
-    public class AccountNameChanged : DomainEvent
+    public interface IPersistableApplicationStateRepository
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="AccountNameChanged"/> class.
+        /// Read the application state from disk or other location.
         /// </summary>
-        /// <param name="name">Account name</param>
-        public AccountNameChanged(string name)
-        {
-            this.Name = name;
-        }
-
-        /// <summary>
-        /// Gets the new account name
-        /// </summary>
-        [DataMember(Name = "Name")]
-        public string Name { get; private set; }
+        /// <param name="location">Platform-specific identifier of where to load the state from (path, key, etc.)</param>
+        /// <returns>Loaded application state, if found.</returns>
+        PersistableApplicationState Get(string location);
     }
 }
