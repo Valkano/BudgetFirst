@@ -6,7 +6,7 @@ install:
 script:
 - xbuild /p:Configuration=Linux src/BudgetFirst.sln
 - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit3-console.exe ./src/Tests/Infrastructure.Tests.Net45/bin/Linux/Infrastructure.Tests.Net45.dll
-  ./src/Tests/Budget.Domain.Tests.Net45/bin/Linux/Budget.Domain.Tests.Net45.dll
+  ./src/Tests/Budget.Tests.Net45/bin/Linux/Budget.Tests.Net45.dll
 notifications:
   slack:
     secure: v8FQ7lnjoJ7NG/GX4rBvj8FGUWp7wwjJrM54miSBx/NcCb+T1mnwo5U4Lqe014clQ4F8BMMiEG0Jq/HKfvCS7Yafx+Q//L+JSZBSFkvyIhV8L8mcLSahDlsba55VFE5FgxlyZBwM5cb7OEP4i/rA2svtMCXhGMcP0F7fcXYKoY8hBmkOb7rIQABIFMD7MBmaZItriVhJ0fHLzwzo6TH/uYDdhbhPk3gSTmoZQJdhsHGpIjLp/9bIOgGNZ7Srdt+iTGx1j5IUNMGifToGINMiIWB6zKql/Sbz6l0vCISEWJY3CWM0MmhKfbCRwxEvImKWdkTGWde/CmlTtMWFMR+XyeBqcrZZyfzV6YHFe902N6ma+2NItPW5fQPnewbBdmdboZN4Vhf7Puf9flcHYsp2IHCydpysB3ZDmjAxEguDUn60G8cCoruJ9PNoW+wRzw6Sj5rdSUH5JZ+E2EVAKd7S6hbG1Zk7F2diXiRvJcF902w6rn2Dz/qMQYH6qLYWB4qFjbS+RzQF6QpkaHwy1Y7vQr2MbDE9AkXK38ucGLC03KsCedsWbUAAZe/Wq3DGD7TB0bQ6BrViz++fm03F3JHLiLebKPyJ58kAKQ324nek+btXxozXmgPN4wcDDTt9csUrrfAQ6lzraRyY3FxK+euOu8JkMW91KbpX/nfHZWmAd/0=
