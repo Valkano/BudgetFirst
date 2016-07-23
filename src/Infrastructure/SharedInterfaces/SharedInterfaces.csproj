@@ -55,6 +55,7 @@
     <Compile Include="Commands\ICommandBus.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="DependencyInjection\IContainer.cs" />
+    <Compile Include="EventSourcing\DomainEventIncompleteException.cs" />
     <Compile Include="IApplicationState.cs" />
     <Compile Include="IBootstrap.cs" />
     <Compile Include="Messaging\DomainEvent.cs" />

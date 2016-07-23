@@ -80,6 +80,7 @@ namespace BudgetFirst.SharedInterfaces.Commands
             try
             {
                 this.InvokeHandler(command, eventTransaction);
+                this.StoreEvents(eventTransaction);
             }
             catch (System.Exception)
             {
@@ -88,7 +89,6 @@ namespace BudgetFirst.SharedInterfaces.Commands
                 throw;
             }
 
-            this.StoreEvents(eventTransaction);
             this.PublishEvents(eventTransaction);
         }
 

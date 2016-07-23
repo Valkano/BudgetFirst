@@ -49,8 +49,7 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         {
             this.EventId = new Guid();
             this.Timestamp = DateTime.UtcNow;
-            this.DeviceId = SharedSingletons.ApplicationState.DeviceId;
-            this.VectorClock = SharedSingletons.ApplicationState.VectorClock.Copy();
+            /* Device id, aggregate id and vector clock should be set by sender */
         }
 
         /// <summary>
@@ -82,6 +81,15 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// </summary>
         [DataMember(Name = "VectorClock")]
         public VectorClock VectorClock { get; set; }
+        
+        /// <summary>
+        /// Is this event valid or are there missing fields?
+        /// </summary>
+        /// <returns><c>true</c> if all required fields are set</returns>
+        public bool IsValid()
+        {
+            return this.DeviceId != Guid.Empty && this.AggregateId != Guid.Empty && this.VectorClock != null;
+        }
 
         /// <summary>
         /// Compares this Event with a second event and determines the order 

@@ -9,6 +9,7 @@
     <Import_RootNamespace>BudgetFirst.Infrastructure.Tests</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)SharedInterfacesTests\EventStoreTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedInterfacesTests\EventTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedInterfacesTests\SerialisationTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedInterfacesTests\VectorClockTests.cs" />

@@ -62,5 +62,11 @@ namespace BudgetFirst.SharedInterfaces.Messaging
         /// Gets the VectorClock for the event
         /// </summary>
         VectorClock VectorClock { get; }
+
+        /// <summary>
+        /// Is this event valid or are there missing fields?
+        /// </summary>
+        /// <returns><c>true</c> if all required fields are set</returns>
+        bool IsValid();
     }
 }

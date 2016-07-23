@@ -81,6 +81,11 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
         public void Add(IEnumerable<IDomainEvent> domainEvents)
         {
             var newEvents = domainEvents.ToList();
+            foreach (var @event in newEvents)
+            {
+                this.CheckValidity(@event);    
+            }
+
             this.store.AddRange(newEvents);
             this.AddToLookup(newEvents);
         }
@@ -91,8 +96,22 @@ namespace BudgetFirst.SharedInterfaces.EventSourcing
         /// <param name="domainEvent">Event to save</param>
         public void Add(IDomainEvent domainEvent)
         {
+            this.CheckValidity(domainEvent);
             this.store.Add(domainEvent);
             this.AddToLookup(domainEvent);
+        }
+        
+        /// <summary>
+        /// Check the validity of an event (i.e. all required fields are set). 
+        /// </summary>
+        /// <param name="event">Event to check</param>
+        /// <exception cref="DomainEventIncompleteException">The domain event is incomplete/invalid and cannot be added to the event store.</exception>
+        private void CheckValidity(IDomainEvent @event)
+        {
+            if (!@event.IsValid())
+            {
+                throw new DomainEventIncompleteException();
+            }
         }
 
         /// <summary>

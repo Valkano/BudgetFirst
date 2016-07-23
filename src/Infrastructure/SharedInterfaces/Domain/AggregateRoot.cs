@@ -108,6 +108,7 @@ namespace BudgetFirst.SharedInterfaces.Domain
         protected void Update<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent
         {
             domainEvent.AggregateId = this.aggregateId;
+            domainEvent.DeviceId = SharedSingletons.ApplicationState.DeviceId; // TODO: inject state or get it via other means
             this.ApplyVectorClock(domainEvent);
             this.HandleEvent(domainEvent);
             this.events.Add(domainEvent);
