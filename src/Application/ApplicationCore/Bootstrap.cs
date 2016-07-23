@@ -32,8 +32,8 @@ namespace BudgetFirst.ApplicationCore
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using Budget.Domain.Interfaces.Events;
 
+    using BudgetFirst.Events.Events;
     using BudgetFirst.Infrastructure.ApplicationState;
     using BudgetFirst.Infrastructure.Commands;
     using BudgetFirst.Infrastructure.DependencyInjection;

@@ -26,8 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_notes", "_notes", "{CFDF83
 		_notes\Third party modules that we still have to credit.txt = _notes\Third party modules that we still have to credit.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budget.Repositories", "Infrastructure\Budget.Repositories\Budget.Repositories.csproj", "{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadSide", "Application\ReadSide\ReadSide.csproj", "{79EDE87E-204B-4A9F-B038-DC225A5B999E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationCore", "Application\ApplicationCore\ApplicationCore.csproj", "{EADDEB9C-FC1E-4B86-8E33-FF05A6F58710}"
@@ -40,9 +38,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Tests.Net45"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrappers", "Infrastructure\Wrappers\Wrappers.csproj", "{D7547C5A-DC03-425F-B8FE-FC9FEBCD1CC5}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Budget.Domain.Tests", "Tests\Budget.Domain.Tests\Budget.Domain.Tests.shproj", "{29B288D4-239F-4756-8B03-B161799CD762}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Budget.Tests", "Tests\Budget.Tests\Budget.Tests.shproj", "{29B288D4-239F-4756-8B03-B161799CD762}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budget.Domain.Tests.Net45", "Tests\Budget.Domain.Tests.Net45\Budget.Domain.Tests.Net45.csproj", "{7D7B5867-28E9-40A9-AE89-0EFA863FA9A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budget.Tests.Net45", "Tests\Budget.Tests.Net45\Budget.Tests.Net45.csproj", "{7D7B5867-28E9-40A9-AE89-0EFA863FA9A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "Application\ViewModel\ViewModel.csproj", "{5C3F50FD-395C-4C4F-91DB-25A5FFDCC0C7}"
 EndProject
@@ -50,10 +48,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WriteSide", "Application\Wr
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Tests\Budget.Domain.Tests\Budget.Domain.Tests.projitems*{29b288d4-239f-4756-8b03-b161799cd762}*SharedItemsImports = 13
+		Tests\Budget.Tests\Budget.Tests.projitems*{29b288d4-239f-4756-8b03-b161799cd762}*SharedItemsImports = 13
 		Tests\Infrastructure.Tests\Infrastructure.Tests.projitems*{8edf4429-251a-416d-bb68-93f227191bcf}*SharedItemsImports = 4
 		Tests\Infrastructure.Tests\Infrastructure.Tests.projitems*{a57cc877-9214-4c7a-b505-7262647eacc2}*SharedItemsImports = 13
-		Tests\Budget.Domain.Tests\Budget.Domain.Tests.projitems*{7d7b5867-28e9-40a9-ae89-0efa863fa9a1}*SharedItemsImports = 4
+		Tests\Budget.Tests\Budget.Tests.projitems*{7d7b5867-28e9-40a9-ae89-0efa863fa9a1}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,12 +82,6 @@ Global
 		{C0B0AF45-F29D-419C-90AE-E9B3719A032A}.Linux|Any CPU.Build.0 = Linux|Any CPU
 		{C0B0AF45-F29D-419C-90AE-E9B3719A032A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0B0AF45-F29D-419C-90AE-E9B3719A032A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7}.Linux|Any CPU.ActiveCfg = Linux|Any CPU
-		{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7}.Linux|Any CPU.Build.0 = Linux|Any CPU
-		{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{79EDE87E-204B-4A9F-B038-DC225A5B999E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{79EDE87E-204B-4A9F-B038-DC225A5B999E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79EDE87E-204B-4A9F-B038-DC225A5B999E}.Linux|Any CPU.ActiveCfg = Linux|Any CPU
@@ -141,7 +133,6 @@ Global
 		{79F9FA8F-BB2F-4F12-8919-32084915B1DB} = {595B8DD2-D829-4340-90AD-17AA5AF2E9D2}
 		{E6091DB1-C9F7-42DB-B4D5-E31FB6A5A6DA} = {EAC77D10-5E9C-4CC3-8922-3A40595E8403}
 		{C0B0AF45-F29D-419C-90AE-E9B3719A032A} = {EAC77D10-5E9C-4CC3-8922-3A40595E8403}
-		{80CFD2DE-DA19-46FD-871C-C16C9AFE62E7} = {EAC77D10-5E9C-4CC3-8922-3A40595E8403}
 		{79EDE87E-204B-4A9F-B038-DC225A5B999E} = {91804646-9924-4562-AEEF-25FA91C83CFD}
 		{EADDEB9C-FC1E-4B86-8E33-FF05A6F58710} = {91804646-9924-4562-AEEF-25FA91C83CFD}
 		{A57CC877-9214-4C7A-B505-7262647EACC2} = {C1E1E144-1762-4177-B5EC-46014205CBF7}

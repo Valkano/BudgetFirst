@@ -25,10 +25,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.Budget.Domain.Tests
+
+namespace BudgetFirst.Budget.Tests
 {
     using System;
-    using BudgetFirst.Budget.Domain.Aggregates;
+
+    using BudgetFirst.Budget.Aggregates;
     using BudgetFirst.Infrastructure.ApplicationState;
     using BudgetFirst.Infrastructure.EventSourcing;
     using BudgetFirst.Infrastructure.Messaging;

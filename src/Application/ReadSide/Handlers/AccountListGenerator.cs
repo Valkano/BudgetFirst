@@ -33,8 +33,8 @@ namespace BudgetFirst.ReadSide.Handlers
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using Budget.Domain.Interfaces.Events;
 
+    using BudgetFirst.Events.Events;
     using BudgetFirst.Infrastructure.Messaging;
 
     using ReadModel;

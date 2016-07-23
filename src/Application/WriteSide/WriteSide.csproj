@@ -53,10 +53,6 @@
       <Project>{c5a29f5e-5669-41bb-aa7b-6943ed5cfbce}</Project>
       <Name>Budget</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Infrastructure\Budget.Repositories\Budget.Repositories.csproj">
-      <Project>{80cfd2de-da19-46fd-871c-c16c9afe62e7}</Project>
-      <Name>Budget.Repositories</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
       <Name>Infrastructure</Name>
@@ -67,6 +63,7 @@
     <Compile Include="Account\CreateAccountCommand.cs" />
     <Compile Include="Account\AccountCommandHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AccountRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

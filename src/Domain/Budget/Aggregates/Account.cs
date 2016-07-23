@@ -25,18 +25,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.Budget.Domain.Aggregates
+
+namespace BudgetFirst.Budget.Aggregates
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    using BudgetFirst.Events.Events;
     using BudgetFirst.Infrastructure.Domain;
     using BudgetFirst.Infrastructure.Messaging;
 
-    using Interfaces.Events;
-    
     /// <summary>
     /// An account, as in bank account, wallet etc.
     /// </summary>

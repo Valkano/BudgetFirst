@@ -25,12 +25,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
+
 namespace BudgetFirst.WriteSide.Account
 {
-    using BudgetFirst.Budget.Domain.Aggregates;
-    using BudgetFirst.Budget.Repositories;
+    using BudgetFirst.Budget.Aggregates;
     using BudgetFirst.Infrastructure.Commands;
     using BudgetFirst.Infrastructure.Messaging;
+
+    using AccountRepository = BudgetFirst.WriteSide.Repositories.AccountRepository;
 
     /// <summary>
     /// Handles commands related to Accounts

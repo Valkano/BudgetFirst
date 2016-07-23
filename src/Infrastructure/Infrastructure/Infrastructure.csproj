@@ -55,7 +55,6 @@
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="DependencyInjection\IContainer.cs" />
     <Compile Include="EventSourcing\DomainEventIncompleteException.cs" />
-    <Compile Include="IBootstrap.cs" />
     <Compile Include="Messaging\DomainEvent.cs" />
     <Compile Include="EventSourcing\EventStore.cs" />
     <Compile Include="Messaging\UnitOfWork.cs" />

@@ -25,16 +25,37 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.Infrastructure
+
+namespace BudgetFirst.WriteSide.Repositories
 {
+    using System;
+
+    using BudgetFirst.Budget.Aggregates;
+    using BudgetFirst.Infrastructure.Messaging;
+
     /// <summary>
-    /// A bootstrap performs necessary run-once operations such as registering classes in inversion of control containers etc.
+    /// Repository for <see cref="Account"/> aggregates
     /// </summary>
-    public interface IBootstrap
+    public class AccountRepository
     {
         /// <summary>
-        /// Perform all necessary run-once operations
+        /// Initialises a new instance of the <see cref="AccountRepository"/> class.
         /// </summary>
-        void Initialise();
+        public AccountRepository()
+        {
+        }
+
+        /// <summary>
+        /// Find (rehydrate) an account aggregate.
+        /// <para>Note: all changes to the account are directly written to the unit of work.</para>
+        /// </summary>
+        /// <param name="id">Account Id</param>
+        /// <param name="unitOfWork">Unit of work</param>
+        /// <returns><para>Rehydrated aggregate. </para>
+        /// <para>Note: all changes to the account are directly written to the unit of work.</para></returns>
+        public Account Find(Guid id, IUnitOfWork unitOfWork)
+        {
+            return AccountFactory.Load(id, unitOfWork);
+        }
     }
 }

@@ -29,8 +29,8 @@
 namespace BudgetFirst.ReadSide.Handlers
 {
     using System;
-    using Budget.Domain.Interfaces.Events;
 
+    using BudgetFirst.Events.Events;
     using BudgetFirst.Infrastructure.Commands;
     using BudgetFirst.Infrastructure.Messaging;
 
