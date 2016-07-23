@@ -25,11 +25,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.Budget.Domain.Commands.Account
+namespace BudgetFirst.WriteSide.Account
 {
     using BudgetFirst.Budget.Domain.Aggregates;
     using BudgetFirst.Budget.Repositories;
-    using BudgetFirst.SharedInterfaces;
     using BudgetFirst.SharedInterfaces.Commands;
     using BudgetFirst.SharedInterfaces.Messaging;
 

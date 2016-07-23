@@ -33,12 +33,13 @@ namespace BudgetFirst.ApplicationCore
     using System.Linq;
     using System.Text;
     using Budget.Domain.Interfaces.Events;
-    using BudgetFirst.Budget.Domain.Commands.Account;
+
     using BudgetFirst.SharedInterfaces;
     using BudgetFirst.SharedInterfaces.ApplicationState;
     using BudgetFirst.SharedInterfaces.EventSourcing;
     using BudgetFirst.SharedInterfaces.ReadModel;
     using BudgetFirst.Wrappers;
+    using BudgetFirst.WriteSide.Account;
 
     using ReadSide.Handlers;
     using ReadSide.Repositories;

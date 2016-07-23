@@ -25,18 +25,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.Budget.Domain.Commands.Account
+namespace BudgetFirst.WriteSide.Account
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+
     using BudgetFirst.SharedInterfaces.Commands;
 
     /// <summary>
-    /// Change account name
+    /// Create a new account
     /// </summary>
-    public class ChangeAccountNameCommand : ICommand
+    public class CreateAccountCommand : ICommand
     {
         /// <summary>
         /// Gets or sets the Id of the account

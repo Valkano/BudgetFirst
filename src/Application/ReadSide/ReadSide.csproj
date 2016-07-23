@@ -57,9 +57,9 @@
       <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
       <Name>SharedInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Budget.Domain.Commands\Budget.Domain.Commands.csproj">
-      <Project>{0d86c58c-1636-45cf-8fa2-5537b94c7c09}</Project>
-      <Name>Budget.Domain.Commands</Name>
+    <ProjectReference Include="..\WriteSide\WriteSide.csproj">
+      <Project>{0D86C58C-1636-45CF-8FA2-5537B94C7C09}</Project>
+      <Name>WriteSide</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

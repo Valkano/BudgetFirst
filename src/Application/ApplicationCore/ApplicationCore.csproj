@@ -61,13 +61,13 @@
       <Project>{d7547c5a-dc03-425f-b8fe-fc9febcd1cc5}</Project>
       <Name>Wrappers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Budget.Domain.Commands\Budget.Domain.Commands.csproj">
-      <Project>{0d86c58c-1636-45cf-8fa2-5537b94c7c09}</Project>
-      <Name>Budget.Domain.Commands</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ReadSide\ReadSide.csproj">
       <Project>{79EDE87E-204B-4A9F-B038-DC225A5B999E}</Project>
       <Name>ReadSide</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WriteSide\WriteSide.csproj">
+      <Project>{0d86c58c-1636-45cf-8fa2-5537b94c7c09}</Project>
+      <Name>WriteSide</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

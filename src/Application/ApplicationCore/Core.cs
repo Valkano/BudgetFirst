@@ -76,9 +76,9 @@ namespace BudgetFirst.ApplicationCore
         public ICommandBus CommandBus { get; private set; }
 
         /// <summary>
-        /// Reset the current state and replay all events
+        /// Reset the current read model state and replay all events
         /// </summary>
-        internal void ResetState()
+        internal void ResetReadModelState()
         {
             // TODO: broadcast reset after it is done
             this.bootstrap.Container.Resolve<IResetableReadStore>().Clear();
