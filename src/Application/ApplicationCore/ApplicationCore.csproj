@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
     <Compile Include="Core.cs" />
+    <Compile Include="CoreFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories.cs" />
   </ItemGroup>

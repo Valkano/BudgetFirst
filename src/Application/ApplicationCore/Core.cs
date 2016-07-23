@@ -42,41 +42,27 @@ namespace BudgetFirst.ApplicationCore
     public class Core
     {
         /// <summary>
-        /// The backing variable for the Singleton instance of <see cref="Core"/>.
+        /// The Core's bootstrap.
         /// </summary>
-        private static readonly Core DefaultInstance;
+        private readonly Bootstrap bootstrap;
 
         /// <summary>
-        /// The Core's Bootstrap.
-        /// </summary>
-        private static readonly Bootstrap Bootstrap;
-
-        /// <summary>
-        /// Initialises static members of the <see cref="Core"/> class.
-        /// </summary>
-        static Core()
-        {
-            Bootstrap = new Bootstrap();
-            DefaultInstance = new Core();
-            Bootstrap.ApplicationState.VectorClock = new VectorClock();
-            Bootstrap.ApplicationState.DeviceId = new Guid("A621850A-5B4B-479F-9071-1F3588C144E6");
-            Bootstrap.ApplicationState.EventStore = new EventStore();
-        }
-
-        /// <summary>
+        /// Initialises a new instance of the <see cref="Core"/> class.
         /// Prevents a default instance of the <see cref="Core"/> class from being created.
         /// </summary>
-        private Core()
+        internal Core()
         {
-            this.Repositories = new Repositories(Bootstrap);
-            this.CommandBus = Bootstrap.CommandBus;
+            this.bootstrap = new Bootstrap();
+
+            // TODO: initialisation of state
+            this.bootstrap.ApplicationState.VectorClock = new VectorClock();
+            this.bootstrap.ApplicationState.DeviceId = new Guid("A621850A-5B4B-479F-9071-1F3588C144E6");
+            this.bootstrap.ApplicationState.EventStore = new EventStore();
+
+            this.Repositories = new Repositories(this.bootstrap);
+            this.CommandBus = this.bootstrap.CommandBus;
         }
-
-        /// <summary>
-        /// The singleton instance of <see cref="Core"/>
-        /// </summary>
-        public static Core Default => DefaultInstance;
-
+        
         /// <summary>
         /// Gets the Application's Repositories.
         /// </summary>

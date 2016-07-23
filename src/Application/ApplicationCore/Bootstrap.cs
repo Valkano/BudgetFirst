@@ -100,7 +100,7 @@ namespace BudgetFirst.ApplicationCore
 
             // Core messaging infrastructure
             // These things only exist once, hence singleton
-            // event store can no longer be singleton due to save/load
+            // TODO: event store should be singleton again (after extracting its state and allowing modification of the state)
             simpleInjector.Register<ICommandBus, CommandBus>(Wrappers.Container.Lifestyle.Singleton);
             simpleInjector.Register<IMessageBus, MessageBus>(Wrappers.Container.Lifestyle.Singleton);
             

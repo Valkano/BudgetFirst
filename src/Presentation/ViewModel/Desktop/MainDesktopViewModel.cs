@@ -42,16 +42,16 @@ namespace BudgetFirst.ViewModel.Desktop
     public class MainDesktopViewModel : ClosableViewModel
     {
         /// <summary>
+        /// Current application core
+        /// </summary>
+        private ApplicationCore.Core applicationCore;
+
+        /// <summary>
         /// The Window Service.
         /// </summary>
         private IWindowService windowService;
 
-        /// <summary>
-        /// The application's command bus
-        /// </summary>
-        private ICommandBus commandBus;
-
-        /// <summary>
+     /// <summary>
         /// The Account List.
         /// </summary>
         private AccountList accountList;
@@ -73,15 +73,16 @@ namespace BudgetFirst.ViewModel.Desktop
         public MainDesktopViewModel(IWindowService windowService)
         {
             this.windowService = windowService;
-            this.commandBus = ApplicationCore.Core.Default.CommandBus;
+            this.applicationCore = ApplicationCore.CoreFactory.CreateNewBudget();
             this.InitialiseRelayCommands();
-            this.accountList = ApplicationCore.Core.Default.Repositories.AccountListReadModelRepository.Find();
+            this.accountList = this.applicationCore.Repositories.AccountListReadModelRepository.Find();
 
             // Account list can be null if we haven't loaded any data yet -> we won't be informed about property changes!
+            // TODO: refactor this, because this means that we're accessing the read model repository directly for modifications, which we shouldn't
             if (this.accountList == null)
             {
                 this.accountList = new AccountList();
-                ApplicationCore.Core.Default.Repositories.AccountListReadModelRepository.Save(this.accountList);
+                this.applicationCore.Repositories.AccountListReadModelRepository.Save(this.accountList);
             }
         }
 
@@ -153,7 +154,7 @@ namespace BudgetFirst.ViewModel.Desktop
         /// </summary>
         private void AddAccount()
         {
-            this.commandBus.Submit(new CreateAccountCommand() { Id = Guid.NewGuid(), Name = "Account Name" });
+            this.applicationCore.CommandBus.Submit(new CreateAccountCommand() { Id = Guid.NewGuid(), Name = "Account Name" });
         }
 
         /// <summary>
@@ -166,7 +167,7 @@ namespace BudgetFirst.ViewModel.Desktop
                 return;
             }
 
-            var accountRepo = ApplicationCore.Core.Default.Repositories.AccountReadModelRepository;
+            var accountRepo = this.applicationCore.Repositories.AccountReadModelRepository;
             var account = accountRepo.Find(this.SelectedAccount.Id);
             account.Name = $"Renamed Account ({this.renameCount++})";
         }
