@@ -112,5 +112,39 @@ namespace BudgetFirst.Infrastructure.Messaging
 
             return result;
         }
+
+        /// <summary>
+        /// Test for equality
+        /// </summary>
+        /// <param name="obj">Other event</param>
+        /// <returns><c>true</c> if the other event is the same as this event</returns>
+        public override bool Equals(object obj)
+        {
+            var other = obj as DomainEvent;
+            if (other == null)
+            {
+                return false;
+            }
+
+            // Don't compare timestamps, I'm not sure if that would be very reliable (I had issues with timestamps and roundtrips in the past)
+            return this.EventId == other.EventId && this.AggregateId == other.AggregateId
+                   && this.DeviceId == other.DeviceId && this.VectorClock == other.VectorClock;
+        }
+
+        /// <summary>
+        /// Get the hash code
+        /// </summary>
+        /// <returns>Hash code</returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = this.EventId.GetHashCode();
+                hashCode = (hashCode * 397) ^ this.DeviceId.GetHashCode();
+                hashCode = (hashCode * 397) ^ this.AggregateId.GetHashCode();
+                hashCode = (hashCode * 397) ^ (this.VectorClock != null ? this.VectorClock.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }
