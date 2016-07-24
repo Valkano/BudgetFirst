@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings xmlns="http://budgetfirst.github.io" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://budgetfirst.github.io Settings.xsd">
+  <IsPortable>false</IsPortable>
+</Settings>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://budgetfirst.github.io" xmlns="http://budgetfirst.github.io" 
+           attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Settings">
+    <xs:annotation>
+      <xs:documentation>Contains settings for the application (such as toggling portable app use etc.)</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="IsPortable" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Indicates if the application should run as a portable application. As portable it loads settings from same folder as application and does not write to system.
+            Portable cannot use sync.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
