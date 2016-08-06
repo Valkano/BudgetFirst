@@ -36,6 +36,7 @@ namespace BudgetFirst.ApplicationCore
 
     using BudgetFirst.ApplicationCore.PlatformSpecific;
     using BudgetFirst.Infrastructure.Commands;
+    using BudgetFirst.Infrastructure.EventSourcing;
     using BudgetFirst.Infrastructure.Messaging;
     using BudgetFirst.Infrastructure.ReadModel;
 
@@ -65,21 +66,33 @@ namespace BudgetFirst.ApplicationCore
         /// </summary>
         /// <param name="deviceSettings">Platform-specific device settings</param>
         /// <param name="persistableApplicationStateRepository">Platform-specific repository for the application state</param>
-        internal Core(IDeviceSettings deviceSettings, IPersistableApplicationStateRepository persistableApplicationStateRepository)
+        /// <param name="applicationStateLocation">Location of the existing application state. Optional (creates a new core/budget when <c>null</c>)</param>
+        internal Core(IDeviceSettings deviceSettings, IPersistableApplicationStateRepository persistableApplicationStateRepository, string applicationStateLocation = null)
         {
             this.deviceSettings = deviceSettings;
             this.persistableApplicationStateRepository = persistableApplicationStateRepository;
 
             this.bootstrap = new Bootstrap();
 
-            // TODO: initialisation of state; restore read models from event store
-            // TODO: event store state
-            // this.bootstrap.EventStore.SetState();
-            this.bootstrap.VectorClock.SetState(new VectorClock());
-            this.bootstrap.DeviceId.SetDeviceId(deviceSettings.GetDeviceId());
+            var vectorClock = new VectorClock();
+            var eventStoreState = new EventStoreState();
 
+            // Load/initialise state
+            if (applicationStateLocation != null)
+            {
+                var state = this.persistableApplicationStateRepository.Get(applicationStateLocation);
+                vectorClock = state.VectorClock;
+                eventStoreState = state.EventStoreState;
+            }
+           
+            this.bootstrap.EventStore.SetState(eventStoreState);
+            this.bootstrap.VectorClock.SetState(vectorClock);
+            this.bootstrap.DeviceId.SetDeviceId(deviceSettings.GetDeviceId());
+            
             this.Repositories = new Repositories(this.bootstrap);
             this.CommandBus = this.bootstrap.CommandBus;
+
+            this.ResetReadModelState();
         }
         
         /// <summary>

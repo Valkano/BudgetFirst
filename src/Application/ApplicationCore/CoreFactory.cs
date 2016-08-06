@@ -43,7 +43,19 @@ namespace BudgetFirst.ApplicationCore
         /// <param name="persistableApplicationStateRepository">Platform-specific repository for the application state</param>
         public static Core CreateNewBudget(IDeviceSettings deviceSettings, IPersistableApplicationStateRepository persistableApplicationStateRepository)
         {
-            return new Core(deviceSettings, persistableApplicationStateRepository);
+            return new Core(deviceSettings, persistableApplicationStateRepository, applicationStateLocation: null);
+        }
+
+        /// <summary>
+        /// Load an existing budget
+        /// </summary>
+        /// <returns>Application core for existing budget</returns>
+        /// <param name="deviceSettings">Platform-specific device settings</param>
+        /// <param name="persistableApplicationStateRepository">Platform-specific repository for the application state</param>
+        /// <param name="applicationStateLocation">Location of the existing application state (i.e. budget)</param>
+        public static Core LoadExistingBudget(IDeviceSettings deviceSettings, IPersistableApplicationStateRepository persistableApplicationStateRepository, string applicationStateLocation)
+        {
+            return new Core(deviceSettings, persistableApplicationStateRepository, applicationStateLocation: applicationStateLocation);
         }
     }
 }

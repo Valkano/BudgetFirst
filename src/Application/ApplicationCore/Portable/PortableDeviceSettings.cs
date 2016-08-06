@@ -39,12 +39,6 @@ namespace BudgetFirst.ApplicationCore.Portable
     public class PortableDeviceSettings
     {
         /// <summary>
-        /// Gets or sets the device Id to use during portable use
-        /// </summary>
-        [DataMember(Name = "DeviceId")]
-        public Guid DeviceId { get; set; }
-
-        /// <summary>
         /// Gets or sets the identifier used to automatically load a budget file on start. Can be <c>null</c>.
         /// </summary>
         [DataMember(Name = "AutoloadBudgetIdentifier")]
