@@ -2,7 +2,7 @@
 {
     using System;
 
-    using BudgetFirst.ApplicationCore.PlatformSpecific;
+    using BudgetFirst.Infrastructure.Persistency;
 
     /// <summary>
     /// Device settings for .net 4.6.1 platforms (i.e. Windows or Linux)

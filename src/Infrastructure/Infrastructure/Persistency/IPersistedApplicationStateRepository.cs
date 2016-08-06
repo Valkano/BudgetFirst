@@ -26,12 +26,12 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.ApplicationCore.PlatformSpecific
+namespace BudgetFirst.Infrastructure.Persistency
 {
     /// <summary>
     /// Multiplatform repository for the persistable application state
     /// </summary>
-    public interface IPersistableApplicationStateRepository
+    public interface IPersistedApplicationStateRepository
     {
         /// <summary>
         /// Read the application state from disk or other location.

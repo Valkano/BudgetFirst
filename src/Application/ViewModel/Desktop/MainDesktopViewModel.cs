@@ -30,7 +30,7 @@ namespace BudgetFirst.ViewModel.Desktop
 {
     using System;
 
-    using BudgetFirst.ApplicationCore.PlatformSpecific;
+    using BudgetFirst.Infrastructure.Persistency;
     using BudgetFirst.ReadSide.ReadModel;
     using BudgetFirst.ViewModel.Services;
     using BudgetFirst.ViewModel.Shared;
@@ -73,21 +73,13 @@ namespace BudgetFirst.ViewModel.Desktop
         /// </summary>
         /// <param name="windowService">The platform's window service.</param>
         /// <param name="deviceSettings">Platform-specific device settings</param>
-        /// <param name="persistableApplicationStateRepository">Platform-specific repository for the application state</param>
-        public MainDesktopViewModel(IWindowService windowService, IDeviceSettings deviceSettings, IPersistableApplicationStateRepository persistableApplicationStateRepository)
+        /// <param name="persistedApplicationStateRepository">Platform-specific repository for the application state</param>
+        public MainDesktopViewModel(IWindowService windowService, IDeviceSettings deviceSettings, IPersistedApplicationStateRepository persistedApplicationStateRepository)
         {
             this.windowService = windowService;
-            this.applicationCore = ApplicationCore.CoreFactory.CreateNewBudget(deviceSettings, persistableApplicationStateRepository);
+            this.applicationCore = ApplicationCore.CoreFactory.CreateNewBudget(deviceSettings, persistedApplicationStateRepository);
             this.InitialiseRelayCommands();
             this.accountList = this.applicationCore.Repositories.AccountListReadModelRepository.Find();
-
-            // Account list can be null if we haven't loaded any data yet -> we won't be informed about property changes!
-            // TODO: refactor this, because this means that we're accessing the read model repository directly for modifications, which we shouldn't
-            if (this.accountList == null)
-            {
-                this.accountList = new AccountList();
-                this.applicationCore.Repositories.AccountListReadModelRepository.Save(this.accountList);
-            }
         }
 
         /// <summary>

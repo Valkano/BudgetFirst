@@ -30,9 +30,11 @@ namespace BudgetFirst.Infrastructure.EventSourcing
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.Serialization;
 
     using BudgetFirst.Infrastructure.Messaging;
+    using BudgetFirst.Infrastructure.Serialisation;
 
     /// <summary>
     /// State for the <see cref="EventStore"/>
@@ -66,6 +68,15 @@ namespace BudgetFirst.Infrastructure.EventSourcing
 
                 this.events = value;
             }
+        }
+
+        /// <summary>
+        /// Get a clone
+        /// </summary>
+        /// <returns>Deep clone</returns>
+        public EventStoreState Clone()
+        {
+            return Serialiser.CloneSerialisable(this);
         }
     }
 }

@@ -43,7 +43,7 @@
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            this.container = new ViewModelContainer(new WindowsDeviceSettings(), new WindowsPersistableApplicationSettingsRepository());
+            this.container = new ViewModelContainer(new WindowsDeviceSettings(), new WindowsPersistedApplicationSettingsRepository());
             this.RegisterServices();
 
             this.mainViewModel = this.container.Resolve<MainDesktopViewModel>();

@@ -39,6 +39,7 @@ namespace BudgetFirst.ApplicationCore
     using BudgetFirst.Infrastructure.DependencyInjection;
     using BudgetFirst.Infrastructure.EventSourcing;
     using BudgetFirst.Infrastructure.Messaging;
+    using BudgetFirst.Infrastructure.Persistency;
     using BudgetFirst.Infrastructure.ReadModel;
     using BudgetFirst.SharedInterfaces;
     using BudgetFirst.Wrappers;
@@ -55,9 +56,11 @@ namespace BudgetFirst.ApplicationCore
         /// <summary>
         /// Initialises a new instance of the <see cref="Bootstrap"/> class.
         /// </summary>
-        public Bootstrap()
+        /// <param name="persistedApplicationStateRepository">Application state repository for access to the persisted application state</param>
+        /// <param name="applicationStateFactory">Factory for the current application state</param>
+        public Bootstrap(IPersistedApplicationStateRepository persistedApplicationStateRepository, ICurrentApplicationStateFactory applicationStateFactory)
         {
-            this.Container = this.SetupDependencyInjection();
+            this.Container = this.SetupDependencyInjection(persistedApplicationStateRepository, applicationStateFactory);
             this.RegisterGenerators(this.Container, this.MessageBus);
         }
 
@@ -65,7 +68,7 @@ namespace BudgetFirst.ApplicationCore
         /// Gets the current device Id
         /// </summary>
         public IDeviceId DeviceId { get; private set; }
-        
+
         /// <summary>
         /// Gets the current (master) vector clock
         /// </summary>
@@ -95,9 +98,15 @@ namespace BudgetFirst.ApplicationCore
         /// Setup the dependency injection
         /// </summary>
         /// <returns>Initialised dependency injection container</returns>
-        private IContainer SetupDependencyInjection()
+        /// <param name="persistedApplicationStateRepository">Application state repository for access to the persisted application state</param>
+        /// <param name="applicationStateFactory">Factory for the current application state</param>
+        private IContainer SetupDependencyInjection(IPersistedApplicationStateRepository persistedApplicationStateRepository, ICurrentApplicationStateFactory applicationStateFactory)
         {
             var simpleInjector = new Container();
+
+            // Application state repository is required when we want to save current the application state
+            simpleInjector.RegisterSingleton<IPersistedApplicationStateRepository>(persistedApplicationStateRepository);
+            simpleInjector.RegisterSingleton<ICurrentApplicationStateFactory>(applicationStateFactory);
 
             // Event store only exists once (the state can be exchanged at runtime though)
             this.EventStore = new EventStore();
@@ -126,7 +135,7 @@ namespace BudgetFirst.ApplicationCore
                 this.VectorClock,
                 this.EventStore);
             simpleInjector.RegisterSingleton<ICommandBus>(this.CommandBus);
-            
+
             // Command Handlers
             // Transient
             simpleInjector.Register<ICommandHandler<CreateAccountCommand>, AccountCommandHandler>();

@@ -1,4 +1,4 @@
-﻿namespace BudgetFirst.ApplicationCore
+﻿namespace BudgetFirst.Infrastructure.Persistency
 {
     using System.Runtime.Serialization;
 

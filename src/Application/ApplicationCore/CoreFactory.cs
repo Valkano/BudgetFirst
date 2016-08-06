@@ -28,7 +28,7 @@
 
 namespace BudgetFirst.ApplicationCore
 {
-    using BudgetFirst.ApplicationCore.PlatformSpecific;
+    using BudgetFirst.Infrastructure.Persistency;
 
     /// <summary>
     /// Factory for application core
@@ -40,10 +40,10 @@ namespace BudgetFirst.ApplicationCore
         /// </summary>
         /// <returns>New application core for new budget</returns>
         /// <param name="deviceSettings">Platform-specific device settings</param>
-        /// <param name="persistableApplicationStateRepository">Platform-specific repository for the application state</param>
-        public static Core CreateNewBudget(IDeviceSettings deviceSettings, IPersistableApplicationStateRepository persistableApplicationStateRepository)
+        /// <param name="persistedApplicationStateRepository">Platform-specific repository for the application state</param>
+        public static Core CreateNewBudget(IDeviceSettings deviceSettings, IPersistedApplicationStateRepository persistedApplicationStateRepository)
         {
-            return new Core(deviceSettings, persistableApplicationStateRepository, applicationStateLocation: null);
+            return new Core(deviceSettings, persistedApplicationStateRepository, applicationStateLocation: null);
         }
 
         /// <summary>
@@ -51,11 +51,11 @@ namespace BudgetFirst.ApplicationCore
         /// </summary>
         /// <returns>Application core for existing budget</returns>
         /// <param name="deviceSettings">Platform-specific device settings</param>
-        /// <param name="persistableApplicationStateRepository">Platform-specific repository for the application state</param>
+        /// <param name="persistedApplicationStateRepository">Platform-specific repository for the application state</param>
         /// <param name="applicationStateLocation">Location of the existing application state (i.e. budget)</param>
-        public static Core LoadExistingBudget(IDeviceSettings deviceSettings, IPersistableApplicationStateRepository persistableApplicationStateRepository, string applicationStateLocation)
+        public static Core LoadExistingBudget(IDeviceSettings deviceSettings, IPersistedApplicationStateRepository persistedApplicationStateRepository, string applicationStateLocation)
         {
-            return new Core(deviceSettings, persistableApplicationStateRepository, applicationStateLocation: applicationStateLocation);
+            return new Core(deviceSettings, persistedApplicationStateRepository, applicationStateLocation: applicationStateLocation);
         }
     }
 }

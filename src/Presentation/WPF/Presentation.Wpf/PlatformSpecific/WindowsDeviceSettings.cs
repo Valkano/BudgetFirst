@@ -30,8 +30,8 @@ namespace BudgetFirst.Presentation.Wpf.PlatformSpecific
 {
     using System;
 
-    using BudgetFirst.ApplicationCore.PlatformSpecific;
     using BudgetFirst.Common.Infrastructure.PlatformSpecific.Net461;
+    using BudgetFirst.Infrastructure.Persistency;
 
     /// <summary>
     /// Contains the device settings for the Windows platform

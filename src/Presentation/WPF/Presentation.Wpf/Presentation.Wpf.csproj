@@ -103,7 +103,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PlatformSpecific\WindowsDeviceSettings.cs" />
-    <Compile Include="PlatformSpecific\WindowsPersistableApplicationSettingsRepository.cs" />
+    <Compile Include="PlatformSpecific\WindowsPersistedApplicationSettingsRepository.cs" />
     <Compile Include="Services\WpfWindowService.cs" />
     <Compile Include="Views\AccountView.xaml.cs">
       <DependentUpon>AccountView.xaml</DependentUpon>

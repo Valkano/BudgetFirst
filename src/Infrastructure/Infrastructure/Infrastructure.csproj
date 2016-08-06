@@ -70,6 +70,10 @@
     <Compile Include="EventSourcing\IReadOnlyEventStore.cs" />
     <Compile Include="ApplicationState\IVectorClock.cs" />
     <Compile Include="ApplicationState\MasterVectorClock.cs" />
+    <Compile Include="Persistency\IDeviceSettings.cs" />
+    <Compile Include="Persistency\ICurrentApplicationStateFactory.cs" />
+    <Compile Include="Persistency\IPersistedApplicationStateRepository.cs" />
+    <Compile Include="Persistency\PersistableApplicationState.cs" />
     <Compile Include="ReadModel\IReadStore.cs" />
     <Compile Include="ReadModel\ReadStore.cs" />
     <Compile Include="ReadModel\IResetableReadStore.cs" />

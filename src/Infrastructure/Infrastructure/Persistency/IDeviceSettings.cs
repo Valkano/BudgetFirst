@@ -26,7 +26,7 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.ApplicationCore.PlatformSpecific
+namespace BudgetFirst.Infrastructure.Persistency
 {
     using System;
 

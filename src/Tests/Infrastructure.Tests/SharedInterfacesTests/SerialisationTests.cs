@@ -92,32 +92,7 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
         /// <returns>Clone of source object through serialisation roundtrip</returns>
         private SerialisableTestClass SerialisationRoundtrip(SerialisableTestClass source)
         {
-            string serialisedObject;
-
-            using (var memoryStream = new MemoryStream())
-            {
-                Serialiser.Serialise(source, memoryStream);
-                memoryStream.Position = 0; // rewind
-                serialisedObject = Encoding.UTF8.GetString(memoryStream.ToArray());
-            }
-
-            SerialisableTestClass roundtrip;
-
-            using (var memoryStream = new MemoryStream())
-            {
-                using (var streamWriter = new StreamWriter(memoryStream))
-                {
-                    streamWriter.Write(serialisedObject);
-                    streamWriter.Flush();
-
-                    // do not close stream yet
-                    memoryStream.Position = 0; // rewind
-
-                    roundtrip = Serialiser.DeSerialise<SerialisableTestClass>(memoryStream);
-                }
-            }
-
-            return roundtrip;
+            return Serialiser.CloneSerialisable(source);
         }
 
         /// <summary>

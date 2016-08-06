@@ -32,6 +32,7 @@ namespace BudgetFirst.Infrastructure.Serialisation
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
+    using System.Text;
 
     /// <summary>
     /// Provides (data contract) serialisation and de-serialisation
@@ -74,6 +75,42 @@ namespace BudgetFirst.Infrastructure.Serialisation
             DataContractSerializer dataContractSerializer;
             dataContractSerializer = new DataContractSerializer(typeof(T), knownTypes);
             return (T)dataContractSerializer.ReadObject(sourceStream);
+        }
+
+        /// <summary>
+        /// Clone an object via serialisation round trip
+        /// </summary>
+        /// <typeparam name="T">Type of the object</typeparam>
+        /// <param name="source">Source object to clone</param>
+        /// <returns>Deep clone</returns>
+        public static T CloneSerialisable<T>(T source)
+        {
+            string serialisedObject;
+
+            using (var memoryStream = new MemoryStream())
+            {
+                Serialiser.Serialise(source, memoryStream);
+                memoryStream.Position = 0; // rewind
+                var bytes = memoryStream.ToArray();
+                serialisedObject = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+            }
+
+            T roundtrip;
+
+            // Memory stream is disposed when stream writer is disposed
+            var writeMemoryStream = new MemoryStream();
+            using (var streamWriter = new StreamWriter(writeMemoryStream))
+            {
+                streamWriter.Write(serialisedObject);
+                streamWriter.Flush();
+
+                // do not close stream yet
+                writeMemoryStream.Position = 0; // rewind
+
+                roundtrip = Serialiser.DeSerialise<T>(writeMemoryStream);
+            }
+            
+            return roundtrip;
         }
     }
 }

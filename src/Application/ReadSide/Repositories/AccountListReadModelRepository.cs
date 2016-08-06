@@ -61,17 +61,24 @@ namespace BudgetFirst.ReadSide.Repositories
         /// <summary>
         /// Retrieve an account list from the repository.
         /// </summary>
-        /// <returns>Reference to the account list in the repository, if found. <c>null</c> otherwise.</returns>
+        /// <returns>Reference to the account list in the repository. Guaranteed to be not <c>null</c>.</returns>
         public AccountList Find()
         {
-            return this.readStore.RetrieveSingleton<AccountList>();
+            var list = this.readStore.RetrieveSingleton<AccountList>();
+            if (list == null)
+            {
+                list = new AccountList();
+                this.Save(list);
+            }
+
+            return list;
         }
 
         /// <summary>
         /// Save the account list, or add it to the repository. Beware: replaces existing account list in repository.
         /// </summary>
         /// <param name="accountList">Account list to save</param>
-        public void Save(AccountList accountList)
+        internal void Save(AccountList accountList)
         {
             this.readStore.StoreSingleton(accountList);
         }

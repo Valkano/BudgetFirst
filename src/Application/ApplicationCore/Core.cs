@@ -1,43 +1,31 @@
 ﻿// BudgetFirst 
 // ©2016 Thomas Mühlgrabner
-//
 // This source code is dual-licensed under:
 //   * Mozilla Public License 2.0 (MPL 2.0) 
 //   * GNU General Public License v3.0 (GPLv3)
-//
 // ==================== Mozilla Public License 2.0 ===================
 // This Source Code Form is subject to the terms of the Mozilla Public 
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // ================= GNU General Public License v3.0 =================
 // This file is part of BudgetFirst.
-//
 // BudgetFirst is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-//
 // BudgetFirst is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
 // GNU General Public License for more details.
-//
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-
 namespace BudgetFirst.ApplicationCore
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
-    using BudgetFirst.ApplicationCore.PlatformSpecific;
     using BudgetFirst.Infrastructure.Commands;
     using BudgetFirst.Infrastructure.EventSourcing;
     using BudgetFirst.Infrastructure.Messaging;
+    using BudgetFirst.Infrastructure.Persistency;
     using BudgetFirst.Infrastructure.ReadModel;
 
     /// <summary>
@@ -53,26 +41,31 @@ namespace BudgetFirst.ApplicationCore
         /// <summary>
         /// Access to the device settings
         /// </summary>
-        private readonly PlatformSpecific.IDeviceSettings deviceSettings;
+        private readonly IDeviceSettings deviceSettings;
 
         /// <summary>
         /// Access to the application state
         /// </summary>
-        private readonly PlatformSpecific.IPersistableApplicationStateRepository persistableApplicationStateRepository;
+        private readonly IPersistedApplicationStateRepository persistedApplicationStateRepository;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="Core"/> class.
         /// Prevents a default instance of the <see cref="Core"/> class from being created.
         /// </summary>
         /// <param name="deviceSettings">Platform-specific device settings</param>
-        /// <param name="persistableApplicationStateRepository">Platform-specific repository for the application state</param>
+        /// <param name="persistedApplicationStateRepository">Platform-specific repository for the application state</param>
         /// <param name="applicationStateLocation">Location of the existing application state. Optional (creates a new core/budget when <c>null</c>)</param>
-        internal Core(IDeviceSettings deviceSettings, IPersistableApplicationStateRepository persistableApplicationStateRepository, string applicationStateLocation = null)
+        internal Core(
+            IDeviceSettings deviceSettings, 
+            IPersistedApplicationStateRepository persistedApplicationStateRepository, 
+            string applicationStateLocation = null)
         {
             this.deviceSettings = deviceSettings;
-            this.persistableApplicationStateRepository = persistableApplicationStateRepository;
+            this.persistedApplicationStateRepository = persistedApplicationStateRepository;
 
-            this.bootstrap = new Bootstrap();
+            var applicationStateFactory = new CurrentApplicationStateFactory(this.GetCurrentApplicationState);
+
+            this.bootstrap = new Bootstrap(persistedApplicationStateRepository, applicationStateFactory);
 
             var vectorClock = new VectorClock();
             var eventStoreState = new EventStoreState();
@@ -80,30 +73,30 @@ namespace BudgetFirst.ApplicationCore
             // Load/initialise state
             if (applicationStateLocation != null)
             {
-                var state = this.persistableApplicationStateRepository.Get(applicationStateLocation);
+                var state = this.persistedApplicationStateRepository.Get(applicationStateLocation);
                 vectorClock = state.VectorClock;
                 eventStoreState = state.EventStoreState;
             }
-           
-            this.bootstrap.EventStore.SetState(eventStoreState);
+
+            this.bootstrap.EventStore.State = eventStoreState;
             this.bootstrap.VectorClock.SetState(vectorClock);
             this.bootstrap.DeviceId.SetDeviceId(deviceSettings.GetDeviceId());
-            
+
             this.Repositories = new Repositories(this.bootstrap);
             this.CommandBus = this.bootstrap.CommandBus;
 
             this.ResetReadModelState();
         }
-        
-        /// <summary>
-        /// Gets the Application's Repositories.
-        /// </summary>
-        public Repositories Repositories { get; private set; }
 
         /// <summary>
         /// Gets the  Application's CommandBus
         /// </summary>
         public ICommandBus CommandBus { get; private set; }
+
+        /// <summary>
+        /// Gets the Application's Repositories.
+        /// </summary>
+        public Repositories Repositories { get; private set; }
 
         /// <summary>
         /// Reset the current read model state and replay all events
@@ -116,6 +109,22 @@ namespace BudgetFirst.ApplicationCore
             {
                 this.bootstrap.MessageBus.Publish(@event);
             }
+        }
+
+        /// <summary>
+        /// Get the current application state
+        /// </summary>
+        /// <returns>Current application state</returns>
+        private PersistableApplicationState GetCurrentApplicationState()
+        {
+            var state = new PersistableApplicationState()
+                            {
+                                VectorClock =
+                                    this.bootstrap.VectorClock.GetVectorClock().Copy(), 
+                                EventStoreState = this.bootstrap.EventStore.State.Clone()
+                            };
+
+            return state;
         }
     }
 }

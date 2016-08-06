@@ -29,14 +29,14 @@
 namespace BudgetFirst.Presentation.Wpf.PlatformSpecific
 {
     using BudgetFirst.ApplicationCore;
-    using BudgetFirst.ApplicationCore.PlatformSpecific;
     using BudgetFirst.Infrastructure.EventSourcing;
     using BudgetFirst.Infrastructure.Messaging;
+    using BudgetFirst.Infrastructure.Persistency;
 
     /// <summary>
     /// Provides access to the application settings on windows platform
     /// </summary>
-    public class WindowsPersistableApplicationSettingsRepository : IPersistableApplicationStateRepository
+    public class WindowsPersistedApplicationSettingsRepository : IPersistedApplicationStateRepository
     {
         /// <summary>
         /// Get the current application state from disk

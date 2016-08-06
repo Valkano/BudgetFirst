@@ -72,7 +72,7 @@ namespace BudgetFirst.ReadSide.Repositories
         /// Save the account list item, or add it to the repository. 
         /// </summary>
         /// <param name="account">Account list item to save</param>
-        public void Save(AccountListItem account)
+        internal void Save(AccountListItem account)
         {
             this.readStore.Store(account.Id, account);
         }

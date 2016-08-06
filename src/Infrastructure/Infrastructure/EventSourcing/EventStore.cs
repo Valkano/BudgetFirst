@@ -51,17 +51,24 @@ namespace BudgetFirst.Infrastructure.EventSourcing
         private Dictionary<Guid, List<DomainEvent>> lookup = new Dictionary<Guid, List<DomainEvent>>();
 
         /// <summary>
-        /// Set the current state
+        /// Gets or sets state (i.e. all events)
         /// </summary>
-        /// <param name="eventStoreState">Event store state</param>
-        public void SetState(EventStoreState eventStoreState)
+        public EventStoreState State
         {
-            if (eventStoreState == null)
+            get
             {
-                throw new ArgumentNullException();
+                return this.state;
             }
 
-            this.state = eventStoreState;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                this.state = value;
+            }
         }
 
         /// <summary>
