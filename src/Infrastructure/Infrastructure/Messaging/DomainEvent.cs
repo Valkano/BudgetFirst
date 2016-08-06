@@ -44,7 +44,7 @@ namespace BudgetFirst.Infrastructure.Messaging
         /// <remarks>Should not be called during de-serialisation</remarks>
         public DomainEvent()
         {
-            this.EventId = new Guid();
+            this.EventId = Guid.NewGuid();
             this.Timestamp = DateTime.UtcNow;
             /* Device id, aggregate id and vector clock should be set by sender */
         }

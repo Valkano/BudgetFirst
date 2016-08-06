@@ -31,6 +31,7 @@ namespace BudgetFirst.Presentation.Wpf.PlatformSpecific
     using System;
 
     using BudgetFirst.ApplicationCore.PlatformSpecific;
+    using BudgetFirst.Common.Infrastructure.PlatformSpecific.Net461;
 
     /// <summary>
     /// Contains the device settings for the Windows platform
@@ -38,13 +39,17 @@ namespace BudgetFirst.Presentation.Wpf.PlatformSpecific
     public class WindowsDeviceSettings : IDeviceSettings
     {
         /// <summary>
+        /// Platform-specific device settings - this one is for .net 4.6.1
+        /// </summary>
+        private DeviceSettings settings = new DeviceSettings(); 
+
+        /// <summary>
         /// Get the current device Id
         /// </summary>
         /// <returns>Current device Id</returns>
         public Guid GetDeviceId()
         {
-            // TODO: actual lookup and creation if it does not yet exist (first: lookup in settings if portable; if portable: load from local settings - else load from user settings)
-            return new Guid("868BBDFD-CEB4-4EE0-8D82-47AE7A3A5219");
+            return this.settings.GetDeviceId();
         }
     }
 }

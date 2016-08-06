@@ -9,13 +9,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BudgetFirst.Presentation.Wpf</RootNamespace>
     <AssemblyName>BudgetFirst</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -152,6 +153,10 @@
     <ProjectReference Include="..\..\..\Application\ViewModel\ViewModel.csproj">
       <Project>{5c3f50fd-395c-4c4f-91db-25a5ffdcc0c7}</Project>
       <Name>ViewModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Infrastructure\Common.Infrastructure.PlatformSpecific.Net461\Common.Infrastructure.PlatformSpecific.Net461.csproj">
+      <Project>{4dc3ccf8-171c-402d-8cb5-c09e610e82ce}</Project>
+      <Name>Common.Infrastructure.PlatformSpecific.Net461</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
