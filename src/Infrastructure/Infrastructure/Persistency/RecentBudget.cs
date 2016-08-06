@@ -28,44 +28,24 @@
 
 namespace BudgetFirst.Infrastructure.Persistency
 {
-    using System;
-    using System.Collections.Generic;
     using System.Runtime.Serialization;
 
     /// <summary>
-    /// Provides access to device-specific settings and state (such as device id etc.).
-    /// To be implemented per platform.
+    /// Contains a display name and the identifier of a recently opened budget
     /// </summary>
-    public interface IDeviceSettings
+    [DataContract(Name = "RecentBudget", Namespace = "http://budgetfirst.github.io/schemas/2016/08/06/RecentBudget")]
+    public class RecentBudget
     {
         /// <summary>
-        /// Get the device Id
+        /// Gets or sets the display name of the budget file
         /// </summary>
-        /// <returns>The current device id</returns>
-        Guid GetDeviceId();
+        [DataMember(Name = "DisplayName")]
+        public string DisplayName { get; set; }
 
         /// <summary>
-        /// Set the identifier used to automatically load a budget file on start. Can be <c>null</c>.
+        /// Gets or sets the identifier of the budget (file)
         /// </summary>
-        /// <param name="identifier">Identifier of the budget</param>
-        void SetAutoloadBudgetIdentifier(string identifier);
-
-        /// <summary>
-        /// Get the identifier used to automatically load a budget file on start. Can be <c>null</c>.
-        /// </summary>
-        /// <returns>automatically loaded budget identifier. May be <c>null</c> or empty.</returns>
-        string GetAutoloadBudgetIdentifier();
-
-        /// <summary>
-        /// Get the list of the recently opened budgets (display name + identifiers)
-        /// </summary>
-        /// <returns>List of recently opened budgets</returns>
-        List<RecentBudget> GetRecentBudgets();
-
-        /// <summary>
-        /// Add a new recent budget to the recent budgets
-        /// </summary>
-        /// <param name="recentBudget">Recent budget</param>
-        void AddRecentBudget(RecentBudget recentBudget);
+        [DataMember(Name = "Identifier")]
+        public string Identifier { get; set; }
     }
 }

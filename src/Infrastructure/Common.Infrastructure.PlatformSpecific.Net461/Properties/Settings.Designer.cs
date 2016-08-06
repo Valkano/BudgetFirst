@@ -46,5 +46,29 @@ namespace BudgetFirst.Common.Infrastructure.PlatformSpecific.Net461.Properties {
                 this["SettingsRequireUpgrade"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AutoloadBudgetIdentifier {
+            get {
+                return ((string)(this["AutoloadBudgetIdentifier"]));
+            }
+            set {
+                this["AutoloadBudgetIdentifier"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RecentBudgetsSerialised {
+            get {
+                return ((string)(this["RecentBudgetsSerialised"]));
+            }
+            set {
+                this["RecentBudgetsSerialised"] = value;
+            }
+        }
     }
 }

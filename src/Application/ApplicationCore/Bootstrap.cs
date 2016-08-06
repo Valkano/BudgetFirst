@@ -25,6 +25,7 @@ namespace BudgetFirst.ApplicationCore
     using System;
     using System.Collections.Generic;
 
+    using BudgetFirst.ApplicationCore.Commands.Infrastructure;
     using BudgetFirst.Events.Events;
     using BudgetFirst.Infrastructure.ApplicationState;
     using BudgetFirst.Infrastructure.Commands;
@@ -171,6 +172,7 @@ namespace BudgetFirst.ApplicationCore
             simpleInjector.Register<ICommandHandler<CreateAccountCommand>, AccountCommandHandler>();
             simpleInjector.Register<ICommandHandler<ChangeAccountNameCommand>, AccountCommandHandler>();
             simpleInjector.Register<ICommandHandler<SaveApplicationState>, InfrastructureService>();
+            simpleInjector.Register<ICommandHandler<LoadApplicationState>, ApplicationCore.Services.InfrastructureService>();
 
             // Read store (for read side repositories) 
             // same singleton for read and reset

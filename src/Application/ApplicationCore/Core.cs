@@ -22,11 +22,16 @@
 // ===================================================================
 namespace BudgetFirst.ApplicationCore
 {
+    using System;
+
+    using BudgetFirst.ApplicationCore.Messages;
     using BudgetFirst.Infrastructure.Commands;
     using BudgetFirst.Infrastructure.EventSourcing;
     using BudgetFirst.Infrastructure.Messaging;
     using BudgetFirst.Infrastructure.Persistency;
     using BudgetFirst.Infrastructure.ReadModel;
+
+    using GalaSoft.MvvmLight.Messaging;
 
     /// <summary>
     /// Represents the Application's core functionality as a Singleton.
@@ -50,15 +55,12 @@ namespace BudgetFirst.ApplicationCore
 
         /// <summary>
         /// Initialises a new instance of the <see cref="Core"/> class.
-        /// Prevents a default instance of the <see cref="Core"/> class from being created.
         /// </summary>
         /// <param name="deviceSettings">Platform-specific device settings</param>
         /// <param name="persistedApplicationStateRepository">Platform-specific repository for the application state</param>
-        /// <param name="applicationStateLocation">Location of the existing application state. Optional (creates a new core/budget when <c>null</c>)</param>
-        internal Core(
+        public Core(
             IDeviceSettings deviceSettings, 
-            IPersistedApplicationStateRepository persistedApplicationStateRepository, 
-            string applicationStateLocation = null)
+            IPersistedApplicationStateRepository persistedApplicationStateRepository)
         {
             this.deviceSettings = deviceSettings;
             this.persistedApplicationStateRepository = persistedApplicationStateRepository;
@@ -70,20 +72,14 @@ namespace BudgetFirst.ApplicationCore
             var vectorClock = new VectorClock();
             var eventStoreState = new EventStoreState();
 
-            // Load/initialise state
-            if (applicationStateLocation != null)
-            {
-                var state = this.persistedApplicationStateRepository.Get(applicationStateLocation);
-                vectorClock = state.VectorClock;
-                eventStoreState = state.EventStoreState;
-            }
-
             this.bootstrap.EventStore.State = eventStoreState;
             this.bootstrap.VectorClock.SetState(vectorClock);
             this.bootstrap.DeviceId.SetDeviceId(deviceSettings.GetDeviceId());
 
             this.Repositories = new Repositories(this.bootstrap);
             this.CommandBus = this.bootstrap.CommandBus;
+
+            Messenger.Default.Register<LoadApplicationStateRequested>(this, x => this.LoadApplicationState(x.Location));
 
             this.ResetReadModelState();
         }
@@ -97,6 +93,26 @@ namespace BudgetFirst.ApplicationCore
         /// Gets the Application's Repositories.
         /// </summary>
         public Repositories Repositories { get; private set; }
+
+        /// <summary>
+        /// Load application state from disk etc.
+        /// This resets all read state, all view models must be rebuilt etc.
+        /// </summary>
+        /// <param name="location">Application state</param>
+        public void LoadApplicationState(string location)
+        {
+            if (location == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var state = this.persistedApplicationStateRepository.Get(location);
+            this.bootstrap.VectorClock.SetState(state.VectorClock);
+            this.bootstrap.EventStore.State = state.EventStoreState;
+            this.ResetReadModelState();
+
+            Messenger.Default.Send(new Messages.LoadedApplicationState());
+        }
 
         /// <summary>
         /// Reset the current read model state and replay all events

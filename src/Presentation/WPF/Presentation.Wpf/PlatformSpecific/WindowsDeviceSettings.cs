@@ -29,6 +29,7 @@
 namespace BudgetFirst.Presentation.Wpf.PlatformSpecific
 {
     using System;
+    using System.Collections.Generic;
 
     using BudgetFirst.Common.Infrastructure.PlatformSpecific.Net461;
     using BudgetFirst.Infrastructure.Persistency;
@@ -50,6 +51,42 @@ namespace BudgetFirst.Presentation.Wpf.PlatformSpecific
         public Guid GetDeviceId()
         {
             return this.settings.GetDeviceId();
+        }
+
+        /// <summary>
+        /// Set the automatically loaded budget identifier
+        /// </summary>
+        /// <param name="identifier">identifier of the automatically loaded budget</param>
+        public void SetAutoloadBudgetIdentifier(string identifier)
+        {
+            this.settings.SetAutoloadBudgetIdentifier(identifier);
+        }
+
+        /// <summary>
+        /// Get the automatically loaded budget identifier
+        /// </summary>
+        /// <returns>The automatically loaded budget identifier. May be <c>null</c> or empty!</returns>
+        public string GetAutoloadBudgetIdentifier()
+        {
+            return this.settings.GetAutoloadBudgetIdentifier();
+        }
+
+        /// <summary>
+        /// Get the recent budgets
+        /// </summary>
+        /// <returns>The list of recent budgets. May be <c>null</c>.</returns>
+        public List<RecentBudget> GetRecentBudgets()
+        {
+            return this.settings.GetRecentBudgets();
+        }
+
+        /// <summary>
+        /// Add a recent budget to the list of recent budgets
+        /// </summary>
+        /// <param name="recentBudget">Recent budget to add</param>
+        public void AddRecentBudget(RecentBudget recentBudget)
+        {
+            this.settings.AddRecentBudget(recentBudget);
         }
     }
 }

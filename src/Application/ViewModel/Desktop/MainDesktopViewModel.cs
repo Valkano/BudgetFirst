@@ -30,6 +30,7 @@ namespace BudgetFirst.ViewModel.Desktop
 {
     using System;
 
+    using BudgetFirst.ApplicationCore;
     using BudgetFirst.Infrastructure.Persistency;
     using BudgetFirst.ReadSide.ReadModel;
     using BudgetFirst.ViewModel.Services;
@@ -37,6 +38,7 @@ namespace BudgetFirst.ViewModel.Desktop
     using BudgetFirst.WriteSide.Account;
 
     using GalaSoft.MvvmLight.Command;
+    using GalaSoft.MvvmLight.Messaging;
 
     /// <summary>
     /// Represents the main Application for Desktop Platforms.
@@ -53,7 +55,7 @@ namespace BudgetFirst.ViewModel.Desktop
         /// </summary>
         private IWindowService windowService;
 
-     /// <summary>
+        /// <summary>
         /// The Account List.
         /// </summary>
         private AccountList accountList;
@@ -77,9 +79,31 @@ namespace BudgetFirst.ViewModel.Desktop
         public MainDesktopViewModel(IWindowService windowService, IDeviceSettings deviceSettings, IPersistedApplicationStateRepository persistedApplicationStateRepository)
         {
             this.windowService = windowService;
-            this.applicationCore = ApplicationCore.CoreFactory.CreateNewBudget(deviceSettings, persistedApplicationStateRepository);
-            this.InitialiseRelayCommands();
+
+            Messenger.Default.Register<ApplicationCore.Messages.LoadedApplicationState>(
+                this,
+                (x) =>
+                {
+                    this.RebindReadModels();
+                });
+
+            // TODO: first view should be "new or open existing" unless device settings give us autoloaded budget...
+            // new view model must use commands to initialise budget.
+            // So basic idea: Core is stable and not to be replaced at runtime. However we can set the application state at runtime.
+            this.applicationCore = new Core(deviceSettings, persistedApplicationStateRepository);
+           
+            // this.RebindReadModels(); // this would cause events while this class is not yet initialised
+            // so use local fields instead
             this.accountList = this.applicationCore.Repositories.AccountListReadModelRepository.Find();
+            this.InitialiseRelayCommands();
+
+            // Only after everything has been initialised, continue with the application flow
+            var autoloaded = deviceSettings.GetAutoloadBudgetIdentifier();
+            if (!string.IsNullOrWhiteSpace(autoloaded))
+            {
+                // TODO: error handling, obviously
+                this.applicationCore.LoadApplicationState(autoloaded); // causes message
+            }
         }
 
         /// <summary>
@@ -166,6 +190,16 @@ namespace BudgetFirst.ViewModel.Desktop
             var accountRepo = this.applicationCore.Repositories.AccountReadModelRepository;
             var account = accountRepo.Find(this.SelectedAccount.Id);
             account.Name = $"Renamed Account ({this.renameCount++})";
+        }
+
+        /// <summary>
+        /// (Re)bind to new read models
+        /// </summary>
+        private void RebindReadModels()
+        {
+            // Use properties to cause raise property changed
+            this.AccountList = this.applicationCore.Repositories.AccountListReadModelRepository.Find();
+            this.SelectedAccount = null;
         }
     }
 }

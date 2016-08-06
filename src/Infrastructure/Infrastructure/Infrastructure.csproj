@@ -73,6 +73,7 @@
     <Compile Include="Persistency\IDeviceSettings.cs" />
     <Compile Include="Persistency\ICurrentApplicationStateFactory.cs" />
     <Compile Include="Persistency\IPersistedApplicationStateRepository.cs" />
+    <Compile Include="Persistency\RecentBudget.cs" />
     <Compile Include="Persistency\PersistableApplicationState.cs" />
     <Compile Include="ReadModel\IReadStore.cs" />
     <Compile Include="ReadModel\ReadStore.cs" />

@@ -4,6 +4,8 @@
     using BudgetFirst.Infrastructure.Messaging;
     using BudgetFirst.Infrastructure.Persistency;
 
+    using GalaSoft.MvvmLight.Messaging;
+
     /// <summary>
     /// Infrastructure command service
     /// </summary>

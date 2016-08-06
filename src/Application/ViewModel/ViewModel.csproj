@@ -72,6 +72,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Messages\" />
     <Folder Include="Mobile\" />
   </ItemGroup>
   <ItemGroup>
