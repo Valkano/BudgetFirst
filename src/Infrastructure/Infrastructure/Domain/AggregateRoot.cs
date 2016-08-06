@@ -95,12 +95,11 @@ namespace BudgetFirst.Infrastructure.Domain
         }
 
         /// <summary>
-        /// Raise and handle an event. 
-        /// Adds event to unpublished events.
+        /// Apply event
         /// </summary>
         /// <typeparam name="TDomainEvent">Type of the event to raise (and handle)</typeparam>
         /// <param name="domainEvent">Event to raise and handle</param>
-        protected void Update<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent
+        protected void Apply<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent
         {
             domainEvent.AggregateId = this.aggregateId;
             domainEvent.DeviceId = this.unitOfWork.ReadOnlyDeviceId.GetDeviceId();

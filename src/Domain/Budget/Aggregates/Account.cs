@@ -48,7 +48,7 @@ namespace BudgetFirst.Budget.Aggregates
         /// <param name="unitOfWork">Unit of work</param>
         internal Account(Guid id, string name, IUnitOfWork unitOfWork) : this(id, unitOfWork, false)
         {
-            this.Update(new AccountCreated(name));
+            this.Apply(new AccountCreated(name));
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace BudgetFirst.Budget.Aggregates
         /// <param name="newName">The new name of the account</param>
         public void ChangeName(string newName)
         {
-            this.Update(new AccountNameChanged(newName));
+            this.Apply(new AccountNameChanged(newName));
         }
 
         /// <summary>
