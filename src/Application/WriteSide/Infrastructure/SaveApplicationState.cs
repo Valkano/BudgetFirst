@@ -26,58 +26,27 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Infrastructure.EventSourcing
+namespace BudgetFirst.WriteSide.Infrastructure
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Runtime.Serialization;
-
-    using BudgetFirst.Infrastructure.Messaging;
-    using BudgetFirst.Infrastructure.Persistency;
-    using BudgetFirst.Infrastructure.Serialisation;
+    using BudgetFirst.Infrastructure.Commands;
 
     /// <summary>
-    /// State for the <see cref="EventStore"/>
+    /// Save the current application state
     /// </summary>
-    [DataContract(Name = "EventStoreState", Namespace = "http://budgetfirst.github.io/schemas/2016/07/23/EventStoreState")]
-    public sealed class EventStoreState
+    public class SaveApplicationState : ICommand
     {
         /// <summary>
-        /// Contains the list of events in this store
+        /// Initialises a new instance of the <see cref="SaveApplicationState"/> class.
         /// </summary>
-        [DataMember(Name = "Events")]
-        private List<DomainEvent> events;
-
-        /// <summary>
-        /// Gets or sets the events in this store.
-        /// Is guaranteed to be not <c>null</c>.
-        /// </summary>
-        public List<DomainEvent> Events
+        /// <param name="location">Location identifier (path etc.) where to save the state to</param>
+        public SaveApplicationState(string location)
         {
-            get
-            {
-                return this.events ?? (this.events = new List<DomainEvent>());
-            }
-
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException();
-                }
-
-                this.events = value;
-            }
+            this.Location = location;
         }
 
         /// <summary>
-        /// Get a clone
+        /// Gets the location where to save the current application state to
         /// </summary>
-        /// <returns>Deep clone</returns>
-        public EventStoreState Clone()
-        {
-            return Serialiser.CloneSerialisable(this);
-        }
+        public string Location { get; }
     }
 }

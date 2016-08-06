@@ -28,10 +28,16 @@
 
 namespace BudgetFirst.Presentation.Wpf.PlatformSpecific
 {
+    using System.IO;
+    using System.Text;
+
     using BudgetFirst.ApplicationCore;
     using BudgetFirst.Infrastructure.EventSourcing;
     using BudgetFirst.Infrastructure.Messaging;
     using BudgetFirst.Infrastructure.Persistency;
+    using BudgetFirst.Infrastructure.Serialisation;
+
+    using Microsoft.Win32.SafeHandles;
 
     /// <summary>
     /// Provides access to the application settings on windows platform
@@ -45,12 +51,28 @@ namespace BudgetFirst.Presentation.Wpf.PlatformSpecific
         /// <returns>Application state, if it could be loaded</returns>
         public PersistableApplicationState Get(string path)
         {
-            // TODO: implement actual loading
-            return new PersistableApplicationState()
+            using (var filestream = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
-                EventStoreState = new EventStoreState(),
-                VectorClock = new VectorClock(),
-            };
+                return Serialiser.DeSerialise<PersistableApplicationState>(filestream);
+            }
+        }
+
+        /// <summary>
+        /// Save the application state to disk (or other location)
+        /// </summary>
+        /// <param name="state">Current application state</param>
+        /// <param name="location">Platform-specific identifier of where to store the state to (path, key, etc.)</param>
+        public void Save(PersistableApplicationState state, string location)
+        {
+            using (var filestream = new FileStream(location, FileMode.Create, FileAccess.Write))
+            {
+                using (var memorystream = new MemoryStream())
+                {
+                    Serialiser.Serialise(state, memorystream);
+                    memorystream.Position = 0;
+                    memorystream.CopyTo(filestream);
+                }
+            }
         }
     }
 }

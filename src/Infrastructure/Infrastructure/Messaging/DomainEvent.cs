@@ -31,6 +31,8 @@ namespace BudgetFirst.Infrastructure.Messaging
     using System;
     using System.Runtime.Serialization;
 
+    using BudgetFirst.Infrastructure.Persistency;
+
     /// <summary>
     /// An event, which is raised by an aggregate
     /// </summary>

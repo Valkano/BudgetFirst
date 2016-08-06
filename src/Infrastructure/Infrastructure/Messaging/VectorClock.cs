@@ -34,6 +34,8 @@ namespace BudgetFirst.Infrastructure.Messaging
     using System.Linq;
     using System.Runtime.Serialization;
 
+    using BudgetFirst.Infrastructure.Persistency;
+
     /// <summary>
     /// A Vector Clock that can tell the relative order of events on distributed systems.
     /// </summary>

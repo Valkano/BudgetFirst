@@ -32,6 +32,8 @@ namespace BudgetFirst.ApplicationCore.Portable
     using System.Collections.Generic;
     using System.Runtime.Serialization;
 
+    using BudgetFirst.Infrastructure.Persistency;
+
     /// <summary>
     /// Contains device settings used in portable mode
     /// </summary>

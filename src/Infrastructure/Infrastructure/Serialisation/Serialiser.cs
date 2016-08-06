@@ -1,31 +1,25 @@
 ﻿// BudgetFirst 
 // ©2016 Thomas Mühlgrabner
-//
 // This source code is dual-licensed under:
 //   * Mozilla Public License 2.0 (MPL 2.0) 
 //   * GNU General Public License v3.0 (GPLv3)
-//
 // ==================== Mozilla Public License 2.0 ===================
 // This Source Code Form is subject to the terms of the Mozilla Public 
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // ================= GNU General Public License v3.0 =================
 // This file is part of BudgetFirst.
-//
 // BudgetFirst is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-//
 // BudgetFirst is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
 // GNU General Public License for more details.
-//
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-
 namespace BudgetFirst.Infrastructure.Serialisation
 {
     using System;
@@ -40,14 +34,44 @@ namespace BudgetFirst.Infrastructure.Serialisation
     public static class Serialiser
     {
         /// <summary>
-        /// Serialise an object onto a stream
+        /// Gets or sets known types for serialisation/de-serialisation
         /// </summary>
-        /// <param name="object">Object to serialise. Must be have <see cref="DataContractAttribute"/>.</param>
-        /// <param name="targetStream">Stream to serialise into</param>
-        public static void Serialise(object @object, Stream targetStream)
+        public static Type[] KnownTypes { get; set; } = new Type[0];
+
+        /// <summary>
+        /// Clone an object via serialisation round trip
+        /// </summary>
+        /// <typeparam name="T">Type of the object</typeparam>
+        /// <param name="source">Source object to clone</param>
+        /// <returns>Deep clone</returns>
+        public static T CloneSerialisable<T>(T source)
         {
-            var dataContractSerialiser = new DataContractSerializer(@object.GetType());
-            dataContractSerialiser.WriteObject(targetStream, @object);
+            string serialisedObject;
+
+            using (var memoryStream = new MemoryStream())
+            {
+                Serialise(source, memoryStream);
+                memoryStream.Position = 0; // rewind
+                var bytes = memoryStream.ToArray();
+                serialisedObject = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+            }
+
+            T roundtrip;
+
+            // Memory stream is disposed when stream writer is disposed
+            var writeMemoryStream = new MemoryStream();
+            using (var streamWriter = new StreamWriter(writeMemoryStream))
+            {
+                streamWriter.Write(serialisedObject);
+                streamWriter.Flush();
+
+                // do not close stream yet
+                writeMemoryStream.Position = 0; // rewind
+
+                roundtrip = DeSerialise<T>(writeMemoryStream);
+            }
+
+            return roundtrip;
         }
 
         /// <summary>
@@ -59,7 +83,7 @@ namespace BudgetFirst.Infrastructure.Serialisation
         public static T DeSerialise<T>(Stream sourceStream)
         {
             DataContractSerializer dataContractSerializer;
-            dataContractSerializer = new DataContractSerializer(typeof(T));
+            dataContractSerializer = new DataContractSerializer(typeof(T), KnownTypes);
             return (T)dataContractSerializer.ReadObject(sourceStream);
         }
 
@@ -78,39 +102,14 @@ namespace BudgetFirst.Infrastructure.Serialisation
         }
 
         /// <summary>
-        /// Clone an object via serialisation round trip
+        /// Serialise an object onto a stream
         /// </summary>
-        /// <typeparam name="T">Type of the object</typeparam>
-        /// <param name="source">Source object to clone</param>
-        /// <returns>Deep clone</returns>
-        public static T CloneSerialisable<T>(T source)
+        /// <param name="object">Object to serialise. Must be have <see cref="DataContractAttribute"/>.</param>
+        /// <param name="targetStream">Stream to serialise into</param>
+        public static void Serialise(object @object, Stream targetStream)
         {
-            string serialisedObject;
-
-            using (var memoryStream = new MemoryStream())
-            {
-                Serialiser.Serialise(source, memoryStream);
-                memoryStream.Position = 0; // rewind
-                var bytes = memoryStream.ToArray();
-                serialisedObject = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
-            }
-
-            T roundtrip;
-
-            // Memory stream is disposed when stream writer is disposed
-            var writeMemoryStream = new MemoryStream();
-            using (var streamWriter = new StreamWriter(writeMemoryStream))
-            {
-                streamWriter.Write(serialisedObject);
-                streamWriter.Flush();
-
-                // do not close stream yet
-                writeMemoryStream.Position = 0; // rewind
-
-                roundtrip = Serialiser.DeSerialise<T>(writeMemoryStream);
-            }
-            
-            return roundtrip;
+            var dataContractSerialiser = new DataContractSerializer(@object.GetType(), KnownTypes);
+            dataContractSerialiser.WriteObject(targetStream, @object);
         }
     }
 }

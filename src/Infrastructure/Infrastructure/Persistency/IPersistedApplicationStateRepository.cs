@@ -39,5 +39,12 @@ namespace BudgetFirst.Infrastructure.Persistency
         /// <param name="location">Platform-specific identifier of where to load the state from (path, key, etc.)</param>
         /// <returns>Loaded application state, if found.</returns>
         PersistableApplicationState Get(string location);
+
+        /// <summary>
+        /// Save the application state to disk (or other location)
+        /// </summary>
+        /// <param name="state">Current application state</param>
+        /// <param name="location">Platform-specific identifier of where to store the state to (path, key, etc.)</param>
+        void Save(PersistableApplicationState state, string location);
     }
 }
