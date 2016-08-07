@@ -42,6 +42,7 @@ namespace BudgetFirst.ViewModel.Desktop
         /// <summary>
         /// Initialises a new instance of the <see cref="WelcomeViewModel"/> class.
         /// </summary>
+        /// <param name="deviceSettings">Device settings</param>
         public WelcomeViewModel(IDeviceSettings deviceSettings)
         {
             var recentBudgets = deviceSettings.GetRecentBudgets() ?? new List<Infrastructure.Persistency.RecentBudget>();
@@ -84,7 +85,7 @@ namespace BudgetFirst.ViewModel.Desktop
         public ObservableCollection<RecentBudget> RecentBudgets { get; private set; }
 
         /// <summary>
-        /// Viewmodel specific recent budget representation
+        /// View model specific recent budget representation
         /// </summary>
         public class RecentBudget
         {

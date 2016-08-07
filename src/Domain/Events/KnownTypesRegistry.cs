@@ -10,12 +10,20 @@
     public static class KnownTypesRegistry
     {
         /// <summary>
+        /// Initialises static members of the <see cref="KnownTypesRegistry"/> class.
+        /// </summary>
+        static KnownTypesRegistry()
+        {
+            EventTypes = new[]
+            {
+                typeof(Events.AccountCreated),
+                typeof(Events.AccountNameChanged),
+            };
+        }
+
+        /// <summary>
         /// Gets all known types in this assembly
         /// </summary>
-        public static Type[] EventTypes { get; } = new[]
-                                              {
-                                                  typeof(Events.AccountCreated),
-                                                  typeof(Events.AccountNameChanged),
-                                              };
+        public static Type[] EventTypes { get; }
     }
 }
