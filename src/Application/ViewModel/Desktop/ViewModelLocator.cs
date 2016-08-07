@@ -28,6 +28,7 @@
 
 namespace BudgetFirst.ViewModel.Desktop
 {
+    using BudgetFirst.ApplicationCore;
     using BudgetFirst.Infrastructure.Persistency;
     using BudgetFirst.Wrappers;
     
@@ -51,6 +52,7 @@ namespace BudgetFirst.ViewModel.Desktop
             SimpleIocWrapper.Default.Register<IPersistedApplicationStateRepository, TPersistedApplicationStateRepository>();
             SimpleIocWrapper.Default.Register<MainDesktopViewModel>();
             SimpleIocWrapper.Default.Register<WelcomeViewModel>();
+            SimpleIocWrapper.Default.Register<Core>();
         }
 
         /// <summary>

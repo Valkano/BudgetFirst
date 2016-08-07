@@ -35,6 +35,7 @@ namespace BudgetFirst.ViewModel.Desktop
     using BudgetFirst.ReadSide.ReadModel;
     using BudgetFirst.ViewModel.Services;
     using BudgetFirst.ViewModel.Shared;
+    using BudgetFirst.Wrappers;
     using BudgetFirst.WriteSide.Account;
 
     using GalaSoft.MvvmLight.Command;
@@ -75,8 +76,7 @@ namespace BudgetFirst.ViewModel.Desktop
         /// </summary>
         /// <param name="windowService">The platform's window service.</param>
         /// <param name="deviceSettings">Platform-specific device settings</param>
-        /// <param name="persistedApplicationStateRepository">Platform-specific repository for the application state</param>
-        public MainDesktopViewModel(IWindowService windowService, IDeviceSettings deviceSettings, IPersistedApplicationStateRepository persistedApplicationStateRepository)
+        public MainDesktopViewModel(IWindowService windowService, IDeviceSettings deviceSettings)
         {
             this.windowService = windowService;
 
@@ -87,13 +87,11 @@ namespace BudgetFirst.ViewModel.Desktop
                     this.RebindReadModels();
                 });
 
-            // TODO: first view should be "new or open existing" unless device settings give us autoloaded budget...
-            // new view model must use commands to initialise budget.
-            // So basic idea: Core is stable and not to be replaced at runtime. However we can set the application state at runtime.
-            this.applicationCore = new Core(deviceSettings, persistedApplicationStateRepository);
-           
+            this.applicationCore = ServiceLocatorWrapper.Current.GetInstance<Core>();
+
             // this.RebindReadModels(); // this would cause events while this class is not yet initialised
             // so use local fields instead
+            // TODO: create a RepositoryLocator? We still have to initialise the core when we have to use it, but that could be done in the Locator itself (instead of in ViewModelLocator)
             this.accountList = this.applicationCore.Repositories.AccountListReadModelRepository.Find();
             this.InitialiseRelayCommands();
 
