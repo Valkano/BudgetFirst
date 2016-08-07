@@ -36,6 +36,9 @@ namespace BudgetFirst.Presentation.Wpf.PlatformSpecific
     /// </summary>
     public class WpfViewModelLocator : ViewModelLocator<WindowsDeviceSettings, WindowsPersistedApplicationSettingsRepository>
     {
+        /// <summary>
+        /// Initialises static members of the <see cref="WpfViewModelLocator"/> class.
+        /// </summary>
         static WpfViewModelLocator() 
         {
             ServiceLocatorWrapper.Current.InitialiseServiceLocator();

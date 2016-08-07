@@ -116,20 +116,20 @@
         }
 
         /// <summary>
+        /// Initialise the service locator
+        /// </summary>
+        public void InitialiseServiceLocator()
+        {
+            // Initialisation is done once the static type is loaded.
+        }
+
+        /// <summary>
         /// Get wrapped service locator
         /// </summary>
         /// <returns>Get original service locator</returns>
         private IServiceLocator GetOriginal()
         {
             return ServiceLocator.Current;
-        }
-
-        /// <summary>
-        /// Initialise the service locator
-        /// </summary>
-        public void InitialiseServiceLocator()
-        {
-            // Initialisation is done once the static type is loaded.
         }
     }
 }
