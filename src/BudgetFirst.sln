@@ -48,6 +48,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WriteSide", "Application\Wr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.PlatformSpecific.Net461", "Infrastructure\Common.Infrastructure.PlatformSpecific.Net461\Common.Infrastructure.PlatformSpecific.Net461.csproj", "{4DC3CCF8-171C-402D-8CB5-C09E610E82CE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{710B309E-C1E5-45AA-A3F7-9F42FC2C210B}"
+	ProjectSection(SolutionItems) = preProject
+		Settings.StyleCop = Settings.StyleCop
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Tests\Budget.Tests\Budget.Tests.projitems*{29b288d4-239f-4756-8b03-b161799cd762}*SharedItemsImports = 13

@@ -9,6 +9,9 @@
     using System.Windows;
 
     using BudgetFirst.Presentation.Wpf.PlatformSpecific;
+    using BudgetFirst.Wrappers;
+
+    using Microsoft.Practices.ServiceLocation;
 
     using Services;
     using ViewModel;
@@ -32,22 +35,22 @@
         private Window mainWindow;
 
         /// <summary>
-        /// View model container
-        /// </summary>
-        private ViewModelContainer container;
-
-        /// <summary>
         /// A method that is called when the application starts.
         /// </summary>
         /// <param name="e">The <see cref="StartupEventArgs"/>.</param>
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            this.container = new ViewModelContainer(new WindowsDeviceSettings(), new WindowsPersistedApplicationSettingsRepository());
-            this.RegisterServices();
 
-            this.mainViewModel = this.container.Resolve<MainDesktopViewModel>();
-            var windowService = this.container.Resolve<IWindowService>();
+            // Setup service locator, ioc etc.
+            WpfViewModelLocator.EnsureInitialised();
+
+            // Register window service (to be replaced by navigation and dialog services)
+            SimpleIocWrapper.Default.Register<IWindowService, WpfWindowService>();
+            WpfWindowService.RegisterWindow<MainDesktopViewModel, MainWindow>();
+            
+            this.mainViewModel = ServiceLocatorWrapper.Current.GetInstance<MainDesktopViewModel>();
+            var windowService = ServiceLocatorWrapper.Current.GetInstance<IWindowService>();
 
             this.mainWindow = (Window)windowService.ShowWindow(this.mainViewModel);
             this.mainWindow.Closed += this.MainWindow_Closed;
@@ -61,17 +64,6 @@
         private void MainWindow_Closed(object sender, EventArgs e)
         {
             Application.Current.Shutdown();
-        }
-
-        /// <summary>
-        /// A method to register application specific services with the ViewModel Container.
-        /// </summary>
-        private void RegisterServices()
-        {
-            // TODO: not that clean (couples implementation of IWindowService to WpfWindowService)
-            WpfWindowService.RegisterWindow<MainDesktopViewModel, MainWindow>();
-
-            this.container.Container.Register<IWindowService, WpfWindowService>(Wrappers.Container.Lifestyle.Singleton);
         }
     }
 }

@@ -165,6 +165,16 @@ namespace BudgetFirst.Wrappers
         }
 
         /// <summary>
+        /// Resolve an instance from the container
+        /// </summary>
+        /// <param name="instanceType">Type of instance to resolve</param>
+        /// <returns>Resolved instance</returns>
+        public object Resolve(Type instanceType)
+        {
+            return this.container.GetInstance(instanceType);
+        }
+
+        /// <summary>
         /// Resolve all registered instances for the given type
         /// </summary>
         /// <typeparam name="TInstance">Type of instance to resolve</typeparam>

@@ -4,6 +4,8 @@
 	<CollectionProperty Name="RecognizedWords">
       <Value>fallback</Value>
 	  <Value>persistable</Value>
+    <Value>Ioc</Value>
+    <Value>Wpf</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Analyzers>

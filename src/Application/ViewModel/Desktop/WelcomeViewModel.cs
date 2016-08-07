@@ -20,6 +20,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
+
 namespace BudgetFirst.ViewModel.Desktop
 {
     using System.Collections.Generic;
@@ -27,13 +28,12 @@ namespace BudgetFirst.ViewModel.Desktop
     using System.Linq;
 
     using BudgetFirst.Infrastructure.Persistency;
+    using BudgetFirst.Wrappers;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
     using GalaSoft.MvvmLight.Views;
-
-    using Microsoft.Practices.ServiceLocation;
-
+    
     /// <summary>
     /// Initial page view model. Contains steps to open or create a budget.
     /// </summary>
@@ -57,8 +57,8 @@ namespace BudgetFirst.ViewModel.Desktop
                                      () =>
                                          {
                                              var navigationService =
-                                                 ServiceLocator.Current.GetInstance<INavigationService>();
-                                             navigationService.NavigateTo(ViewModelContainer.OpenBudgetPageKey, x.Identifier);
+                                                 ServiceLocatorWrapper.Current.GetInstance<INavigationService>();
+                                             navigationService.NavigateTo(ViewModelPageKeys.OpenBudgetPageKey, x.Identifier);
                                          }), 
                              });
 
@@ -69,8 +69,8 @@ namespace BudgetFirst.ViewModel.Desktop
                 () =>
                     {
                         var navigationService =
-                                                 ServiceLocator.Current.GetInstance<INavigationService>();
-                        navigationService.NavigateTo(ViewModelContainer.CreateNewBudgetPageKey);
+                                                 ServiceLocatorWrapper.Current.GetInstance<INavigationService>();
+                        navigationService.NavigateTo(ViewModelPageKeys.CreateNewBudgetPageKey);
                     });
         }
 
