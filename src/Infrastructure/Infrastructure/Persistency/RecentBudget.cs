@@ -28,6 +28,7 @@
 
 namespace BudgetFirst.Infrastructure.Persistency
 {
+    using System;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -36,6 +37,18 @@ namespace BudgetFirst.Infrastructure.Persistency
     [DataContract(Name = "RecentBudget", Namespace = "http://budgetfirst.github.io/schemas/2016/08/06/RecentBudget")]
     public class RecentBudget
     {
+        /// <summary>
+        /// Initialises a new instance of the <see cref="RecentBudget"/> class.
+        /// </summary>
+        /// <param name="displayName">Human readable (display) name of the budget</param>
+        /// <param name="identifier">Location identifier</param>
+        public RecentBudget(string displayName, string identifier)
+        {
+            this.DisplayName = displayName;
+            this.Identifier = identifier;
+            this.LastTimeAccessed = DateTime.UtcNow;
+        }
+
         /// <summary>
         /// Gets or sets the display name of the budget file
         /// </summary>
@@ -47,5 +60,11 @@ namespace BudgetFirst.Infrastructure.Persistency
         /// </summary>
         [DataMember(Name = "Identifier")]
         public string Identifier { get; set; }
+
+        /// <summary>
+        /// Gets or sets the last time the budget was accessed
+        /// </summary>
+        [DataMember(Name = "LastTimeAccessed")]
+        public DateTime LastTimeAccessed { get; set; }
     }
 }

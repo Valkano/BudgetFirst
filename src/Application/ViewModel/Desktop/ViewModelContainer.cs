@@ -26,24 +26,31 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.ViewModel
+namespace BudgetFirst.ViewModel.Desktop
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using BudgetFirst.Infrastructure.Persistency;
     using BudgetFirst.Wrappers;
-
-    using Desktop;
 
     /// <summary>
     /// A Singleton Container for ViewModels.
     /// </summary>
     public class ViewModelContainer
     {
+        /// <summary>
+        /// Navigation key for welcome view
+        /// </summary>
+        public const string WelcomePageKey = "Welcome";
+
+        /// <summary>
+        /// Navigation key for open budget view
+        /// </summary>
+        public const string OpenBudgetPageKey = "OpenBudget";
+
+        /// <summary>
+        /// Navigation key for create new budget view
+        /// </summary>
+        public const string CreateNewBudgetPageKey = "CreateNewBudget";
+
         /// <summary>
         /// Initialises a new instance of the <see cref="ViewModelContainer"/> class.
         /// </summary>

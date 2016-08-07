@@ -124,7 +124,7 @@ namespace BudgetFirst.Common.Infrastructure.PlatformSpecific.Net461
             {
                 existing = new List<RecentBudget>();
             }
-
+            
             // add or update position
             var matching = existing.FirstOrDefault(x => x.Identifier == recentBudget.Identifier);
             if (matching == null)

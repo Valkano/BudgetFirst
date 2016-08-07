@@ -68,6 +68,7 @@
         /// </summary>
         private void RegisterServices()
         {
+            // TODO: not that clean (couples implementation of IWindowService to WpfWindowService)
             WpfWindowService.RegisterWindow<MainDesktopViewModel, MainWindow>();
 
             this.container.Container.Register<IWindowService, WpfWindowService>(Wrappers.Container.Lifestyle.Singleton);

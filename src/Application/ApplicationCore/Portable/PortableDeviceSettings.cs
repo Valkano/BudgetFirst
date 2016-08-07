@@ -50,13 +50,13 @@ namespace BudgetFirst.ApplicationCore.Portable
         /// Gets or sets the list of the recently opened budgets (display name + identifiers)
         /// </summary>
         [DataMember(Name = "RecentBudgets")]
-        public List<RecentBudget> RecentBudgets { get; set; }
+        public List<PortableRecentBudget> RecentBudgets { get; set; }
 
         /// <summary>
         /// Contains a display name and the identifier of a recently opened budget
         /// </summary>
         [DataContract(Name = "RecentBudget", Namespace = "http://budgetfirst.github.io/schemas/2016/07/24/PortableDeviceSettings/RecentBudget")]
-        public class RecentBudget
+        public class PortableRecentBudget
         {
             /// <summary>
             /// Gets or sets the display name of the budget file

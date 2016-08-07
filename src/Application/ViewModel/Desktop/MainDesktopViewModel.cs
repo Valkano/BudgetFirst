@@ -104,6 +104,10 @@ namespace BudgetFirst.ViewModel.Desktop
                 // TODO: error handling, obviously
                 this.applicationCore.LoadApplicationState(autoloaded); // causes message
             }
+            else
+            {
+                // TODO: navigate to "new or load" view
+            }
         }
 
         /// <summary>
