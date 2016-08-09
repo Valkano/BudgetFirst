@@ -48,6 +48,7 @@
     <StyleCopEnabled>false</StyleCopEnabled>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Desktop\CreateNewBudgetViewModel.cs" />
     <Compile Include="Desktop\MainDesktopViewModel.cs" />
     <Compile Include="Desktop\ViewModelLocator.cs" />
     <Compile Include="Desktop\ViewModelPageKeys.cs" />

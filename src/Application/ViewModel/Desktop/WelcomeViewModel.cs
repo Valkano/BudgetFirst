@@ -20,69 +20,128 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-
 namespace BudgetFirst.ViewModel.Desktop
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
 
+    using BudgetFirst.ApplicationCore.Commands.Infrastructure;
+    using BudgetFirst.ApplicationCore.Messages;
+    using BudgetFirst.Infrastructure.Commands;
     using BudgetFirst.Infrastructure.Persistency;
     using BudgetFirst.Wrappers;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
+    using GalaSoft.MvvmLight.Messaging;
     using GalaSoft.MvvmLight.Views;
-    
+
     /// <summary>
     /// Initial page view model. Contains steps to open or create a budget.
     /// </summary>
+    /// <remarks>TODO: open budget view model/navigation (i.e. not just recent, but a budget). Is this navigation or message?</remarks>
     public class WelcomeViewModel : ViewModelBase
     {
+        /// <summary>
+        /// Backing state for notify-able property
+        /// </summary>
+        private ObservableCollection<RecentBudget> recentBudgets;
+
         /// <summary>
         /// Initialises a new instance of the <see cref="WelcomeViewModel"/> class.
         /// </summary>
         /// <param name="deviceSettings">Device settings</param>
         public WelcomeViewModel(IDeviceSettings deviceSettings)
         {
-            var recentBudgets = deviceSettings.GetRecentBudgets() ?? new List<Infrastructure.Persistency.RecentBudget>();
-
-            // Map to viewmodel-specific model
-            var viewModelRecentBudgets =
-                recentBudgets.Select(
-                    x => new RecentBudget()
-                             {
-                                 Name = x.DisplayName, 
-                                 OpenCommand = new RelayCommand(
-                                     () =>
-                                         {
-                                             var navigationService =
-                                                 ServiceLocatorWrapper.Current.GetInstance<INavigationService>();
-                                             navigationService.NavigateTo(ViewModelPageKeys.OpenBudgetPageKey, x.Identifier);
-                                         }), 
-                             });
-
-            this.RecentBudgets = new ObservableCollection<RecentBudget>(viewModelRecentBudgets);
+            // Initialise list of recent budgets
+            this.RebindViewModel(deviceSettings);
 
             // Initialise relay commands
             this.CreateNewBudgetCommand = new RelayCommand(
                 () =>
                     {
-                        var navigationService =
-                                                 ServiceLocatorWrapper.Current.GetInstance<INavigationService>();
-                        navigationService.NavigateTo(ViewModelPageKeys.CreateNewBudgetPageKey);
+                        var navigationService = ServiceLocatorWrapper.Current.GetInstance<INavigationService>();
+                        navigationService.NavigateTo(ViewModelPageKeys.CreateNewBudget);
+                    });
+
+            // Messaging
+            Messenger.Default.Register<LoadedApplicationState>(
+                this,
+                (x) =>
+                    {
+                        // trigger navigation (if we're still the displayed view)
+                        var navigationService = ServiceLocatorWrapper.Current.GetInstance<INavigationService>();
+                        if (navigationService.CurrentPageKey == ViewModelPageKeys.Welcome)
+                        {
+                            navigationService.NavigateTo(ViewModelPageKeys.PrimaryApplication);
+                        }
+
+                        // Also, rebind.
+                        this.RebindViewModel(deviceSettings);
+                        this.RaisePropertyChangedForReboundProperties();
                     });
         }
 
         /// <summary>
         /// Gets the create new budget command
         /// </summary>
+        /// <remarks>This property never changes</remarks>
         public RelayCommand CreateNewBudgetCommand { get; }
 
         /// <summary>
         /// Gets the recent budgets
         /// </summary>
-        public ObservableCollection<RecentBudget> RecentBudgets { get; private set; }
+        public ObservableCollection<RecentBudget> RecentBudgets
+        {
+            get
+            {
+                return this.recentBudgets;
+            }
+
+            private set
+            {
+                this.recentBudgets = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// (Re)bind the view model to the new application state
+        /// </summary>
+        /// <param name="deviceSettings">Device settings</param>
+        private void RebindViewModel(IDeviceSettings deviceSettings)
+        {
+            var recentlyUsedBudgets = deviceSettings.GetRecentBudgets() ?? new List<Infrastructure.Persistency.RecentBudget>();
+
+            // Map to viewmodel-specific model
+            var viewModelRecentBudgets =
+                recentlyUsedBudgets.Select(
+                    x => new RecentBudget()
+                    {
+                        Name = x.DisplayName,
+                        OpenCommand = new RelayCommand(
+                                     () =>
+                                         {
+                                             var commandBus = ServiceLocatorWrapper.Current.GetInstance<ICommandBus>();
+                                             commandBus.Submit(new LoadApplicationState(x.Identifier));
+
+                                             // Navigation is done when the corresponding message reaches us (and we're still responsible for the navigation)
+                                         }),
+                    });
+
+            // Do not use the property right now
+            this.recentBudgets = new ObservableCollection<RecentBudget>(viewModelRecentBudgets);
+        }
+
+        /// <summary>
+        /// Raise property changed for properties that have been set in <see cref="RebindViewModel"/>.
+        /// This is a separate method to avoid raising notify property changed during the constructor
+        /// </summary>
+        private void RaisePropertyChangedForReboundProperties()
+        {
+            this.RecentBudgets = this.recentBudgets;
+        }
 
         /// <summary>
         /// View model specific recent budget representation

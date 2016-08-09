@@ -47,6 +47,7 @@ namespace BudgetFirst.ApplicationCore.Services
         /// <param name="unitOfWork">unit of work</param>
         public void Handle(LoadApplicationState command, IUnitOfWork unitOfWork)
         {
+            // Core handles actual loading
             Messenger.Default.Send(new LoadApplicationStateRequested() { Location = command.Identifier });
         }
     }
