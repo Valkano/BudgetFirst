@@ -47,9 +47,9 @@ namespace BudgetFirst.Application.ViewModels
     public class MainDesktopViewModel : ClosableViewModel
     {
         /// <summary>
-        /// Current application core
+        /// Current application kernel
         /// </summary>
-        private Core applicationCore;
+        private Kernel applicationKernel;
 
         /// <summary>
         /// The Window Service.
@@ -87,7 +87,7 @@ namespace BudgetFirst.Application.ViewModels
                     this.RebindReadModels();
                 });
 
-            this.applicationCore = ServiceLocatorWrapper.Current.GetInstance<Core>();
+            this.applicationKernel = ServiceLocatorWrapper.Current.GetInstance<Kernel>();
             var repositories = ServiceLocatorWrapper.Current.GetInstance<Repositories>();
 
             // this.RebindReadModels(); // this would cause events while this class is not yet initialised
@@ -100,7 +100,7 @@ namespace BudgetFirst.Application.ViewModels
             if (!string.IsNullOrWhiteSpace(autoloaded))
             {
                 // TODO: error handling, obviously
-                this.applicationCore.LoadApplicationState(autoloaded); // causes message
+                this.applicationKernel.LoadApplicationState(autoloaded); // causes message
             }
             else
             {
@@ -176,7 +176,7 @@ namespace BudgetFirst.Application.ViewModels
         /// </summary>
         private void AddAccount()
         {
-            this.applicationCore.CommandBus.Submit(new CreateAccountCommand() { Id = Guid.NewGuid(), Name = "Account Name" });
+            this.applicationKernel.CommandBus.Submit(new CreateAccountCommand() { Id = Guid.NewGuid(), Name = "Account Name" });
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace BudgetFirst.Application.ViewModels
                 return;
             }
 
-            var accountRepo = this.applicationCore.Repositories.AccountReadModelRepository;
+            var accountRepo = this.applicationKernel.Repositories.AccountReadModelRepository;
             var account = accountRepo.Find(this.SelectedAccount.Id);
             account.Name = $"Renamed Account ({this.renameCount++})";
         }
@@ -200,7 +200,7 @@ namespace BudgetFirst.Application.ViewModels
         private void RebindReadModels()
         {
             // Use properties to cause raise property changed
-            this.AccountList = this.applicationCore.Repositories.AccountListReadModelRepository.Find();
+            this.AccountList = this.applicationKernel.Repositories.AccountListReadModelRepository.Find();
             this.SelectedAccount = null;
         }
     }

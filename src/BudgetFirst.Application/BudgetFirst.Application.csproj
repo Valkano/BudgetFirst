@@ -60,7 +60,7 @@
     <Compile Include="Bootstrap.cs" />
     <Compile Include="Commands\Infrastructure\LoadApplicationState.cs" />
     <Compile Include="Commands\Infrastructure\SaveApplicationState.cs" />
-    <Compile Include="Core.cs" />
+    <Compile Include="Kernel.cs" />
     <Compile Include="CurrentApplicationStateFactory.cs" />
     <Compile Include="Messages\LoadApplicationStateRequested.cs" />
     <Compile Include="Messages\LoadedApplicationState.cs" />

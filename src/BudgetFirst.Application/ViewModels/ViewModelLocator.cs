@@ -56,9 +56,9 @@ namespace BudgetFirst.Application.ViewModels
             SimpleIocWrapper.Default.Register<WelcomeViewModel>();
             SimpleIocWrapper.Default.Register<CreateNewBudgetViewModel>();
 
-            // Application repositories and core
-            SimpleIocWrapper.Default.Register<Core>();
-            SimpleIocWrapper.Default.Register<Repositories>(() => SimpleIocWrapper.Default.GetInstance<Core>().Repositories);
+            // Application repositories and kernel
+            SimpleIocWrapper.Default.Register<Kernel>();
+            SimpleIocWrapper.Default.Register<Repositories>(() => SimpleIocWrapper.Default.GetInstance<Kernel>().Repositories);
         }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace BudgetFirst.Application.Services
     using GalaSoft.MvvmLight.Messaging;
 
     /// <summary>
-    /// Application core application state service
+    /// Application kernel application state service
     /// </summary>
     public class ApplicationStateService : IHandleCommand<LoadApplicationState>, IHandleCommand<SaveApplicationState>
     {
@@ -68,7 +68,7 @@ namespace BudgetFirst.Application.Services
         /// <param name="unitOfWork">unit of work</param>
         public void Handle(LoadApplicationState command, IUnitOfWork unitOfWork)
         {
-            // Core handles actual loading
+            // Kernel handles actual loading
             Messenger.Default.Send(new LoadApplicationStateRequested() { Location = command.Identifier });
         }
 

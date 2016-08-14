@@ -35,12 +35,12 @@ namespace BudgetFirst.Application
     using GalaSoft.MvvmLight.Messaging;
 
     /// <summary>
-    /// Represents the Application's core functionality as a Singleton.
+    /// Represents the Application's core functionality
     /// </summary> 
-    public class Core // TODO: rename to kernel
+    public class Kernel 
     {
         /// <summary>
-        /// The Core's bootstrap.
+        /// The kernel's bootstrap.
         /// </summary>
         private readonly Bootstrap bootstrap;
 
@@ -55,11 +55,11 @@ namespace BudgetFirst.Application
         private readonly IPersistedApplicationStateRepository persistedApplicationStateRepository;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="Core"/> class.
+        /// Initialises a new instance of the <see cref="Kernel"/> class.
         /// </summary>
         /// <param name="deviceSettings">Platform-specific device settings</param>
         /// <param name="persistedApplicationStateRepository">Platform-specific repository for the application state</param>
-        public Core(
+        public Kernel(
             IDeviceSettings deviceSettings, 
             IPersistedApplicationStateRepository persistedApplicationStateRepository)
         {

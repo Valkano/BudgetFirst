@@ -38,14 +38,14 @@ namespace BudgetFirst.Application.Projections
     public class Repositories
     {
         /// <summary>
-        /// bootstrap which handles all initialisation of the application core
+        /// bootstrap which handles all initialisation of the application kernel
         /// </summary>
         private readonly Bootstrap bootstrap;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="Repositories"/> class.
         /// </summary>
-        /// <param name="bootstrap">The application core's bootstrap</param>
+        /// <param name="bootstrap">The application kernel's bootstrap</param>
         internal Repositories(Bootstrap bootstrap)
         {
             this.bootstrap = bootstrap;
