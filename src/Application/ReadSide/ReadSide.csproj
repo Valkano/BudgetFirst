@@ -69,11 +69,14 @@
     <Compile Include="ReadModel\AccountList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadModel\AccountListItem.cs" />
+    <Compile Include="ReadModel\CurrencyList.cs" />
+    <Compile Include="ReadModel\Currency.cs" />
     <Compile Include="ReadModel\IAccount.cs" />
     <Compile Include="ReadModel\IAccountListItem.cs" />
     <Compile Include="Repositories\AccountListReadModelRepository.cs" />
     <Compile Include="Repositories\AccountListItemReadModelRepository.cs" />
     <Compile Include="Repositories\AccountReadModelRepository.cs" />
+    <Compile Include="Repositories\CurrencyRepository.cs" />
     <Compile Include="Repositories\IReadModelRepository.cs" />
   </ItemGroup>
   <ItemGroup>

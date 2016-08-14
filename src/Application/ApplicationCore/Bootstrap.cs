@@ -183,12 +183,10 @@ namespace BudgetFirst.ApplicationCore
             // Read side repositories. 
             // While these could be stateless and transient, they are used by the singleton generators
             // -> Singleton
-            simpleInjector.Register<AccountReadModelRepository, AccountReadModelRepository>(
-                Wrappers.Container.Lifestyle.Singleton);
-            simpleInjector.Register<AccountListItemReadModelRepository, AccountListItemReadModelRepository>(
-                Wrappers.Container.Lifestyle.Singleton);
-            simpleInjector.Register<AccountListReadModelRepository, AccountListReadModelRepository>(
-                Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountReadModelRepository>(Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountListItemReadModelRepository>(Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountListReadModelRepository>(Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<CurrencyRepository>(Wrappers.Container.Lifestyle.Singleton);
 
             // Generators
             // Only one instance per generator -> Singleton

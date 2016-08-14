@@ -28,70 +28,57 @@
 
 namespace BudgetFirst.ReadSide.ReadModel
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+    using System.Globalization;
+    using System.Runtime.InteropServices;
 
-    using BudgetFirst.Infrastructure.Commands;
     using BudgetFirst.Infrastructure.ReadModel;
-    using BudgetFirst.WriteSide.Account;
 
     /// <summary>
-    /// Account read model
+    /// A single currency
     /// </summary>
-    public class Account : ReadModel, IAccount
+    [ComVisible(false)]
+    public class Currency : ReadModel
     {
         /// <summary>
-        /// The application's CommandBus
-        /// </summary>
-        private ICommandBus commandBus;
-
-        /// <summary>
-        /// Account name
+        /// Currency name
         /// </summary>
         private string name;
 
         /// <summary>
-        /// Account Id
+        /// Three letter code of the currency
         /// </summary>
-        private Guid id;
+        private string code;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="Account"/> class.
+        /// Gets or sets the three letter code of the currency
         /// </summary>
-        /// <param name="commandBus">The application's command bus</param>
-        public Account(ICommandBus commandBus)
+        public string Code
         {
-            this.commandBus = commandBus;
+            get
+            {
+                return this.code;
+            }
+
+            set
+            {
+                this.SetProperty(ref this.code, value);
+            }
         }
 
         /// <summary>
-        /// Gets or sets the account Id
-        /// </summary>
-        public Guid Id
-        {
-            get { return this.id; }
-            set { this.SetProperty(ref this.id, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the account name
+        /// Gets or sets the name of the currency
         /// </summary>
         public string Name
         {
-            get { return this.name; }
-            set { this.commandBus.Submit(new ChangeAccountNameCommand() { Id = this.Id, Name = value }); }
-        }
+            get
+            {
+                return this.name;
+            }
 
-        /// <summary>
-        /// Updates the Account's name backing variable directly without using the command bus, should be used by Generators ONLY.
-        /// </summary>
-        /// <param name="newName">The new name.</param>
-        /// <remarks>TODO: move projections and their models into the same assembly and make this internal</remarks>
-        public void UpdateName(string newName)
-        {
-            this.SetProperty(ref this.name, newName, "Name");
+            set
+            {
+                this.SetProperty(ref this.name, value);
+            }
         }
     }
 }

@@ -28,45 +28,14 @@
 
 namespace BudgetFirst.ReadSide.ReadModel
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
-    using BudgetFirst.Infrastructure.ReadModel;
+    using System.Collections.ObjectModel;
+    using System.Runtime.InteropServices;
 
     /// <summary>
-    /// Account list item, for use in account lists
+    /// Currency list
     /// </summary>
-    public class AccountListItem : ReadModel, IAccountListItem
+    [ComVisible(false)]
+    public class CurrencyList : ObservableCollection<Currency>
     {
-        /// <summary>
-        /// Account name
-        /// </summary>
-        private string name;
-
-        /// <summary>
-        /// Account Id
-        /// </summary>
-        private Guid id;
-
-        /// <summary>
-        /// Gets or sets the account Id
-        /// </summary>
-        public Guid Id
-        {
-            get { return this.id; }
-            set { this.SetProperty(ref this.id, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the account name
-        /// </summary>
-        public string Name
-        {
-            get { return this.name; }
-            set { this.SetProperty(ref this.name, value); }
-        }
     }
 }

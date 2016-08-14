@@ -88,11 +88,11 @@ namespace BudgetFirst.ViewModel.Desktop
                 });
 
             this.applicationCore = ServiceLocatorWrapper.Current.GetInstance<Core>();
+            var repositories = ServiceLocatorWrapper.Current.GetInstance<Repositories>();
 
             // this.RebindReadModels(); // this would cause events while this class is not yet initialised
             // so use local fields instead
-            // TODO: create a RepositoryLocator? We still have to initialise the core when we have to use it, but that could be done in the Locator itself (instead of in ViewModelLocator)
-            this.accountList = this.applicationCore.Repositories.AccountListReadModelRepository.Find();
+            this.accountList = repositories.AccountListReadModelRepository.Find();
             this.InitialiseRelayCommands();
 
             // Only after everything has been initialised, continue with the application flow

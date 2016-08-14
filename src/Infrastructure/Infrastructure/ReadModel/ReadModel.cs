@@ -40,23 +40,9 @@ namespace BudgetFirst.Infrastructure.ReadModel
     public abstract class ReadModel : IReadModel
     {
         /// <summary>
-        /// Read model Id
-        /// </summary>
-        private Guid id;
-
-        /// <summary>
         /// Property changed event
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Gets or sets the Id
-        /// </summary>
-        public Guid Id
-        {
-            get { return this.id; }
-            set { this.SetProperty(ref this.id, value); }
-        }
 
         /// <summary>
         /// Set property and, if different than current value, raise <see cref="PropertyChanged"/>.

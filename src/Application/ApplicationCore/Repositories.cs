@@ -63,5 +63,10 @@ namespace BudgetFirst.ApplicationCore
         /// Gets the Account List read model Repository
         /// </summary>
         public AccountListReadModelRepository AccountListReadModelRepository => this.bootstrap.Container.Resolve<AccountListReadModelRepository>();
+
+        /// <summary>
+        /// Gets the currency (read model) repository
+        /// </summary>
+        public CurrencyRepository CurrencyRepository => this.bootstrap.Container.Resolve<CurrencyRepository>();
     }
 }

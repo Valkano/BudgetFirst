@@ -23,7 +23,15 @@
 
 namespace BudgetFirst.ViewModel.Desktop
 {
+    using System;
+    using System.Globalization;
+    using System.Linq;
+
+    using BudgetFirst.ApplicationCore;
+    using BudgetFirst.ReadSide.ReadModel;
+
     using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Command;
 
     /// <summary>
     /// View model for creating a new budget
@@ -33,5 +41,92 @@ namespace BudgetFirst.ViewModel.Desktop
         // TODO: we need: a create budget command, identifier of current budget (on view model?)
         // TODO fields for: budget name, currency; do we need formatting?
         // TODO additional steps to guide (add accounts, define/change categories)?
+
+        /// <summary>
+        /// Name of the budget
+        /// </summary>
+        private string name;
+
+        /// <summary>
+        /// List of currencies
+        /// </summary>
+        private CurrencyList currencyList;
+
+        /// <summary>
+        /// Selected currency
+        /// </summary>
+        private Currency selectedCurrency;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="CreateNewBudgetViewModel"/> class.
+        /// </summary>
+        /// <param name="repositories">Repositories for read models</param>
+        public CreateNewBudgetViewModel(Repositories repositories)
+        {
+            this.currencyList = repositories.CurrencyRepository.GetAll();
+
+            this.CreateNewBudget = new RelayCommand(
+                () =>
+                {
+                    // TODO: create actual new budget, then navigate
+                },
+                () => !string.IsNullOrWhiteSpace(this.Name) && this.selectedCurrency != null);
+        }
+
+        /// <summary>
+        /// Gets the create new budget command
+        /// </summary>
+        public RelayCommand CreateNewBudget { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the budget name
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                return this.name;
+            }
+
+            set
+            {
+                this.name = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets the list of currencies
+        /// </summary>
+        public CurrencyList CurrencyList
+        {
+            get
+            {
+                return this.currencyList;
+            }
+
+            private set
+            {
+                this.currencyList = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the selected currency
+        /// </summary>
+        public Currency SelectedCurrency
+        {
+            get
+            {
+                return this.selectedCurrency;
+            }
+
+            set
+            {
+                this.selectedCurrency = value;
+                this.RaisePropertyChanged();
+            }
+        }
     }
 }

@@ -19,5 +19,10 @@
         /// Navigation key for create new budget view
         /// </summary>
         public const string CreateNewBudget = "CreateNewBudget";
+
+        /// <summary>
+        /// Navigation key for open a budget view
+        /// </summary>
+        public const string OpenExistingBudget = "OpenExistingBudget";
     }
 }

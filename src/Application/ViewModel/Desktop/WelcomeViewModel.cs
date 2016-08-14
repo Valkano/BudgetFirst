@@ -20,6 +20,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
+
 namespace BudgetFirst.ViewModel.Desktop
 {
     using System.Collections.Generic;
@@ -40,7 +41,6 @@ namespace BudgetFirst.ViewModel.Desktop
     /// <summary>
     /// Initial page view model. Contains steps to open or create a budget.
     /// </summary>
-    /// <remarks>TODO: open budget view model/navigation (i.e. not just recent, but a budget). Is this navigation or message?</remarks>
     public class WelcomeViewModel : ViewModelBase
     {
         /// <summary>
@@ -65,11 +65,19 @@ namespace BudgetFirst.ViewModel.Desktop
                         navigationService.NavigateTo(ViewModelPageKeys.CreateNewBudget);
                     });
 
+            this.OpenExistingBudgetCommand = new RelayCommand(
+                () =>
+                    {
+                        var navigationService = ServiceLocatorWrapper.Current.GetInstance<INavigationService>();
+                        navigationService.NavigateTo(ViewModelPageKeys.OpenExistingBudget);
+                    });
+
             // Messaging
             Messenger.Default.Register<LoadedApplicationState>(
                 this,
                 (x) =>
                     {
+                        // TODO: always trigger navigation to primary after opening budget?
                         // trigger navigation (if we're still the displayed view)
                         var navigationService = ServiceLocatorWrapper.Current.GetInstance<INavigationService>();
                         if (navigationService.CurrentPageKey == ViewModelPageKeys.Welcome)
@@ -88,6 +96,12 @@ namespace BudgetFirst.ViewModel.Desktop
         /// </summary>
         /// <remarks>This property never changes</remarks>
         public RelayCommand CreateNewBudgetCommand { get; }
+        
+        /// <summary>
+        /// Gets the open existing budget command (triggers navigation to open existing budget)
+        /// </summary>
+        /// <remarks>This property never changes</remarks>
+        public RelayCommand OpenExistingBudgetCommand { get; }
 
         /// <summary>
         /// Gets the recent budgets

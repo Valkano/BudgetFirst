@@ -93,7 +93,7 @@ namespace BudgetFirst.ApplicationCore
         /// Gets the Application's Repositories.
         /// </summary>
         public Repositories Repositories { get; private set; }
-
+        
         /// <summary>
         /// Load application state from disk etc.
         /// This resets all read state, all view models must be rebuilt etc.

@@ -50,9 +50,15 @@ namespace BudgetFirst.ViewModel.Desktop
             // Every object in SimpleIoc is singleton by default
             SimpleIocWrapper.Default.Register<IDeviceSettings, TDeviceSettings>();
             SimpleIocWrapper.Default.Register<IPersistedApplicationStateRepository, TPersistedApplicationStateRepository>();
+
+            // View models
             SimpleIocWrapper.Default.Register<MainDesktopViewModel>();
             SimpleIocWrapper.Default.Register<WelcomeViewModel>();
+            SimpleIocWrapper.Default.Register<CreateNewBudgetViewModel>();
+
+            // Application repositories and core
             SimpleIocWrapper.Default.Register<Core>();
+            SimpleIocWrapper.Default.Register<Repositories>(() => SimpleIocWrapper.Default.GetInstance<Core>().Repositories);
         }
 
         /// <summary>
