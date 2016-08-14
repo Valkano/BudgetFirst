@@ -30,7 +30,7 @@ namespace BudgetFirst.ApplicationCore
 {
     using System;
 
-    using BudgetFirst.Infrastructure.Persistency;
+    using BudgetFirst.Common.Infrastructure.Persistency;
 
     /// <summary>
     /// Persistable application state factory

@@ -28,7 +28,7 @@
 
 namespace BudgetFirst.ApplicationCore.Commands.Infrastructure
 {
-    using BudgetFirst.Infrastructure.Commands;
+    using BudgetFirst.Common.Infrastructure.Commands;
 
     /// <summary>
     /// Load a new application state

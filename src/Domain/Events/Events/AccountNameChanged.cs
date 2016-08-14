@@ -30,7 +30,7 @@ namespace BudgetFirst.Events.Events
 {
     using System.Runtime.Serialization;
 
-    using BudgetFirst.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.Messaging;
 
     /// <summary>
     /// The name of an account was changed

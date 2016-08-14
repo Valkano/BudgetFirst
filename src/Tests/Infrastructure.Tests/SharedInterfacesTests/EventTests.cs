@@ -33,9 +33,9 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
     using System.Text;
     using System.Threading;
 
-    using BudgetFirst.Infrastructure.ApplicationState;
-    using BudgetFirst.Infrastructure.EventSourcing;
-    using BudgetFirst.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.ApplicationState;
+    using BudgetFirst.Common.Infrastructure.EventSourcing;
+    using BudgetFirst.Common.Infrastructure.Messaging;
     using BudgetFirst.SharedInterfaces;
 
     using NUnit.Framework;

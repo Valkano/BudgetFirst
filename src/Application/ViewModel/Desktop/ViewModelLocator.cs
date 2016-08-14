@@ -29,9 +29,9 @@
 namespace BudgetFirst.ViewModel.Desktop
 {
     using BudgetFirst.ApplicationCore;
-    using BudgetFirst.Infrastructure.Persistency;
-    using BudgetFirst.Wrappers;
-    
+    using BudgetFirst.Common.Infrastructure.Persistency;
+    using BudgetFirst.Common.Infrastructure.Wrappers;
+
     /// <summary>
     /// View model locator
     /// </summary>

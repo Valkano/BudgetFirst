@@ -57,9 +57,9 @@
       <Project>{c0b0af45-f29d-419c-90ae-e9b3719a032a}</Project>
       <Name>Events</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
+    <ProjectReference Include="..\..\Common.Infrastructure\Common.Infrastructure.csproj">
       <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
-      <Name>Infrastructure</Name>
+      <Name>Common.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

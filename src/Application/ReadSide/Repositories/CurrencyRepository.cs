@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
 
+    using BudgetFirst.Common.Infrastructure.Data;
     using BudgetFirst.ReadSide.ReadModel;
     using BudgetFirst.SharedInterfaces.Annotations;
 
@@ -26,7 +27,7 @@
             var alreadyLoadedCurrencies = new HashSet<string>();
 
             // Load currencies 
-            var data = new Infrastructure.Data.Currencies();
+            var data = new Currencies();
 
             var currencies = data.CurrencyList.Root?.Element("CcyTbl")?.Elements("CcyNtry");
             if (currencies == null)

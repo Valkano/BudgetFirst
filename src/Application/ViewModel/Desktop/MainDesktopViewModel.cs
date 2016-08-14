@@ -31,11 +31,11 @@ namespace BudgetFirst.ViewModel.Desktop
     using System;
 
     using BudgetFirst.ApplicationCore;
-    using BudgetFirst.Infrastructure.Persistency;
+    using BudgetFirst.Common.Infrastructure.Persistency;
+    using BudgetFirst.Common.Infrastructure.Wrappers;
     using BudgetFirst.ReadSide.ReadModel;
     using BudgetFirst.ViewModel.Services;
     using BudgetFirst.ViewModel.Shared;
-    using BudgetFirst.Wrappers;
     using BudgetFirst.WriteSide.Account;
 
     using GalaSoft.MvvmLight.Command;

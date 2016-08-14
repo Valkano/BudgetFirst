@@ -30,9 +30,9 @@ namespace BudgetFirst.Budget.Aggregates
 {
     using System;
 
+    using BudgetFirst.Common.Infrastructure.Domain;
+    using BudgetFirst.Common.Infrastructure.Messaging;
     using BudgetFirst.Events.Events;
-    using BudgetFirst.Infrastructure.Domain;
-    using BudgetFirst.Infrastructure.Messaging;
 
     /// <summary>
     /// An account, as in bank account, wallet etc.

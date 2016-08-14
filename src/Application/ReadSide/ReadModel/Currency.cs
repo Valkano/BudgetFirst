@@ -31,7 +31,7 @@ namespace BudgetFirst.ReadSide.ReadModel
     using System.Globalization;
     using System.Runtime.InteropServices;
 
-    using BudgetFirst.Infrastructure.ReadModel;
+    using BudgetFirst.Common.Infrastructure.ReadModel;
 
     /// <summary>
     /// A single currency

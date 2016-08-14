@@ -30,8 +30,8 @@ namespace BudgetFirst.ApplicationCore.Services
 {
     using BudgetFirst.ApplicationCore.Commands.Infrastructure;
     using BudgetFirst.ApplicationCore.Messages;
-    using BudgetFirst.Infrastructure.Commands;
-    using BudgetFirst.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.Commands;
+    using BudgetFirst.Common.Infrastructure.Messaging;
 
     using GalaSoft.MvvmLight.Messaging;
 

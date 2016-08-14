@@ -33,8 +33,8 @@ namespace BudgetFirst.ReadSide.ReadModel
     using System.Linq;
     using System.Text;
 
-    using BudgetFirst.Infrastructure.Commands;
-    using BudgetFirst.Infrastructure.ReadModel;
+    using BudgetFirst.Common.Infrastructure.Commands;
+    using BudgetFirst.Common.Infrastructure.ReadModel;
     using BudgetFirst.WriteSide.Account;
 
     /// <summary>

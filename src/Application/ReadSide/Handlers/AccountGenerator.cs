@@ -30,9 +30,9 @@ namespace BudgetFirst.ReadSide.Handlers
 {
     using System;
 
+    using BudgetFirst.Common.Infrastructure.Commands;
+    using BudgetFirst.Common.Infrastructure.Messaging;
     using BudgetFirst.Events.Events;
-    using BudgetFirst.Infrastructure.Commands;
-    using BudgetFirst.Infrastructure.Messaging;
 
     using ReadModel;
     using Repositories;

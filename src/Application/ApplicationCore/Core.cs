@@ -25,11 +25,11 @@ namespace BudgetFirst.ApplicationCore
     using System;
 
     using BudgetFirst.ApplicationCore.Messages;
-    using BudgetFirst.Infrastructure.Commands;
-    using BudgetFirst.Infrastructure.EventSourcing;
-    using BudgetFirst.Infrastructure.Messaging;
-    using BudgetFirst.Infrastructure.Persistency;
-    using BudgetFirst.Infrastructure.ReadModel;
+    using BudgetFirst.Common.Infrastructure.Commands;
+    using BudgetFirst.Common.Infrastructure.EventSourcing;
+    using BudgetFirst.Common.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.Persistency;
+    using BudgetFirst.Common.Infrastructure.ReadModel;
 
     using GalaSoft.MvvmLight.Messaging;
 

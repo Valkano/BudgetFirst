@@ -30,7 +30,7 @@ namespace BudgetFirst.Budget.Aggregates
 {
     using System;
 
-    using BudgetFirst.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.Messaging;
 
     /// <summary>
     /// Factory for <see cref="Account">accounts</see>

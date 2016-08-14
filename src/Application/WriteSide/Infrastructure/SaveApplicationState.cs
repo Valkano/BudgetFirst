@@ -28,7 +28,7 @@
 
 namespace BudgetFirst.WriteSide.Infrastructure
 {
-    using BudgetFirst.Infrastructure.Commands;
+    using BudgetFirst.Common.Infrastructure.Commands;
 
     /// <summary>
     /// Save the current application state

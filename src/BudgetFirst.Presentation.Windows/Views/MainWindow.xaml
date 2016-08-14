@@ -1,0 +1,46 @@
+﻿<Window x:Class="BudgetFirst.Presentation.Windows.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BudgetFirst.Presentation.Windows.Views"
+        mc:Ignorable="d"
+        Title="Budget First" Height="350" Width="525">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="E_xit" Command="{Binding CloseCommand}" InputGestureText="Alt+F4" />
+            </MenuItem>
+        </Menu>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <DockPanel>
+
+                <Button DockPanel.Dock="Bottom" Content="Add Account" Command="{Binding AddAccountCommand}" />
+                <Button DockPanel.Dock="Bottom" Content="Rename Account" Command="{Binding RenameAccountCommand}" />
+                <ListBox ItemsSource="{Binding AccountList}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedAccount}"/>
+            </DockPanel>
+
+            <GridSplitter Width="4" Grid.Column="1" Grid.RowSpan="1" HorizontalAlignment="Stretch"/>
+
+            <DataGrid Grid.Column="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Date" />
+                    <DataGridTextColumn Header="Category" />
+                    <DataGridTextColumn Header="Memo" />
+                    <DataGridTextColumn Header="Amount" />
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </DockPanel>
+</Window>

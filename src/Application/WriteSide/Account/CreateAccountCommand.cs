@@ -30,7 +30,7 @@ namespace BudgetFirst.WriteSide.Account
 {
     using System;
 
-    using BudgetFirst.Infrastructure.Commands;
+    using BudgetFirst.Common.Infrastructure.Commands;
 
     /// <summary>
     /// Create a new account

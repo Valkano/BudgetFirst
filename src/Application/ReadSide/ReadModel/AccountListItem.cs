@@ -34,7 +34,7 @@ namespace BudgetFirst.ReadSide.ReadModel
     using System.Text;
     using System.Threading.Tasks;
 
-    using BudgetFirst.Infrastructure.ReadModel;
+    using BudgetFirst.Common.Infrastructure.ReadModel;
 
     /// <summary>
     /// Account list item, for use in account lists

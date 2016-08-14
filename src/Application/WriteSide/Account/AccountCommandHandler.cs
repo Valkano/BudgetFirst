@@ -29,8 +29,8 @@
 namespace BudgetFirst.WriteSide.Account
 {
     using BudgetFirst.Budget.Aggregates;
-    using BudgetFirst.Infrastructure.Commands;
-    using BudgetFirst.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.Commands;
+    using BudgetFirst.Common.Infrastructure.Messaging;
 
     using AccountRepository = BudgetFirst.WriteSide.Repositories.AccountRepository;
 

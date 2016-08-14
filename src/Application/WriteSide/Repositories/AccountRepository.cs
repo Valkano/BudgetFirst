@@ -31,7 +31,7 @@ namespace BudgetFirst.WriteSide.Repositories
     using System;
 
     using BudgetFirst.Budget.Aggregates;
-    using BudgetFirst.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.Messaging;
 
     /// <summary>
     /// Repository for <see cref="Account"/> aggregates

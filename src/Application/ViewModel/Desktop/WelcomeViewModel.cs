@@ -29,9 +29,9 @@ namespace BudgetFirst.ViewModel.Desktop
 
     using BudgetFirst.ApplicationCore.Commands.Infrastructure;
     using BudgetFirst.ApplicationCore.Messages;
-    using BudgetFirst.Infrastructure.Commands;
-    using BudgetFirst.Infrastructure.Persistency;
-    using BudgetFirst.Wrappers;
+    using BudgetFirst.Common.Infrastructure.Commands;
+    using BudgetFirst.Common.Infrastructure.Persistency;
+    using BudgetFirst.Common.Infrastructure.Wrappers;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
@@ -126,7 +126,7 @@ namespace BudgetFirst.ViewModel.Desktop
         /// <param name="deviceSettings">Device settings</param>
         private void RebindViewModel(IDeviceSettings deviceSettings)
         {
-            var recentlyUsedBudgets = deviceSettings.GetRecentBudgets() ?? new List<Infrastructure.Persistency.RecentBudget>();
+            var recentlyUsedBudgets = deviceSettings.GetRecentBudgets() ?? new List<Common.Infrastructure.Persistency.RecentBudget>();
 
             // Map to viewmodel-specific model
             var viewModelRecentBudgets =

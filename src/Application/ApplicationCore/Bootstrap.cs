@@ -26,18 +26,18 @@ namespace BudgetFirst.ApplicationCore
     using System.Collections.Generic;
 
     using BudgetFirst.ApplicationCore.Commands.Infrastructure;
+    using BudgetFirst.Common.Infrastructure.ApplicationState;
+    using BudgetFirst.Common.Infrastructure.Commands;
+    using BudgetFirst.Common.Infrastructure.DependencyInjection;
+    using BudgetFirst.Common.Infrastructure.EventSourcing;
+    using BudgetFirst.Common.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.Persistency;
+    using BudgetFirst.Common.Infrastructure.ReadModel;
+    using BudgetFirst.Common.Infrastructure.Serialisation;
+    using BudgetFirst.Common.Infrastructure.Wrappers;
     using BudgetFirst.Events.Events;
-    using BudgetFirst.Infrastructure.ApplicationState;
-    using BudgetFirst.Infrastructure.Commands;
-    using BudgetFirst.Infrastructure.DependencyInjection;
-    using BudgetFirst.Infrastructure.EventSourcing;
-    using BudgetFirst.Infrastructure.Messaging;
-    using BudgetFirst.Infrastructure.Persistency;
-    using BudgetFirst.Infrastructure.ReadModel;
-    using BudgetFirst.Infrastructure.Serialisation;
     using BudgetFirst.ReadSide.Handlers;
     using BudgetFirst.ReadSide.Repositories;
-    using BudgetFirst.Wrappers;
     using BudgetFirst.WriteSide.Account;
     using BudgetFirst.WriteSide.Infrastructure;
 
@@ -183,15 +183,15 @@ namespace BudgetFirst.ApplicationCore
             // Read side repositories. 
             // While these could be stateless and transient, they are used by the singleton generators
             // -> Singleton
-            simpleInjector.Register<AccountReadModelRepository>(Wrappers.Container.Lifestyle.Singleton);
-            simpleInjector.Register<AccountListItemReadModelRepository>(Wrappers.Container.Lifestyle.Singleton);
-            simpleInjector.Register<AccountListReadModelRepository>(Wrappers.Container.Lifestyle.Singleton);
-            simpleInjector.Register<CurrencyRepository>(Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountReadModelRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountListItemReadModelRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountListReadModelRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<CurrencyRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
 
             // Generators
             // Only one instance per generator -> Singleton
-            simpleInjector.Register<AccountGenerator, AccountGenerator>(Wrappers.Container.Lifestyle.Singleton);
-            simpleInjector.Register<AccountListGenerator, AccountListGenerator>(Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountGenerator, AccountGenerator>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountListGenerator, AccountListGenerator>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
 
             // Must also register container itself because infrastructure needs it
             simpleInjector.RegisterSingleton<IContainer>(simpleInjector);
