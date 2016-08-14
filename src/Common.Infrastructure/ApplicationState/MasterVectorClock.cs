@@ -28,6 +28,7 @@
 
 namespace BudgetFirst.Common.Infrastructure.ApplicationState
 {
+    using BudgetFirst.Common.Infrastructure.Domain.Events;
     using BudgetFirst.Common.Infrastructure.Messaging;
 
     /// <summary>

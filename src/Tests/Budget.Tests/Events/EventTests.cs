@@ -33,9 +33,10 @@ namespace Budget.Domain.Tests.Events
     using System.IO;
     using System.Text;
 
+    using BudgetFirst.Accounting.Domain.Events.Events;
+    using BudgetFirst.Common.Infrastructure.Domain.Events;
     using BudgetFirst.Common.Infrastructure.Messaging;
     using BudgetFirst.Common.Infrastructure.Serialisation;
-    using BudgetFirst.Events.Events;
 
     using NUnit.Framework;
 

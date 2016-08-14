@@ -3,11 +3,11 @@
     using System;
     using System.Windows;
 
+    using BudgetFirst.Application.ViewModels;
+    using BudgetFirst.Application.ViewModels.ReplaceMe;
     using BudgetFirst.Common.Infrastructure.Wrappers;
     using BudgetFirst.Presentation.Windows.PlatformSpecific;
     using BudgetFirst.Presentation.Windows.Services;
-    using BudgetFirst.ViewModel.Desktop;
-    using BudgetFirst.ViewModel.Services;
     
     using MainWindow = BudgetFirst.Presentation.Windows.Views.MainWindow;
 

@@ -31,6 +31,8 @@ namespace BudgetFirst.Common.Infrastructure.Messaging
     using System;
     using System.Collections.Generic;
 
+    using BudgetFirst.Common.Infrastructure.Domain.Events;
+
     /// <summary>
     /// A publish/subscribe message bus
     /// </summary>

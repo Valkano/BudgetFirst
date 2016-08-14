@@ -30,6 +30,8 @@ namespace BudgetFirst.Common.Infrastructure.Messaging
 {
     using System;
 
+    using BudgetFirst.Common.Infrastructure.Domain.Events;
+
     /// <summary>
     /// Represents a message bus/queue, publish-subscribe pattern.
     /// Subscribers are to be automatically resolved

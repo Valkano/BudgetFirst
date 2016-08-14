@@ -33,6 +33,7 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
     using System.Linq;
     using System.Text;
 
+    using BudgetFirst.Common.Infrastructure.Domain.Events;
     using BudgetFirst.Common.Infrastructure.EventSourcing;
     using BudgetFirst.Common.Infrastructure.Messaging;
 

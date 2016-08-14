@@ -34,8 +34,10 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
     using System.Threading;
 
     using BudgetFirst.Common.Infrastructure.ApplicationState;
+    using BudgetFirst.Common.Infrastructure.Domain.Events;
     using BudgetFirst.Common.Infrastructure.EventSourcing;
     using BudgetFirst.Common.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.Persistency;
     using BudgetFirst.SharedInterfaces;
 
     using NUnit.Framework;

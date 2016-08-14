@@ -32,6 +32,7 @@ namespace BudgetFirst.Common.Infrastructure.Commands
     using BudgetFirst.Common.Infrastructure.DependencyInjection;
     using BudgetFirst.Common.Infrastructure.EventSourcing;
     using BudgetFirst.Common.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.Persistency;
 
     /// <summary>
     /// The command bus accepts commands and forwards them to the corresponding command handler.
@@ -106,7 +107,7 @@ namespace BudgetFirst.Common.Infrastructure.Commands
         /// <param name="unitOfWork">Event transaction to track unpublished events</param>
         private void InvokeHandler<TCommand>(TCommand command, IUnitOfWork unitOfWork) where TCommand : ICommand
         {
-            var handler = this.dependencyInjectionContainer.Resolve<ICommandHandler<TCommand>>();
+            var handler = this.dependencyInjectionContainer.Resolve<IHandleCommand<TCommand>>();
             handler.Handle(command, unitOfWork);
         }
     }

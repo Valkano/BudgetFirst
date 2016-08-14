@@ -30,10 +30,11 @@ namespace BudgetFirst.Budget.Tests
 {
     using System;
 
-    using BudgetFirst.Budget.Aggregates;
+    using BudgetFirst.Accounting.Domain.Models;
     using BudgetFirst.Common.Infrastructure.ApplicationState;
     using BudgetFirst.Common.Infrastructure.EventSourcing;
     using BudgetFirst.Common.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.Persistency;
     using BudgetFirst.SharedInterfaces;
 
     using NUnit.Framework;

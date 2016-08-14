@@ -50,18 +50,18 @@
   <ItemGroup>
     <Compile Include="Commands\CommandBus.cs" />
     <Compile Include="Data\Currencies.cs" />
-    <Compile Include="Domain\AggregateRoot.cs" />
+    <Compile Include="Domain\Model\AggregateRoot.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\ICommandBus.cs" />
-    <Compile Include="Commands\ICommandHandler.cs" />
+    <Compile Include="Commands\IHandleCommand.cs" />
     <Compile Include="DependencyInjection\IContainer.cs" />
     <Compile Include="EventSourcing\DomainEventIncompleteException.cs" />
-    <Compile Include="Messaging\DomainEvent.cs" />
+    <Compile Include="Domain\Events\DomainEvent.cs" />
     <Compile Include="EventSourcing\EventStore.cs" />
-    <Compile Include="Messaging\UnitOfWork.cs" />
-    <Compile Include="Messaging\IDomainEventHandler.cs" />
+    <Compile Include="Persistency\UnitOfWork.cs" />
+    <Compile Include="Projections\IProjectFrom.cs" />
     <Compile Include="EventSourcing\IEventStore.cs" />
-    <Compile Include="Messaging\IUnitOfWork.cs" />
+    <Compile Include="Persistency\IUnitOfWork.cs" />
     <Compile Include="Messaging\IMessageBus.cs" />
     <Compile Include="Messaging\MessageBus.cs" />
     <Compile Include="ApplicationState\IDeviceId.cs" />
@@ -76,15 +76,15 @@
     <Compile Include="Persistency\IPersistedApplicationStateRepository.cs" />
     <Compile Include="Persistency\RecentBudget.cs" />
     <Compile Include="Persistency\PersistableApplicationState.cs" />
-    <Compile Include="ReadModel\IReadStore.cs" />
-    <Compile Include="ReadModel\ReadStore.cs" />
-    <Compile Include="ReadModel\IResetableReadStore.cs" />
+    <Compile Include="Projections\Models\IReadStore.cs" />
+    <Compile Include="Projections\Models\ReadStore.cs" />
+    <Compile Include="Projections\Models\IResetableReadStore.cs" />
     <Compile Include="Serialisation\Serialiser.cs" />
-    <Compile Include="Messaging\VectorClock.cs" />
+    <Compile Include="Domain\Events\VectorClock.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadModel\IReadModel.cs" />
-    <Compile Include="ReadModel\ReadModel.cs" />
+    <Compile Include="Projections\Models\IReadModel.cs" />
+    <Compile Include="Projections\Models\ReadModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -92,6 +92,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Data\currencies.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

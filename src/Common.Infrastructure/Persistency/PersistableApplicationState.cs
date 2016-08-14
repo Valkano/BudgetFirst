@@ -30,6 +30,7 @@ namespace BudgetFirst.Common.Infrastructure.Persistency
 {
     using System.Runtime.Serialization;
 
+    using BudgetFirst.Common.Infrastructure.Domain.Events;
     using BudgetFirst.Common.Infrastructure.EventSourcing;
     using BudgetFirst.Common.Infrastructure.Messaging;
 

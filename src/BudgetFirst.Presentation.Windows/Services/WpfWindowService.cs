@@ -32,11 +32,10 @@ namespace BudgetFirst.Presentation.Windows.Services
     using System.Collections.Generic;
     using System.Windows;
 
-    using BudgetFirst.ViewModel.Services;
-    using BudgetFirst.ViewModel.Shared;
-
+    using BudgetFirst.Application.ViewModels.ReplaceMe;
+    
     /// <summary>
-    /// The WPF implementation of the <see cref="IWindowService"/>.
+    /// The WPF implementation of the <see cref="System.Windows.IWindowService"/>.
     /// </summary>
     public class WpfWindowService : IWindowService
     {

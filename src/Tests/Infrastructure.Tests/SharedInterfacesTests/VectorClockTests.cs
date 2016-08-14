@@ -34,6 +34,7 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
     using System.Text;
     using System.Threading.Tasks;
 
+    using BudgetFirst.Common.Infrastructure.Domain.Events;
     using BudgetFirst.Common.Infrastructure.Messaging;
 
     using NUnit.Framework;

@@ -30,6 +30,7 @@ namespace BudgetFirst.Common.Infrastructure.EventSourcing
 {
     using System.Collections.Generic;
 
+    using BudgetFirst.Common.Infrastructure.Domain.Events;
     using BudgetFirst.Common.Infrastructure.Messaging;
 
     /// <summary>

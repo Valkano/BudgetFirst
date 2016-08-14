@@ -28,8 +28,8 @@
 
 namespace BudgetFirst.Presentation.Windows.PlatformSpecific
 {
+    using BudgetFirst.Application.ViewModels;
     using BudgetFirst.Common.Infrastructure.Wrappers;
-    using BudgetFirst.ViewModel.Desktop;
     
     /// <summary>
     /// Windows-specific view model locator

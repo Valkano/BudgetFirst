@@ -26,11 +26,11 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Events.Events
+namespace BudgetFirst.Accounting.Domain.Events.Events
 {
     using System.Runtime.Serialization;
 
-    using BudgetFirst.Common.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.Domain.Events;
 
     /// <summary>
     /// A new account was created

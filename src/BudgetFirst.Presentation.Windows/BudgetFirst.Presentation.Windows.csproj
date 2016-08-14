@@ -144,17 +144,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Application\ApplicationCore\ApplicationCore.csproj">
-      <Project>{eaddeb9c-fc1e-4b86-8e33-ff05a6f58710}</Project>
-      <Name>ApplicationCore</Name>
+    <ProjectReference Include="..\Accounting.Application\Accounting.Application.csproj">
+      <Project>{f2ad5b2f-8164-4e1d-881c-bdbaa03e95bf}</Project>
+      <Name>Accounting.Application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Application\ReadSide\ReadSide.csproj">
-      <Project>{79ede87e-204b-4a9f-b038-dc225a5b999e}</Project>
-      <Name>ReadSide</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Application\ViewModel\ViewModel.csproj">
-      <Project>{5c3f50fd-395c-4c4f-91db-25a5ffdcc0c7}</Project>
-      <Name>ViewModel</Name>
+    <ProjectReference Include="..\BudgetFirst.Application\BudgetFirst.Application.csproj">
+      <Project>{7481763d-9817-495c-a31e-68e0b449480e}</Project>
+      <Name>BudgetFirst.Application</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common.Infrastructure.PlatformSpecific.Net461\Common.Infrastructure.PlatformSpecific.Net461.csproj">
       <Project>{4dc3ccf8-171c-402d-8cb5-c09e610e82ce}</Project>

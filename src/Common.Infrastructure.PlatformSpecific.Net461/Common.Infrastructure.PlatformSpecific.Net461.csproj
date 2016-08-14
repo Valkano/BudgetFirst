@@ -66,10 +66,6 @@
     <Compile Include="SettingsRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Application\ApplicationCore\ApplicationCore.csproj">
-      <Project>{eaddeb9c-fc1e-4b86-8e33-ff05a6f58710}</Project>
-      <Name>ApplicationCore</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Common.Infrastructure\Common.Infrastructure.csproj">
       <Project>{E6091DB1-C9F7-42DB-B4D5-E31FB6A5A6DA}</Project>
       <Name>Common.Infrastructure</Name>
