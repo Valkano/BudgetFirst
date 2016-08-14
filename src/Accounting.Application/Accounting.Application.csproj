@@ -64,11 +64,11 @@
       <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
       <Name>Common.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain\Budget\Accounting.Domain.Models.csproj">
+    <ProjectReference Include="..\Accounting.Domain.Models\Accounting.Domain.Models.csproj">
       <Project>{c5a29f5e-5669-41bb-aa7b-6943ed5cfbce}</Project>
       <Name>Accounting.Domain.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain\Events\Accounting.Domain.Events.csproj">
+    <ProjectReference Include="..\Accounting.Domain.Events\Accounting.Domain.Events.csproj">
       <Project>{c0b0af45-f29d-419c-90ae-e9b3719a032a}</Project>
       <Name>Accounting.Domain.Events</Name>
     </ProjectReference>

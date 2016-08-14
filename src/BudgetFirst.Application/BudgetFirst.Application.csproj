@@ -99,7 +99,7 @@
       <Project>{DE11EF5B-579F-41A1-B64E-79E827E6351D}</Project>
       <Name>Currencies.Application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain\Events\Accounting.Domain.Events.csproj">
+    <ProjectReference Include="..\Accounting.Domain.Events\Accounting.Domain.Events.csproj">
       <Project>{c0b0af45-f29d-419c-90ae-e9b3719a032a}</Project>
       <Name>Accounting.Domain.Events</Name>
     </ProjectReference>

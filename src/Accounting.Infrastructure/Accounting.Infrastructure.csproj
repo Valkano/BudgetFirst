@@ -49,7 +49,7 @@
       <Project>{E6091DB1-C9F7-42DB-B4D5-E31FB6A5A6DA}</Project>
       <Name>Common.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain\Budget\Accounting.Domain.Models.csproj">
+    <ProjectReference Include="..\Accounting.Domain.Models\Accounting.Domain.Models.csproj">
       <Project>{C5A29F5E-5669-41BB-AA7B-6943ED5CFBCE}</Project>
       <Name>Accounting.Domain.Models</Name>
     </ProjectReference>
