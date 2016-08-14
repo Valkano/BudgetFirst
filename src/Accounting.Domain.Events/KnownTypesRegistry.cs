@@ -30,8 +30,6 @@ namespace BudgetFirst.Accounting.Domain.Events
 {
     using System;
 
-    using BudgetFirst.Accounting.Domain.Events.Events;
-
     /// <summary>
     /// Registry for known types for serialisation support.
     /// Contains all known types needed for serialisation or de-serialisation

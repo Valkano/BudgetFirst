@@ -30,7 +30,7 @@ namespace BudgetFirst.Accounting.Domain.Models
 {
     using System;
 
-    using BudgetFirst.Accounting.Domain.Events.Events;
+    using BudgetFirst.Accounting.Domain.Events;
     using BudgetFirst.Common.Infrastructure.Domain.Model;
     using BudgetFirst.Common.Infrastructure.Persistency;
 

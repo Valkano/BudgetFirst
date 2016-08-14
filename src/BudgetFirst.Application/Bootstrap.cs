@@ -29,7 +29,7 @@ namespace BudgetFirst.Application
     using BudgetFirst.Accounting.Application.Projections;
     using BudgetFirst.Accounting.Application.Projections.Repositories;
     using BudgetFirst.Accounting.Application.Services;
-    using BudgetFirst.Accounting.Domain.Events.Events;
+    using BudgetFirst.Accounting.Domain.Events;
     using BudgetFirst.Application.Commands.Infrastructure;
     using BudgetFirst.Application.Services;
     using BudgetFirst.Common.Infrastructure.ApplicationState;

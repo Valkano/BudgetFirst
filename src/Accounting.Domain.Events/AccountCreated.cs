@@ -26,29 +26,29 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Accounting.Domain.Events.Events
+namespace BudgetFirst.Accounting.Domain.Events
 {
     using System.Runtime.Serialization;
 
     using BudgetFirst.Common.Infrastructure.Domain.Events;
 
     /// <summary>
-    /// The name of an account was changed
+    /// A new account was created
     /// </summary>
-    [DataContract(Name = "AccountNameChanged", Namespace = "http://budgetfirst.github.io/schemas/2016/07/23/Events/Account/NameChanged")]
-    public class AccountNameChanged : DomainEvent
+    [DataContract(Name = "AccountCreated", Namespace = "http://budgetfirst.github.io/schemas/2016/07/23/Events/Account/Created")]
+    public class AccountCreated : DomainEvent
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="AccountNameChanged"/> class.
+        /// Initialises a new instance of the <see cref="AccountCreated"/> class.
         /// </summary>
         /// <param name="name">Account name</param>
-        public AccountNameChanged(string name)
+        public AccountCreated(string name)
         {
             this.Name = name;
         }
 
         /// <summary>
-        /// Gets the new account name
+        /// Gets the account name
         /// </summary>
         [DataMember(Name = "Name")]
         public string Name { get; private set; }

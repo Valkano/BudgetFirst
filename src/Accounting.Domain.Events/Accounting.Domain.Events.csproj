@@ -51,8 +51,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Events\AccountCreated.cs" />
-    <Compile Include="Events\AccountNameChanged.cs" />
+    <Compile Include="AccountCreated.cs" />
+    <Compile Include="AccountNameChanged.cs" />
     <Compile Include="KnownTypesRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -63,7 +63,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Events\Every event must be registered in the KnownTypesRegistry.txt" />
+    <Content Include="Every event must be registered in the KnownTypesRegistry.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />

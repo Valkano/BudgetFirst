@@ -33,7 +33,7 @@ namespace BudgetFirst.Accounting.Application.Projections
 
     using BudgetFirst.Accounting.Application.Projections.Models;
     using BudgetFirst.Accounting.Application.Projections.Repositories;
-    using BudgetFirst.Accounting.Domain.Events.Events;
+    using BudgetFirst.Accounting.Domain.Events;
     using BudgetFirst.Common.Infrastructure.Projections;
 
     /// <summary>
