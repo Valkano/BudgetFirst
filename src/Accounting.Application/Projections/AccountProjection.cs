@@ -39,7 +39,7 @@ namespace BudgetFirst.Accounting.Application.Projections
     /// <summary>
     /// Projection for accounts
     /// </summary>
-    public class AccountProjection : IProjectFrom<AccountCreated>, IProjectFrom<AccountNameChanged> // any new handler must be registered in bootstrap
+    public class AccountProjection : IProjectFrom<AddedAccount>, IProjectFrom<AccountNameChanged> // any new handler must be registered in bootstrap
     {
         /// <summary>
         /// The application's Command Bus.
@@ -66,7 +66,7 @@ namespace BudgetFirst.Accounting.Application.Projections
         /// Account created event handler
         /// </summary>
         /// <param name="e">Account created event</param>
-        public void Handle(AccountCreated e)
+        public void Handle(AddedAccount e)
         {
             var account = this.repository.Find(e.AggregateId);
             if (account != null)

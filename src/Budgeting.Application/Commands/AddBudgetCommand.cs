@@ -30,6 +30,7 @@ namespace BudgetFirst.Budgeting.Application.Commands
 {
     using System;
 
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Commands;
 
     /// <summary>
@@ -43,7 +44,7 @@ namespace BudgetFirst.Budgeting.Application.Commands
         /// <param name="id">Unique Id of the budget</param>
         /// <param name="name">Name of the budget</param>
         /// <param name="currencyCode">Currency code (e.g. EUR)</param>
-        public AddBudgetCommand(Guid id, string name, string currencyCode)
+        public AddBudgetCommand(BudgetId id, string name, string currencyCode)
         {
             this.Id = id;
             this.Name = name;
@@ -53,7 +54,7 @@ namespace BudgetFirst.Budgeting.Application.Commands
         /// <summary>
         /// Gets or sets the budget Id
         /// </summary>
-        public Guid Id { get; set; }
+        public BudgetId Id { get; set; }
 
         /// <summary>
         /// Gets or sets the budget name

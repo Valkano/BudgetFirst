@@ -32,6 +32,7 @@ namespace BudgetFirst.Common.Infrastructure.EventSourcing
     using System.Collections.Generic;
 
     using BudgetFirst.Common.Infrastructure.Domain.Events;
+    using BudgetFirst.Common.Infrastructure.Domain.Model;
     using BudgetFirst.Common.Infrastructure.Messaging;
 
     /// <summary>
@@ -43,14 +44,15 @@ namespace BudgetFirst.Common.Infrastructure.EventSourcing
         /// Get all events in the store
         /// </summary>
         /// <returns>All events in the store</returns>
-        IReadOnlyList<DomainEvent> GetEvents();
+        IReadOnlyList<IDomainEvent> GetEvents();
 
         /// <summary>
         /// Get all saved events for a specific aggregate.
         /// Beware: events are referenced directly, do not manipulate them.
         /// </summary>
         /// <param name="aggregateId">Aggregate Id</param>
+        /// <typeparam name="TAggregateId">Aggregate id type</typeparam>
         /// <returns>Reference to all events for the given aggregate</returns>
-        IReadOnlyList<DomainEvent> GetEventsFor(Guid aggregateId);
+        IReadOnlyList<DomainEvent<TAggregateId>> GetEventsFor<TAggregateId>(TAggregateId aggregateId) where TAggregateId : AggregateId;
     }
 }

@@ -44,7 +44,7 @@ namespace BudgetFirst.Accounting.Domain.Events
         {
             EventTypes = new[]
             {
-                typeof(AccountCreated),
+                typeof(AddedAccount),
                 typeof(AccountNameChanged),
             };
         }

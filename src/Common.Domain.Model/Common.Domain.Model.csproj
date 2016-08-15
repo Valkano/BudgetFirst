@@ -5,16 +5,16 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6E2FF562-6440-4E18-99C1-353EB8C3ACBC}</ProjectGuid>
+    <ProjectGuid>{8A2D1F46-8FCD-4E72-A8EE-98A1308065DB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BudgetFirst.Accounting.Infrastructure</RootNamespace>
-    <AssemblyName>BudgetFirst.Accounting.Infrastructure</AssemblyName>
+    <RootNamespace>BudgetFirst.Common.Domain.Model</RootNamespace>
+    <AssemblyName>BudgetFirst.Common.Domain.Model</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile44</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -27,6 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+    <StyleCopTreatErrorsAsWarnings>False</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,40 +36,26 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <StyleCopTreatErrorsAsWarnings>False</StyleCopTreatErrorsAsWarnings>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Linux|AnyCPU'">
-    <OutputPath>bin\Linux\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Persistence\AccountRepository.cs" />
+    <Compile Include="Identifiers\BudgetId.cs" />
+    <Compile Include="Identifiers\AccountId.cs" />
+    <Compile Include="KnownTypesRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common.Domain.Model\Common.Domain.Model.csproj">
-      <Project>{8a2d1f46-8fcd-4e72-a8ee-98a1308065db}</Project>
-      <Name>Common.Domain.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Common.Infrastructure\Common.Infrastructure.csproj">
-      <Project>{E6091DB1-C9F7-42DB-B4D5-E31FB6A5A6DA}</Project>
+      <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
       <Name>Common.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Accounting.Domain.Models\Accounting.Domain.Models.csproj">
-      <Project>{C5A29F5E-5669-41BB-AA7B-6943ED5CFBCE}</Project>
-      <Name>Accounting.Domain.Models</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Identifiers\Every identifier must have a DataContract.txt" />
+    <Content Include="Identifiers\Every identifier must be registered in the KnownTypesRegistry.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.54.0\build\StyleCop.MSBuild.Targets')" />

@@ -102,6 +102,7 @@ namespace BudgetFirst.Application
             var allKnownTypes = new List<Type>();
             allKnownTypes.AddRange(BudgetFirst.Accounting.Domain.Events.KnownTypesRegistry.EventTypes);
             allKnownTypes.AddRange(BudgetFirst.Budgeting.Domain.Events.KnownTypesRegistry.EventTypes);
+            allKnownTypes.AddRange(BudgetFirst.Common.Domain.Model.KnownTypesRegistry.IdentityTypes);
             Serialiser.KnownTypes = allKnownTypes.ToArray();
         }
         
@@ -217,14 +218,14 @@ namespace BudgetFirst.Application
             {
                 // Account
                 var accountProjection = container.Resolve<AccountProjection>();
-                eventBus.Subscribe<AccountCreated>(accountProjection.Handle);
+                eventBus.Subscribe<AddedAccount>(accountProjection.Handle);
                 eventBus.Subscribe<AccountNameChanged>(accountProjection.Handle);
             }
 
             {
                 // Account list
                 var accountListProjection = container.Resolve<AccountListProjection>();
-                eventBus.Subscribe<AccountCreated>(accountListProjection.Handle);
+                eventBus.Subscribe<AddedAccount>(accountListProjection.Handle);
                 eventBus.Subscribe<AccountNameChanged>(accountListProjection.Handle);
             }
 

@@ -41,14 +41,14 @@ namespace BudgetFirst.Common.Infrastructure.Messaging
         /// <summary>
         /// Registered subscribers
         /// </summary>
-        private Dictionary<Type, List<Action<DomainEvent>>> registrations; // code smell
+        private Dictionary<Type, List<Action<IDomainEvent>>> registrations; // code smell
 
         /// <summary>
         /// Initialises a new instance of the <see cref="EventBus"/> class.
         /// </summary>
         public EventBus()
         {
-            this.registrations = new Dictionary<Type, List<Action<DomainEvent>>>();
+            this.registrations = new Dictionary<Type, List<Action<IDomainEvent>>>();
         }
 
         /// <summary>
@@ -56,9 +56,9 @@ namespace BudgetFirst.Common.Infrastructure.Messaging
         /// </summary>
         /// <typeparam name="TDomainEvent">Type of the event to publish</typeparam>
         /// <param name="domainEvent">Event to publish</param>
-        public void Publish<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent
+        public void Publish<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : class, IDomainEvent
         {
-            List<Action<DomainEvent>> handlers;
+            List<Action<IDomainEvent>> handlers;
             this.registrations.TryGetValue(domainEvent.GetType(), out handlers);
             if (handlers == null)
             {
@@ -76,12 +76,12 @@ namespace BudgetFirst.Common.Infrastructure.Messaging
         /// </summary>
         /// <typeparam name="TDomainEvent">Event type</typeparam>
         /// <param name="handler">Event handler to register</param>
-        public void Subscribe<TDomainEvent>(Action<TDomainEvent> handler) where TDomainEvent : DomainEvent
+        public void Subscribe<TDomainEvent>(Action<TDomainEvent> handler) where TDomainEvent : class, IDomainEvent
         {
             var eventType = typeof(TDomainEvent);
             if (!this.registrations.ContainsKey(eventType))
             {
-                this.registrations[eventType] = new List<Action<DomainEvent>>();
+                this.registrations[eventType] = new List<Action<IDomainEvent>>();
             }
 
             this.registrations[eventType].Add(@event => handler.Invoke((TDomainEvent)@event));

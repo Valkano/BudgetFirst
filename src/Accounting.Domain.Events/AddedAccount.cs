@@ -26,39 +26,43 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Accounting.Domain.Models
+namespace BudgetFirst.Accounting.Domain.Events
 {
     using System;
+    using System.Runtime.InteropServices;
+    using System.Runtime.Serialization;
 
     using BudgetFirst.Common.Domain.Model.Identifiers;
-    using BudgetFirst.Common.Infrastructure.Persistency;
+    using BudgetFirst.Common.Infrastructure.Domain.Events;
 
     /// <summary>
-    /// Factory for <see cref="Account">accounts</see>
+    /// A new account was created
     /// </summary>
-    public static class AccountFactory
+    [DataContract(Name = "AddedAccount", Namespace = "http://budgetfirst.github.io/schemas/2016/08/15/Accounting/AddedAccount")]
+    [ComVisible(false)]
+    public class AddedAccount : DomainEvent<AccountId>
     {
         /// <summary>
-        /// Creates a new account
+        /// Initialises a new instance of the <see cref="AddedAccount"/> class.
         /// </summary>
-        /// <param name="id">Account id</param>
         /// <param name="name">Account name</param>
-        /// <param name="unitOfWork">Current unit of work</param>
-        /// <returns>A new account</returns>
-        public static Account Create(AccountId id, string name, IUnitOfWork unitOfWork)
+        public AddedAccount(string name)
         {
-            return new Account(id, name, unitOfWork);
+            this.Name = name;
         }
 
         /// <summary>
-        /// Load account from (event) history
+        /// Gets the budget this account is associated with.
+        /// Off-budget accounts have <see cref="Guid.Empty"/>.
         /// </summary>
-        /// <param name="id">Account id</param>
-        /// <param name="unitOfWork">Current unit of work</param>
-        /// <returns>An existing account, loaded from the event history</returns>
-        public static Account Load(AccountId id, IUnitOfWork unitOfWork)
-        {
-            return new Account(id, unitOfWork);
-        }
+        /// <remarks>TODO: make use of this; Use proper value object as Id</remarks>
+        [DataMember(Name = "BudgetId")]
+        public Guid Budget { get; private set; }
+
+        /// <summary>
+        /// Gets the account name
+        /// </summary>
+        [DataMember(Name = "Name")]
+        public string Name { get; private set; }
     }
 }

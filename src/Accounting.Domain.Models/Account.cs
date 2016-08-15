@@ -29,15 +29,18 @@
 namespace BudgetFirst.Accounting.Domain.Models
 {
     using System;
+    using System.Runtime.InteropServices;
 
     using BudgetFirst.Accounting.Domain.Events;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Domain.Model;
     using BudgetFirst.Common.Infrastructure.Persistency;
 
     /// <summary>
     /// An account, as in bank account, wallet etc.
     /// </summary>
-    public class Account : AggregateRoot
+    [ComVisible(false)]
+    public class Account : AggregateRoot<AccountId>
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Account"/> class.
@@ -46,9 +49,9 @@ namespace BudgetFirst.Accounting.Domain.Models
         /// <param name="id">Account id</param>
         /// <param name="name">Account name</param>
         /// <param name="unitOfWork">Unit of work</param>
-        internal Account(Guid id, string name, IUnitOfWork unitOfWork) : this(id, unitOfWork, false)
+        internal Account(AccountId id, string name, IUnitOfWork unitOfWork) : this(id, unitOfWork, false)
         {
-            this.Apply(new AccountCreated(name));
+            this.Apply(new AddedAccount(name));
         }
 
         /// <summary>
@@ -57,7 +60,7 @@ namespace BudgetFirst.Accounting.Domain.Models
         /// </summary>
         /// <param name="id">Account Id</param>
         /// <param name="unitOfWork">Unit of work</param>
-        internal Account(Guid id, IUnitOfWork unitOfWork) : this(id, unitOfWork, true)
+        internal Account(AccountId id, IUnitOfWork unitOfWork) : this(id, unitOfWork, true)
         {
         }
 
@@ -69,9 +72,9 @@ namespace BudgetFirst.Accounting.Domain.Models
         /// <param name="unitOfWork">Unit of work</param>
         /// <param name="loadFromHistory">Load the aggregate state from history</param>
         /// <remarks>Load from history cannot be part of the base class because we must define the event handlers first</remarks>
-        private Account(Guid id, IUnitOfWork unitOfWork, bool loadFromHistory) : base(id, unitOfWork)
+        private Account(AccountId id, IUnitOfWork unitOfWork, bool loadFromHistory) : base(id, unitOfWork)
         {
-            this.Handles<AccountCreated>(this.When);
+            this.Handles<AddedAccount>(this.When);
             this.Handles<AccountNameChanged>(this.When);
 
             if (loadFromHistory)
@@ -95,10 +98,10 @@ namespace BudgetFirst.Accounting.Domain.Models
         }
 
         /// <summary>
-        /// Handles <see cref="AccountCreated"/> events
+        /// Handles <see cref="AddedAccount"/> events
         /// </summary>
         /// <param name="e">Event to handle</param>
-        private void When(AccountCreated e)
+        private void When(AddedAccount e)
         {
             this.Name = e.Name;
         }

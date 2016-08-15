@@ -31,11 +31,14 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.Serialization;
     using System.Text;
 
     using BudgetFirst.Common.Infrastructure.Domain.Events;
+    using BudgetFirst.Common.Infrastructure.Domain.Model;
     using BudgetFirst.Common.Infrastructure.EventSourcing;
     using BudgetFirst.Common.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.Serialisation;
 
     using NUnit.Framework;
 
@@ -53,7 +56,7 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
         {
             var eventStore = new EventStore();
             var @event = new TestEvent();
-            @event.AggregateId = new Guid("FFF291EF-1911-4C7C-BB30-89C29F0D6D3E");
+            @event.AggregateId = new TestEventId(new Guid("FFF291EF-1911-4C7C-BB30-89C29F0D6D3E"));
             @event.DeviceId = new Guid("6BAAB117-6D9B-404A-AB6A-4AE7A8DA856C");
             @event.VectorClock = new VectorClock();
 
@@ -70,7 +73,7 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
         {
             var eventStore = new EventStore();
             var @event = new TestEvent();
-            @event.AggregateId = new Guid("FFF291EF-1911-4C7C-BB30-89C29F0D6D3E");
+            @event.AggregateId = new TestEventId(new Guid("FFF291EF-1911-4C7C-BB30-89C29F0D6D3E"));
             @event.DeviceId = new Guid("6BAAB117-6D9B-404A-AB6A-4AE7A8DA856C");
             @event.VectorClock = new VectorClock();
 
@@ -105,10 +108,51 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
         }
 
         /// <summary>
+        /// Events survive a serialisation round trip
+        /// </summary>
+        [Test]
+        public void EventsSurviveSerialisationRoundtrip()
+        {
+            var eventStore = new EventStore();
+            var @event = new TestEvent();
+            @event.AggregateId = new TestEventId(new Guid("FFF291EF-1911-4C7C-BB30-89C29F0D6D3E"));
+            @event.DeviceId = new Guid("6BAAB117-6D9B-404A-AB6A-4AE7A8DA856C");
+            @event.VectorClock = new VectorClock();
+
+            eventStore.Add(@event);
+
+            Serialiser.KnownTypes = new Type[]
+                                        {
+                                            typeof(TestEvent),
+                                            typeof(TestEventId),
+                                        };
+
+            var clonedState = Serialiser.CloneSerialisable(eventStore.State);
+
+            Assert.That(() => eventStore.State.Events.SequenceEqual(clonedState.Events));
+        }
+
+        /// <summary>
         /// Simple, empty event for tests
         /// </summary>
-        private class TestEvent : DomainEvent
+        [DataContract]
+        private class TestEvent : DomainEvent<TestEventId>
         {
+        }
+
+        /// <summary>
+        /// Simple test id
+        /// </summary>
+        [DataContract]
+        private sealed class TestEventId : AggregateId
+        {
+            /// <summary>
+            /// Initialises a new instance of the <see cref="TestEventId"/> class.
+            /// </summary>
+            /// <param name="id">Underlying id</param>
+            public TestEventId(Guid id) : base(id)
+            {
+            }
         }
     }
 }

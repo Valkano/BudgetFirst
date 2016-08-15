@@ -26,31 +26,34 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Accounting.Domain.Events
+namespace BudgetFirst.Common.Domain.Model
 {
-    using System.Runtime.Serialization;
+    using System;
 
-    using BudgetFirst.Common.Infrastructure.Domain.Events;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
 
     /// <summary>
-    /// A new account was created
+    /// Registry for known types for serialisation support.
+    /// Contains all known types needed for serialisation or de-serialisation
     /// </summary>
-    [DataContract(Name = "AccountCreated", Namespace = "http://budgetfirst.github.io/schemas/2016/07/23/Events/Account/Created")]
-    public class AccountCreated : DomainEvent
+    /// <remarks>Usually we would determine the known types at runtime via reflection, but we cannot use reflection in a PCL.</remarks>
+    public static class KnownTypesRegistry
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="AccountCreated"/> class.
+        /// Initialises static members of the <see cref="KnownTypesRegistry"/> class.
         /// </summary>
-        /// <param name="name">Account name</param>
-        public AccountCreated(string name)
+        static KnownTypesRegistry()
         {
-            this.Name = name;
+            IdentityTypes = new[]
+            {
+                typeof(BudgetId),
+                typeof(AccountId),
+            };
         }
 
         /// <summary>
-        /// Gets the account name
+        /// Gets all known types in this assembly
         /// </summary>
-        [DataMember(Name = "Name")]
-        public string Name { get; private set; }
+        public static Type[] IdentityTypes { get; }
     }
 }

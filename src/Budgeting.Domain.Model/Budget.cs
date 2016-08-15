@@ -1,15 +1,18 @@
 ﻿namespace BudgetFirst.Budgeting.Domain.Model
 {
     using System;
+    using System.Runtime.InteropServices;
 
     using BudgetFirst.Budgeting.Domain.Events;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Domain.Model;
     using BudgetFirst.Common.Infrastructure.Persistency;
 
     /// <summary>
     /// A budget for a single currency
     /// </summary>
-    public class Budget : AggregateRoot
+    [ComVisible(false)]
+    public class Budget : AggregateRoot<BudgetId>
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Budget"/> class.
@@ -19,9 +22,9 @@
         /// <param name="name">Budget name</param>
         /// <param name="currencyCode">Currency code</param>
         /// <param name="unitOfWork">Unit of work</param>
-        internal Budget(Guid id, string name, string currencyCode, IUnitOfWork unitOfWork) : this(id, unitOfWork, false)
+        internal Budget(BudgetId id, string name, string currencyCode, IUnitOfWork unitOfWork) : this(id, unitOfWork, false)
         {
-            if (id == Guid.Empty)
+            if (id == null || id.ToGuid() == Guid.Empty)
             {
                 throw new ArgumentException("Id must be set");
             }
@@ -45,7 +48,7 @@
         /// </summary>
         /// <param name="id">Budget Id</param>
         /// <param name="unitOfWork">Unit of work</param>
-        internal Budget(Guid id, IUnitOfWork unitOfWork) : this(id, unitOfWork, true)
+        internal Budget(BudgetId id, IUnitOfWork unitOfWork) : this(id, unitOfWork, true)
         {
         }
 
@@ -57,7 +60,7 @@
         /// <param name="unitOfWork">Unit of work</param>
         /// <param name="loadFromHistory">Load the aggregate state from history</param>
         /// <remarks>Load from history cannot be part of the base class because we must define the event handlers first</remarks>
-        private Budget(Guid id, IUnitOfWork unitOfWork, bool loadFromHistory) : base(id, unitOfWork)
+        private Budget(BudgetId id, IUnitOfWork unitOfWork, bool loadFromHistory) : base(id, unitOfWork)
         {
             this.Handles<AddedBudget>(this.When);
 

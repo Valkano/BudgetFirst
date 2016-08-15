@@ -31,6 +31,7 @@ namespace BudgetFirst.Accounting.Application.Projections.Models
     using System;
 
     using BudgetFirst.Accounting.Application.Commands;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Commands;
     using BudgetFirst.Common.Infrastructure.Projections.Models;
 
@@ -47,7 +48,7 @@ namespace BudgetFirst.Accounting.Application.Projections.Models
         /// <summary>
         /// Account Id
         /// </summary>
-        private Guid id;
+        private AccountId id;
 
         /// <summary>
         /// Command bus
@@ -60,7 +61,7 @@ namespace BudgetFirst.Accounting.Application.Projections.Models
         /// <param name="id">Account id</param>
         /// <param name="name">Account name</param>
         /// <param name="commandBus">Command bus</param>
-        public AccountListItem(Guid id, string name, ICommandBus commandBus)
+        public AccountListItem(AccountId id, string name, ICommandBus commandBus)
         {
             this.id = id;
             this.name = name;
@@ -70,7 +71,7 @@ namespace BudgetFirst.Accounting.Application.Projections.Models
         /// <summary>
         /// Gets the account Id
         /// </summary>
-        public Guid Id
+        public AccountId Id
         {
             get { return this.id; }
         }

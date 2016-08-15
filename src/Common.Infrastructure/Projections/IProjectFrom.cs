@@ -34,7 +34,7 @@ namespace BudgetFirst.Common.Infrastructure.Projections
     /// Defines a domain event handler, intended for projections
     /// </summary>
     /// <typeparam name="TDomainEvent">Type of domain event to handle</typeparam>
-    public interface IProjectFrom<TDomainEvent> where TDomainEvent : DomainEvent
+    public interface IProjectFrom<TDomainEvent> where TDomainEvent : IDomainEvent
     {
         /// <summary>
         /// Handle the domain event

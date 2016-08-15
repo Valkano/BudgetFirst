@@ -30,6 +30,7 @@ namespace BudgetFirst.Budgeting.Domain.Model
 {
     using System;
 
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Persistency;
 
     /// <summary>
@@ -45,7 +46,7 @@ namespace BudgetFirst.Budgeting.Domain.Model
         /// <param name="currencyCode">Currency code</param>
         /// <param name="unitOfWork">Current unit of work</param>
         /// <returns>A new budget</returns>
-        public static Budget Create(Guid id, string name, string currencyCode, IUnitOfWork unitOfWork)
+        public static Budget Create(BudgetId id, string name, string currencyCode, IUnitOfWork unitOfWork)
         {
             return new Budget(id, name, currencyCode, unitOfWork);
         }
@@ -56,7 +57,7 @@ namespace BudgetFirst.Budgeting.Domain.Model
         /// <param name="id">Budget id</param>
         /// <param name="unitOfWork">Current unit of work</param>
         /// <returns>An existing account, loaded from the event history</returns>
-        public static Budget Load(Guid id, IUnitOfWork unitOfWork)
+        public static Budget Load(BudgetId id, IUnitOfWork unitOfWork)
         {
             return new Budget(id, unitOfWork);
         }

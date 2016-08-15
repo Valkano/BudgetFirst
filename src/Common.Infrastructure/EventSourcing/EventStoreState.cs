@@ -46,17 +46,17 @@ namespace BudgetFirst.Common.Infrastructure.EventSourcing
         /// Contains the list of events in this store
         /// </summary>
         [DataMember(Name = "Events")]
-        private List<DomainEvent> events;
+        private List<IDomainEvent> events;
 
         /// <summary>
         /// Gets or sets the events in this store.
         /// Is guaranteed to be not <c>null</c>.
         /// </summary>
-        public List<DomainEvent> Events
+        public List<IDomainEvent> Events
         {
             get
             {
-                return this.events ?? (this.events = new List<DomainEvent>());
+                return this.events ?? (this.events = new List<IDomainEvent>());
             }
 
             set

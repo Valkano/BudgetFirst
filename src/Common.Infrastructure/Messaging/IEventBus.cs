@@ -43,13 +43,13 @@ namespace BudgetFirst.Common.Infrastructure.Messaging
         /// </summary>
         /// <typeparam name="TDomainEvent">Event type</typeparam>
         /// <param name="domainEvent">Event to publish</param>
-        void Publish<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent;
+        void Publish<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : class, IDomainEvent;
 
         /// <summary>
         /// Register as a subscriber
         /// </summary>
         /// <typeparam name="TDomainEvent">Type of event</typeparam>
         /// <param name="handler">Event handler</param>
-        void Subscribe<TDomainEvent>(Action<TDomainEvent> handler) where TDomainEvent : DomainEvent;
+        void Subscribe<TDomainEvent>(Action<TDomainEvent> handler) where TDomainEvent : class, IDomainEvent;
     }
 }

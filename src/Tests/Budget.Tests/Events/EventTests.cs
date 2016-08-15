@@ -54,7 +54,7 @@ namespace Budget.Domain.Tests.Events
         {
             const string AccountName = "Account name";
 
-            var accountCreated = new AccountCreated(AccountName);
+            var accountCreated = new AddedAccount(AccountName);
             var roundtripped = this.SerialisationRoundtrip(accountCreated);
 
             Assert.AreNotSame(accountCreated, roundtripped);
@@ -87,10 +87,10 @@ namespace Budget.Domain.Tests.Events
         /// </summary>
         /// <param name="source">Source before roundtrip</param>
         /// <param name="actual">Event after roundtrip</param>
-        private void AssertDomainEventPropertiesAreEqual(DomainEvent source, DomainEvent actual)
+        private void AssertDomainEventPropertiesAreEqual(IDomainEvent source, IDomainEvent actual)
         {
             Assert.AreEqual(source.VectorClock, actual.VectorClock);
-            Assert.AreEqual(source.AggregateId, actual.AggregateId);
+            Assert.AreEqual(source.AbstractAggregateId, actual.AbstractAggregateId);
             Assert.AreEqual(source.DeviceId, actual.DeviceId);
             Assert.AreEqual(source.EventId, actual.EventId);
             Assert.AreEqual(source.Timestamp, actual.Timestamp);
@@ -102,7 +102,7 @@ namespace Budget.Domain.Tests.Events
         /// <param name="source">Source object to serialise and de-serialise</param>
         /// <typeparam name="TEvent">Event type</typeparam>
         /// <returns>Clone of source object through serialisation roundtrip</returns>
-        private TEvent SerialisationRoundtrip<TEvent>(TEvent source) where TEvent : DomainEvent
+        private TEvent SerialisationRoundtrip<TEvent>(TEvent source) where TEvent : IDomainEvent
         {
             return Serialiser.CloneSerialisable(source);
         }

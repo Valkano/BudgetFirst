@@ -42,12 +42,12 @@ namespace BudgetFirst.Common.Infrastructure.EventSourcing
         /// Add a single event
         /// </summary>
         /// <param name="domainEvent">Event to add</param>
-        void Add(DomainEvent domainEvent);
+        void Add(IDomainEvent domainEvent);
 
         /// <summary>
         /// Add multiple events
         /// </summary>
         /// <param name="domainEvents">Events to add</param>
-        void Add(IEnumerable<DomainEvent> domainEvents);
+        void Add(IEnumerable<IDomainEvent> domainEvents);
     }
 }

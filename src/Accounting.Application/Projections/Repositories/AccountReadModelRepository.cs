@@ -31,6 +31,7 @@ namespace BudgetFirst.Accounting.Application.Projections.Repositories
     using System;
 
     using BudgetFirst.Accounting.Application.Projections.Models;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Projections.Models;
 
     /// <summary>
@@ -57,9 +58,9 @@ namespace BudgetFirst.Accounting.Application.Projections.Repositories
         /// </summary>
         /// <param name="id">Account Id</param>
         /// <returns>Reference to the account in the repository, if found. <c>null</c> otherwise.</returns>
-        public Account Find(Guid id)
+        public Account Find(AccountId id)
         {
-            return this.readStore.Retrieve<Account>(id);
+            return this.readStore.Retrieve<Account>(id.ToGuid());
         }
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace BudgetFirst.Accounting.Application.Projections.Repositories
         /// <param name="account">Account to save</param>
         public void Save(Account account)
         {
-            this.readStore.Store(account.Id, account);
+            this.readStore.Store(account.Id.ToGuid(), account);
         }
     }
 }

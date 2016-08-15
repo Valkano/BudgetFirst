@@ -272,6 +272,30 @@ namespace BudgetFirst.Common.Infrastructure.Domain.Events
             }
         }
 
+        /// <summary>Determines whether the specified object is equal to the current object.</summary>
+        /// <returns>true if the specified object  is equal to the current object; otherwise, false.</returns>
+        /// <param name="obj">The object to compare with the current object. </param>
+        public override bool Equals(object obj)
+        {
+            var other = obj as VectorClock;
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.CompareVectors(other) == ComparisonResult.Equal && this.Timestamp == other.Timestamp;
+        }
+
+        /// <summary>Serves as the default hash function. </summary>
+        /// <returns>A hash code for the current object.</returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (this.Timestamp.GetHashCode() * 397) ^ (this.Vector != null ? this.Vector.GetHashCode() : 0);
+            }
+        }
+
         /// <summary>
         /// Create an exact copy of this current VectorClock.
         /// </summary>

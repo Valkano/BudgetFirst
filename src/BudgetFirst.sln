@@ -61,6 +61,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgeting.Domain.Model", "B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgeting.Domain.Events", "Budgeting.Domain.Events\Budgeting.Domain.Events.csproj", "{06242251-ED86-4038-8606-925A4FB5D830}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Domain.Model", "Common.Domain.Model\Common.Domain.Model.csproj", "{8A2D1F46-8FCD-4E72-A8EE-98A1308065DB}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Tests\Budget.Tests\Budget.Tests.projitems*{29b288d4-239f-4756-8b03-b161799cd762}*SharedItemsImports = 13
@@ -169,6 +171,12 @@ Global
 		{06242251-ED86-4038-8606-925A4FB5D830}.Linux|Any CPU.Build.0 = Linux|Any CPU
 		{06242251-ED86-4038-8606-925A4FB5D830}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06242251-ED86-4038-8606-925A4FB5D830}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A2D1F46-8FCD-4E72-A8EE-98A1308065DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A2D1F46-8FCD-4E72-A8EE-98A1308065DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A2D1F46-8FCD-4E72-A8EE-98A1308065DB}.Linux|Any CPU.ActiveCfg = Release|Any CPU
+		{8A2D1F46-8FCD-4E72-A8EE-98A1308065DB}.Linux|Any CPU.Build.0 = Release|Any CPU
+		{8A2D1F46-8FCD-4E72-A8EE-98A1308065DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A2D1F46-8FCD-4E72-A8EE-98A1308065DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,5 +198,6 @@ Global
 		{8257820D-9B18-47FF-9B85-BCEDC1F9E01E} = {80301C9E-D28A-4EDE-9A07-EA1DB33E94D8}
 		{8A139D4B-FA1C-48DD-B415-43089ED6720C} = {80301C9E-D28A-4EDE-9A07-EA1DB33E94D8}
 		{06242251-ED86-4038-8606-925A4FB5D830} = {80301C9E-D28A-4EDE-9A07-EA1DB33E94D8}
+		{8A2D1F46-8FCD-4E72-A8EE-98A1308065DB} = {B5BE9A28-1EE5-43F5-A730-DC70A0F0C879}
 	EndGlobalSection
 EndGlobal

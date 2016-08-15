@@ -28,15 +28,18 @@
 
 namespace BudgetFirst.Budgeting.Domain.Events
 {
+    using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
 
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Domain.Events;
     
     /// <summary>
     /// A new budget has been added
     /// </summary>
     [DataContract(Name = "AddedBudget", Namespace = "http://budgetfirst.github.io/schemas/2016/08/15/Budgeting/AddedBudget")]
-    public class AddedBudget : DomainEvent
+    [ComVisible(false)]
+    public class AddedBudget : DomainEvent<BudgetId>
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="AddedBudget"/> class. 

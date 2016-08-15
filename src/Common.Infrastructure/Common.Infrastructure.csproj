@@ -52,6 +52,9 @@
   <ItemGroup>
     <Compile Include="Commands\CommandBus.cs" />
     <Compile Include="Data\Currencies.cs" />
+    <Compile Include="Domain\Events\AbstractDomainEvent.cs" />
+    <Compile Include="Domain\Events\IDomainEvent.cs" />
+    <Compile Include="Domain\Model\AggregateId.cs" />
     <Compile Include="Domain\Model\AggregateRoot.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\ICommandBus.cs" />

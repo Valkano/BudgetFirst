@@ -31,6 +31,7 @@ namespace BudgetFirst.Accounting.Infrastructure.Persistence
     using System;
 
     using BudgetFirst.Accounting.Domain.Models;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Messaging;
     using BudgetFirst.Common.Infrastructure.Persistency;
 
@@ -54,7 +55,7 @@ namespace BudgetFirst.Accounting.Infrastructure.Persistence
         /// <param name="unitOfWork">Unit of work</param>
         /// <returns><para>Rehydrated aggregate. </para>
         /// <para>Note: all changes to the account are directly written to the unit of work.</para></returns>
-        public Account Find(Guid id, IUnitOfWork unitOfWork)
+        public Account Find(AccountId id, IUnitOfWork unitOfWork)
         {
             return AccountFactory.Load(id, unitOfWork);
         }

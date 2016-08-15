@@ -28,15 +28,18 @@
 
 namespace BudgetFirst.Accounting.Domain.Events
 {
+    using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
 
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Domain.Events;
 
     /// <summary>
     /// The name of an account was changed
     /// </summary>
     [DataContract(Name = "AccountNameChanged", Namespace = "http://budgetfirst.github.io/schemas/2016/07/23/Events/Account/NameChanged")]
-    public class AccountNameChanged : DomainEvent
+    [ComVisible(false)]
+    public class AccountNameChanged : DomainEvent<AccountId>
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="AccountNameChanged"/> class.

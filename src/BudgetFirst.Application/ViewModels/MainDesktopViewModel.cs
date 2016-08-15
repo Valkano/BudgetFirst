@@ -36,6 +36,7 @@ namespace BudgetFirst.Application.ViewModels
     using BudgetFirst.Application.Messages;
     using BudgetFirst.Application.Projections;
     using BudgetFirst.Application.ViewModels.ReplaceMe;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Persistency;
     using BudgetFirst.Common.Infrastructure.Wrappers;
 
@@ -178,7 +179,7 @@ namespace BudgetFirst.Application.ViewModels
         /// </summary>
         private void AddAccount()
         {
-            this.applicationKernel.CommandBus.Submit(new CreateAccountCommand() { Id = Guid.NewGuid(), Name = "Account Name" });
+            this.applicationKernel.CommandBus.Submit(new CreateAccountCommand() { Id = new AccountId(Guid.NewGuid()), Name = "Account Name" });
         }
 
         /// <summary>

@@ -31,6 +31,7 @@ namespace BudgetFirst.Budget.Tests
     using System;
 
     using BudgetFirst.Accounting.Domain.Models;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.ApplicationState;
     using BudgetFirst.Common.Infrastructure.EventSourcing;
     using BudgetFirst.Common.Infrastructure.Messaging;
@@ -72,7 +73,7 @@ namespace BudgetFirst.Budget.Tests
         [Test]
         public void NewAccountHasName()
         {
-            var account = AccountFactory.Create(new Guid("DB1C3C3E-C8C4-47A0-AD43-F154FDDB0577"), "Test1", this.unitOfWork);
+            var account = AccountFactory.Create(new AccountId(new Guid("DB1C3C3E-C8C4-47A0-AD43-F154FDDB0577")), "Test1", this.unitOfWork);
             Assert.AreEqual("Test1", account.Name);
         }
 
@@ -82,7 +83,7 @@ namespace BudgetFirst.Budget.Tests
         [Test]
         public void ReconstitutedNewAccountHasCorrectName()
         {
-            var accountId = new Guid("A34C7724-F9FE-4A14-89A2-C8F1D662EE2A");
+            var accountId = new AccountId(new Guid("A34C7724-F9FE-4A14-89A2-C8F1D662EE2A"));
             var prevouslyCreatedAccount = AccountFactory.Create(accountId, "Test2", this.unitOfWork);
             
             var account = AccountFactory.Load(accountId, this.unitOfWork);

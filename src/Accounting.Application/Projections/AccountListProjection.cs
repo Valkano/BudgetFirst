@@ -40,7 +40,7 @@ namespace BudgetFirst.Accounting.Application.Projections
     /// <summary>
     /// Projection for account lists
     /// </summary>
-    public class AccountListProjection : IProjectFrom<AccountCreated>, IProjectFrom<AccountNameChanged> // any new handler must be registered in bootstrap
+    public class AccountListProjection : IProjectFrom<AddedAccount>, IProjectFrom<AccountNameChanged> // any new handler must be registered in bootstrap
     {
         /// <summary>
         /// Account list repository
@@ -77,7 +77,7 @@ namespace BudgetFirst.Accounting.Application.Projections
         /// Account created event handler
         /// </summary>
         /// <param name="e">Account created event</param>
-        public void Handle(AccountCreated e)
+        public void Handle(AddedAccount e)
         {
             var accountList = this.accountListRepository.Find();
             if (accountList == null)
@@ -93,7 +93,7 @@ namespace BudgetFirst.Accounting.Application.Projections
                 this.accountListItemRepository.Save(account);
             }
 
-            if (!accountList.Any(x => x.Id == e.AggregateId))
+            if (!accountList.Any(x => e.AggregateId.Equals(x.Id)))
             {
                 accountList.Add(account);
                 this.accountListRepository.Save(accountList);

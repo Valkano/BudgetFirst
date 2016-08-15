@@ -35,6 +35,7 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
 
     using BudgetFirst.Common.Infrastructure.ApplicationState;
     using BudgetFirst.Common.Infrastructure.Domain.Events;
+    using BudgetFirst.Common.Infrastructure.Domain.Model;
     using BudgetFirst.Common.Infrastructure.EventSourcing;
     using BudgetFirst.Common.Infrastructure.Messaging;
     using BudgetFirst.Common.Infrastructure.Persistency;
@@ -131,7 +132,7 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
         [Test]
         public void OrderEvents()
         {
-            var eventList = new List<DomainEvent>();
+            var eventList = new List<IDomainEvent>();
             eventList.Add(this.evt5);
             eventList.Add(this.evt4);
             eventList.Add(this.evt3);
@@ -152,7 +153,7 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
         [Test]
         public void VectorClockTakesPrecedence()
         {
-            var eventList = new List<DomainEvent>();
+            var eventList = new List<IDomainEvent>();
             eventList.Add(this.evt6); // Earlier timestamp but later vectorclock
             eventList.Add(this.evt1);
 
@@ -168,7 +169,7 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
         public void SimultaneousEventsLastWins()
         {
             Assert.That(this.evt3.VectorClock.CompareVectors(this.evt4.VectorClock) == VectorClock.ComparisonResult.Simultaneous);
-            var eventList = new List<DomainEvent>();
+            var eventList = new List<IDomainEvent>();
             eventList.Add(this.evt4); // Earlier timestamp
             eventList.Add(this.evt3);
             eventList.Sort();
@@ -193,10 +194,24 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
         }
 
         /// <summary>
-        /// Test event
+        /// Simple, empty event for tests
         /// </summary>
-        private class TestEvent : DomainEvent
+        private class TestEvent : DomainEvent<TestEventId>
         {
+        }
+
+        /// <summary>
+        /// Simple test id
+        /// </summary>
+        private sealed class TestEventId : AggregateId
+        {
+            /// <summary>
+            /// Initialises a new instance of the <see cref="TestEventId"/> class.
+            /// </summary>
+            /// <param name="id">Underlying id</param>
+            public TestEventId(Guid id) : base(id)
+            {
+            }
         }
     }
 }

@@ -33,6 +33,7 @@ namespace BudgetFirst.Common.Infrastructure.Persistency
 
     using BudgetFirst.Common.Infrastructure.ApplicationState;
     using BudgetFirst.Common.Infrastructure.Domain.Events;
+    using BudgetFirst.Common.Infrastructure.Domain.Model;
 
     /// <summary>
     /// Unit of work for aggregates.
@@ -54,13 +55,15 @@ namespace BudgetFirst.Common.Infrastructure.Persistency
         /// <summary>
         /// Gets the list of new events in this unit of work (not all events from the event store!)
         /// </summary>
-        IList<DomainEvent> NewEvents { get; }
+        IList<IDomainEvent> NewEvents { get; }
 
         /// <summary>
         /// Get ALL events for the aggregate - includes new events from the unit of work and events from the event store.
         /// </summary>
         /// <param name="aggregateId">Aggregate id</param>
+        /// <typeparam name="TAggregateId">Aggregate id type</typeparam>
         /// <returns>All events (from store and unit of work) for the aggregate</returns>
-        IReadOnlyList<DomainEvent> GetEventsForAggregate(Guid aggregateId);
+        IReadOnlyList<DomainEvent<TAggregateId>> GetEventsForAggregate<TAggregateId>(TAggregateId aggregateId)
+            where TAggregateId : AggregateId;
     }
 }

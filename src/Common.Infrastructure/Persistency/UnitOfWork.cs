@@ -34,6 +34,7 @@ namespace BudgetFirst.Common.Infrastructure.Persistency
 
     using BudgetFirst.Common.Infrastructure.ApplicationState;
     using BudgetFirst.Common.Infrastructure.Domain.Events;
+    using BudgetFirst.Common.Infrastructure.Domain.Model;
     using BudgetFirst.Common.Infrastructure.EventSourcing;
     using BudgetFirst.Common.Infrastructure.Messaging;
 
@@ -71,7 +72,7 @@ namespace BudgetFirst.Common.Infrastructure.Persistency
             this.ReadOnlyDeviceId = readOnlyDeviceId;
             this.VectorClock = vectorClock.Clone(); // vector clock in unit of work must be isolated
             this.masterVectorClock = vectorClock;
-            this.NewEvents = new List<DomainEvent>();
+            this.NewEvents = new List<IDomainEvent>();
             this.eventStore = eventStore;
             this.eventBus = eventBus;
         }
@@ -89,23 +90,24 @@ namespace BudgetFirst.Common.Infrastructure.Persistency
         /// <summary>
         /// Gets the current list of events (only new events in this unit of work)
         /// </summary>
-        public IList<DomainEvent> NewEvents { get; }
+        public IList<IDomainEvent> NewEvents { get; }
 
         /// <summary>
         /// Get ALL events for the aggregate - includes new events from the unit of work and events from the event store.
         /// </summary>
         /// <param name="aggregateId">Aggregate id</param>
+        /// <typeparam name="TAggregateId">Aggregate id type</typeparam>
         /// <returns>All events (from store and unit of work) for the aggregate</returns>
-        public IReadOnlyList<DomainEvent> GetEventsForAggregate(Guid aggregateId)
+        public IReadOnlyList<DomainEvent<TAggregateId>> GetEventsForAggregate<TAggregateId>(TAggregateId aggregateId) where TAggregateId : AggregateId
         {
-            var result = new List<DomainEvent>();
+            var result = new List<DomainEvent<TAggregateId>>();
             var existingEvents = this.eventStore.GetEventsFor(aggregateId);
             if (existingEvents?.Any() ?? false)
             {
                 result.AddRange(existingEvents);
             }
 
-            result.AddRange(this.NewEvents.Where((x) => x.AggregateId == aggregateId));
+            result.AddRange(this.NewEvents.OfType<DomainEvent<TAggregateId>>().Where((x) => aggregateId.Equals(x.AggregateId)));
             return result;
         }
 

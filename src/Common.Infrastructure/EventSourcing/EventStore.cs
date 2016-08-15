@@ -33,6 +33,7 @@ namespace BudgetFirst.Common.Infrastructure.EventSourcing
     using System.Linq;
 
     using BudgetFirst.Common.Infrastructure.Domain.Events;
+    using BudgetFirst.Common.Infrastructure.Domain.Model;
     using BudgetFirst.Common.Infrastructure.Messaging;
 
     /// <summary>
@@ -49,7 +50,7 @@ namespace BudgetFirst.Common.Infrastructure.EventSourcing
         /// <summary>
         /// Lookup which groups the events in the store by aggregate
         /// </summary>
-        private Dictionary<Guid, List<DomainEvent>> lookup = new Dictionary<Guid, List<DomainEvent>>();
+        private Dictionary<AggregateId, List<IDomainEvent>> lookup = new Dictionary<AggregateId, List<IDomainEvent>>();
 
         /// <summary>
         /// Gets or sets state (i.e. all events)
@@ -77,7 +78,7 @@ namespace BudgetFirst.Common.Infrastructure.EventSourcing
         /// Beware: events are referenced directly, do not manipulate them.
         /// </summary>
         /// <returns>References to all saved events</returns>
-        public IReadOnlyList<DomainEvent> GetEvents()
+        public IReadOnlyList<IDomainEvent> GetEvents()
         {
             return this.state.Events;
         }
@@ -87,19 +88,20 @@ namespace BudgetFirst.Common.Infrastructure.EventSourcing
         /// Beware: events are referenced directly, do not manipulate them.
         /// </summary>
         /// <param name="aggregateId">Aggregate Id</param>
+        /// <typeparam name="TAggregateId">Aggregate id type</typeparam>
         /// <returns>Reference to all events for the given aggregate</returns>
-        public IReadOnlyList<DomainEvent> GetEventsFor(Guid aggregateId)
+        public IReadOnlyList<DomainEvent<TAggregateId>> GetEventsFor<TAggregateId>(TAggregateId aggregateId) where TAggregateId : AggregateId
         {
-            List<DomainEvent> events = null;
+            List<IDomainEvent> events = null;
             this.lookup.TryGetValue(aggregateId, out events);
-            return events;
+            return events?.Cast<DomainEvent<TAggregateId>>()?.ToList();
         }
 
         /// <summary>
         /// Save multiple events
         /// </summary>
         /// <param name="domainEvents">Events to save</param>
-        public void Add(IEnumerable<DomainEvent> domainEvents)
+        public void Add(IEnumerable<IDomainEvent> domainEvents)
         {
             var newEvents = domainEvents.ToList();
             foreach (var @event in newEvents)
@@ -115,7 +117,7 @@ namespace BudgetFirst.Common.Infrastructure.EventSourcing
         /// Save a single event
         /// </summary>
         /// <param name="domainEvent">Event to save</param>
-        public void Add(DomainEvent domainEvent)
+        public void Add(IDomainEvent domainEvent)
         {
             this.CheckValidity(domainEvent);
             this.state.Events.Add(domainEvent);
@@ -127,7 +129,7 @@ namespace BudgetFirst.Common.Infrastructure.EventSourcing
         /// </summary>
         /// <param name="event">Event to check</param>
         /// <exception cref="DomainEventIncompleteException">The domain event is incomplete/invalid and cannot be added to the event store.</exception>
-        private void CheckValidity(DomainEvent @event)
+        private void CheckValidity(IDomainEvent @event)
         {
             if (!@event.IsValid())
             {
@@ -139,9 +141,9 @@ namespace BudgetFirst.Common.Infrastructure.EventSourcing
         /// Add multiple events to the lookup
         /// </summary>
         /// <param name="newEvents">New events to add</param>
-        private void AddToLookup(IEnumerable<DomainEvent> newEvents)
+        private void AddToLookup(IEnumerable<IDomainEvent> newEvents)
         {
-            foreach (var e in newEvents.GroupBy(x => x.AggregateId))
+            foreach (var e in newEvents.GroupBy(x => x.AbstractAggregateId))
             {
                 this.EnsureLookupKeyExists(e.Key);
                 this.lookup[e.Key].AddRange(e);
@@ -152,21 +154,21 @@ namespace BudgetFirst.Common.Infrastructure.EventSourcing
         /// Add a single event to the lookup
         /// </summary>
         /// <param name="domainEvent">Event to add</param>
-        private void AddToLookup(DomainEvent domainEvent)
+        private void AddToLookup(IDomainEvent domainEvent)
         {
-            this.EnsureLookupKeyExists(domainEvent.AggregateId);
-            this.lookup[domainEvent.AggregateId].Add(domainEvent);
+            this.EnsureLookupKeyExists(domainEvent.AbstractAggregateId);
+            this.lookup[domainEvent.AbstractAggregateId].Add(domainEvent);
         }
 
         /// <summary>
         /// Ensure that the lookup key exists (initialise as new list if not yet set).
         /// </summary>
         /// <param name="key">Lookup key (i.e. aggregate id)</param>
-        private void EnsureLookupKeyExists(Guid key)
+        private void EnsureLookupKeyExists(AggregateId key)
         {
             if (!this.lookup.ContainsKey(key))
             {
-                this.lookup[key] = new List<DomainEvent>();
+                this.lookup[key] = new List<IDomainEvent>();
             }
         }
     }

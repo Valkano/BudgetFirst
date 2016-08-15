@@ -71,6 +71,10 @@
       <Project>{c0b0af45-f29d-419c-90ae-e9b3719a032a}</Project>
       <Name>Accounting.Domain.Events</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Common.Domain.Model\Common.Domain.Model.csproj">
+      <Project>{8a2d1f46-8fcd-4e72-a8ee-98a1308065db}</Project>
+      <Name>Common.Domain.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common.Infrastructure\Common.Infrastructure.csproj">
       <Project>{e6091db1-c9f7-42db-b4d5-e31fb6a5a6da}</Project>
       <Name>Common.Infrastructure</Name>

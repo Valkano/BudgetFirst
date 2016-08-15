@@ -30,6 +30,7 @@ namespace BudgetFirst.Accounting.Application.Commands
 {
     using System;
 
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Commands;
 
     /// <summary>
@@ -40,7 +41,7 @@ namespace BudgetFirst.Accounting.Application.Commands
         /// <summary>
         /// Gets or sets the Id of the account
         /// </summary>
-        public Guid Id { get; set; }
+        public AccountId Id { get; set; }
 
         /// <summary>
         /// Gets or sets the account name

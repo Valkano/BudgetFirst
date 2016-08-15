@@ -31,6 +31,7 @@ namespace BudgetFirst.Accounting.Application.Projections.Models
     using System;
 
     using BudgetFirst.Accounting.Application.Commands;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Commands;
     using BudgetFirst.Common.Infrastructure.Projections.Models;
 
@@ -52,7 +53,7 @@ namespace BudgetFirst.Accounting.Application.Projections.Models
         /// <summary>
         /// Account Id
         /// </summary>
-        private Guid id;
+        private AccountId id;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="Account"/> class.
@@ -66,7 +67,7 @@ namespace BudgetFirst.Accounting.Application.Projections.Models
         /// <summary>
         /// Gets or sets the account Id
         /// </summary>
-        public Guid Id
+        public AccountId Id
         {
             get { return this.id; }
             set { this.SetProperty(ref this.id, value); }
