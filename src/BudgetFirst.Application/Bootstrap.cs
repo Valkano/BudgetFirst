@@ -179,7 +179,7 @@ namespace BudgetFirst.Application
             simpleInjector.Register<IHandleCommand<ChangeAccountNameCommand>, AccountService>();
 
             // Budgeting context
-            simpleInjector.Register<IHandleCommand<CreateNewBudgetCommand>, BudgetService>();
+            simpleInjector.Register<IHandleCommand<AddBudgetCommand>, BudgetService>();
 
             // Budget First context
             simpleInjector.Register<IHandleCommand<SaveApplicationState>, ApplicationStateService>();

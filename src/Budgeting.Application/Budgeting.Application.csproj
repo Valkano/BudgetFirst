@@ -53,7 +53,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CreateNewBudgetCommand.cs" />
+    <Compile Include="Commands\AddBudgetCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BudgetService.cs" />
   </ItemGroup>
