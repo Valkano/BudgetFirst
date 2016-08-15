@@ -48,10 +48,27 @@ namespace BudgetFirst.Accounting.Domain.Models
         /// </summary>
         /// <param name="id">Account id</param>
         /// <param name="name">Account name</param>
+        /// <param name="budgetId">Budget the account belongs to</param>
         /// <param name="unitOfWork">Unit of work</param>
-        internal Account(AccountId id, string name, IUnitOfWork unitOfWork) : this(id, unitOfWork, false)
+        internal Account(AccountId id, string name, BudgetId budgetId, IUnitOfWork unitOfWork) : this(id, unitOfWork, false)
         {
-            this.Apply(new AddedAccount(name));
+            if (id == null || !id.IsValid())
+            {
+                throw new ArgumentException("Account id must be valid");
+            }
+
+            // TODO: value object instead
+            if (string.IsNullOrWhiteSpace(name)) 
+            {
+                throw new ArgumentException("Account name must be valid");
+            }
+
+            if (budgetId == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            this.Apply(new AddedAccount(name, budgetId));
         }
 
         /// <summary>

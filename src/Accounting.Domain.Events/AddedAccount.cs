@@ -46,23 +46,29 @@ namespace BudgetFirst.Accounting.Domain.Events
         /// Initialises a new instance of the <see cref="AddedAccount"/> class.
         /// </summary>
         /// <param name="name">Account name</param>
-        public AddedAccount(string name)
+        /// <param name="budgetId">Budget the account belongs to</param>
+        public AddedAccount(string name, BudgetId budgetId)
         {
             this.Name = name;
+            this.Budget = budgetId;
         }
 
         /// <summary>
         /// Gets the budget this account is associated with.
         /// Off-budget accounts have <see cref="Guid.Empty"/>.
         /// </summary>
-        /// <remarks>TODO: make use of this; Use proper value object as Id</remarks>
         [DataMember(Name = "BudgetId")]
-        public Guid Budget { get; private set; }
+        public BudgetId Budget { get; private set; }
 
         /// <summary>
         /// Gets the account name
         /// </summary>
         [DataMember(Name = "Name")]
         public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets the account id
+        /// </summary>
+        public AccountId AccountId => this.AggregateId;
     }
 }

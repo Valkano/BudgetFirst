@@ -38,7 +38,7 @@ namespace BudgetFirst.Accounting.Application.Services
     /// <summary>
     /// Handles commands related to Accounts
     /// </summary>
-    public class AccountService : IHandleCommand<CreateAccountCommand>, IHandleCommand<ChangeAccountNameCommand>
+    public class AccountService : IHandleCommand<AddAccountCommand>, IHandleCommand<ChangeAccountNameCommand>
     {
         /// <summary>
         /// The Account repository
@@ -70,9 +70,9 @@ namespace BudgetFirst.Accounting.Application.Services
         /// </summary>
         /// <param name="command">The CreateAccountNameCommand</param>
         /// <param name="unitOfWork">The event transaction</param>
-        public void Handle(CreateAccountCommand command, IUnitOfWork unitOfWork)
+        public void Handle(AddAccountCommand command, IUnitOfWork unitOfWork)
         {
-            var account = AccountFactory.Create(command.Id, command.Name, unitOfWork);
+            var account = AccountFactory.Create(command.Id, command.Name, command.Budget, unitOfWork);
         }
     }
 }

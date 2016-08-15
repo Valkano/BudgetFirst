@@ -176,7 +176,7 @@ namespace BudgetFirst.Application
         {
             // Command Handlers - transient
             // Accounting context
-            simpleInjector.Register<IHandleCommand<CreateAccountCommand>, AccountService>();
+            simpleInjector.Register<IHandleCommand<AddAccountCommand>, AccountService>();
             simpleInjector.Register<IHandleCommand<ChangeAccountNameCommand>, AccountService>();
 
             // Budgeting context

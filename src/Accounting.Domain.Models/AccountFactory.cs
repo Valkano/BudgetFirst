@@ -43,11 +43,12 @@ namespace BudgetFirst.Accounting.Domain.Models
         /// </summary>
         /// <param name="id">Account id</param>
         /// <param name="name">Account name</param>
+        /// <param name="budgetId">Budget this account belongs to</param>
         /// <param name="unitOfWork">Current unit of work</param>
         /// <returns>A new account</returns>
-        public static Account Create(AccountId id, string name, IUnitOfWork unitOfWork)
+        public static Account Create(AccountId id, string name, BudgetId budgetId, IUnitOfWork unitOfWork)
         {
-            return new Account(id, name, unitOfWork);
+            return new Account(id, name, budgetId, unitOfWork);
         }
 
         /// <summary>

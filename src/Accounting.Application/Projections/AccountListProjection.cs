@@ -79,24 +79,24 @@ namespace BudgetFirst.Accounting.Application.Projections
         /// <param name="e">Account created event</param>
         public void Handle(AddedAccount e)
         {
-            var accountList = this.accountListRepository.Find();
+            var accountList = this.accountListRepository.Find(e.Budget);
             if (accountList == null)
             {
                 accountList = new AccountList();
-                this.accountListRepository.Save(accountList);
+                this.accountListRepository.Save(e.Budget, accountList);
             }
-
-            var account = this.accountListItemRepository.Find(e.AggregateId);
+            
+            var account = this.accountListItemRepository.Find(e.AccountId);
             if (account == null)
             {
-                account = new AccountListItem(e.AggregateId, e.Name, this.commandBus);
+                account = new AccountListItem(e.AccountId, e.Name, this.commandBus);
                 this.accountListItemRepository.Save(account);
             }
 
-            if (!accountList.Any(x => e.AggregateId.Equals(x.Id)))
+            if (!accountList.Any(x => e.AccountId.Equals(x.Id)))
             {
                 accountList.Add(account);
-                this.accountListRepository.Save(accountList);
+                this.accountListRepository.Save(e.Budget, accountList);
             }
         }
 
@@ -106,10 +106,10 @@ namespace BudgetFirst.Accounting.Application.Projections
         /// <param name="e">Account renamed event</param>
         public void Handle(AccountNameChanged e)
         {
-            var account = this.accountListItemRepository.Find(e.AggregateId);
+            var account = this.accountListItemRepository.Find(e.AccountId);
             if (account == null)
             {
-                throw new InvalidOperationException("Account list item with id " + e.AggregateId.ToString() + " was not found in repository.");
+                throw new InvalidOperationException("Account list item with id " + e.AccountId.ToString() + " was not found in repository.");
             }
 
             account.SetName(e.Name);

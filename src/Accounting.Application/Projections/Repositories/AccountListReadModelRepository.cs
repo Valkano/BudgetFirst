@@ -29,6 +29,7 @@
 namespace BudgetFirst.Accounting.Application.Projections.Repositories
 {
     using BudgetFirst.Accounting.Application.Projections.Models;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Projections.Models;
 
     /// <summary>
@@ -53,14 +54,15 @@ namespace BudgetFirst.Accounting.Application.Projections.Repositories
         /// <summary>
         /// Retrieve an account list from the repository.
         /// </summary>
+        /// <param name="budget">Budget the accounts belong to</param>
         /// <returns>Reference to the account list in the repository. Guaranteed to be not <c>null</c>.</returns>
-        public AccountList Find()
+        public AccountList Find(BudgetId budget)
         {
-            var list = this.readStore.RetrieveSingleton<AccountList>();
+            var list = this.readStore.Retrieve<AccountList>(budget.ToGuid());
             if (list == null)
             {
                 list = new AccountList();
-                this.Save(list);
+                this.Save(budget, list);
             }
 
             return list;
@@ -69,10 +71,11 @@ namespace BudgetFirst.Accounting.Application.Projections.Repositories
         /// <summary>
         /// Save the account list, or add it to the repository. Beware: replaces existing account list in repository.
         /// </summary>
+        /// <param name="budget">Budget the accounts belong to</param>
         /// <param name="accountList">Account list to save</param>
-        internal void Save(AccountList accountList)
+        internal void Save(BudgetId budget, AccountList accountList)
         {
-            this.readStore.StoreSingleton(accountList);
+            this.readStore.Store(budget.ToGuid(), accountList);
         }
     }
 }

@@ -29,7 +29,12 @@
 namespace BudgetFirst.Accounting.Application.Projections.Models
 {
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
+
+    using BudgetFirst.Common.Infrastructure.Projections.Models;
+    using BudgetFirst.SharedInterfaces.Annotations;
 
     /// <summary>
     /// Account list read model

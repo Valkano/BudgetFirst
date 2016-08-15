@@ -20,7 +20,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-
 namespace BudgetFirst.Common.Domain.Model.Identifiers
 {
     using System;
@@ -33,15 +32,28 @@ namespace BudgetFirst.Common.Domain.Model.Identifiers
     /// Budget id
     /// </summary>
     [ComVisible(false)]
-    [DataContract(Name = "BudgetId", Namespace = "http://budgetfirst.github.io/schemas/2016/08/15/Identifiers/BudgetId")]
+    [DataContract(Name = "BudgetId", Namespace = "http://budgetfirst.github.io/schemas/2016/08/15/Identifiers/BudgetId")
+    ]
     public sealed class BudgetId : AggregateId
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="BudgetId"/> class.
         /// </summary>
         /// <param name="id">Underlying id</param>
-        public BudgetId(Guid id) : base(id)
+        public BudgetId(Guid id)
+            : base(id)
         {
+        }
+
+        /// <summary>
+        /// Gets the off-budget id
+        /// </summary>
+        public static BudgetId OffBudgetId
+        {
+            get
+            {
+                return new BudgetId(Guid.Empty);
+            }
         }
 
         /// <summary>
@@ -50,7 +62,7 @@ namespace BudgetFirst.Common.Domain.Model.Identifiers
         /// <returns><c>true</c> if this identifies the off-budget budget</returns>
         public bool IsOffBudget()
         {
-            return this.ToGuid() == Guid.Empty;
+            return this.Equals(OffBudgetId);
         }
     }
 }

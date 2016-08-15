@@ -34,6 +34,7 @@ namespace Budget.Domain.Tests.Events
     using System.Text;
 
     using BudgetFirst.Accounting.Domain.Events;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Domain.Events;
     using BudgetFirst.Common.Infrastructure.Messaging;
     using BudgetFirst.Common.Infrastructure.Serialisation;
@@ -54,12 +55,15 @@ namespace Budget.Domain.Tests.Events
         {
             const string AccountName = "Account name";
 
-            var accountCreated = new AddedAccount(AccountName);
+            var offBudgetId = BudgetId.OffBudgetId;
+
+            var accountCreated = new AddedAccount(AccountName, offBudgetId);
             var roundtripped = this.SerialisationRoundtrip(accountCreated);
 
             Assert.AreNotSame(accountCreated, roundtripped);
 
             Assert.AreEqual(accountCreated.Name, roundtripped.Name);
+            Assert.AreEqual(accountCreated.Budget, roundtripped.Budget);
             
             this.AssertDomainEventPropertiesAreEqual(accountCreated, roundtripped);
         }

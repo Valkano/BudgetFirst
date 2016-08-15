@@ -53,7 +53,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CreateAccountCommand.cs" />
+    <Compile Include="Commands\AddAccountCommand.cs" />
     <Compile Include="Commands\CreateAccountNameCommand.cs" />
     <Compile Include="Projections\AccountListProjection.cs" />
     <Compile Include="Projections\AccountProjection.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="Services\AccountService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Projections\All projections must be registered in bootstrap.txt" />
+    <Content Include="Projections\All projections and handlers must be registered in bootstrap.txt" />
     <Content Include="Services\Every command handler must be registered in bootstrap.txt" />
   </ItemGroup>
   <ItemGroup>

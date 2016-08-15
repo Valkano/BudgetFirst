@@ -55,5 +55,10 @@ namespace BudgetFirst.Accounting.Domain.Events
         /// </summary>
         [DataMember(Name = "Name")]
         public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets the account id
+        /// </summary>
+        public AccountId AccountId => this.AggregateId;
     }
 }
