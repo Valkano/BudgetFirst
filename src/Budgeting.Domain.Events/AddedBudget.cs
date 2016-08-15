@@ -26,30 +26,41 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Common.Infrastructure.Messaging
+namespace BudgetFirst.Budgeting.Domain.Events
 {
-    using System;
+    using System.Runtime.Serialization;
 
     using BudgetFirst.Common.Infrastructure.Domain.Events;
-
+    
     /// <summary>
-    /// Represents a message bus/queue, publish-subscribe pattern.
-    /// Subscribers are to be automatically resolved
+    /// A new budget has been added
     /// </summary>
-    public interface IMessageBus
+    [DataContract(Name = "AddedBudget", Namespace = "http://budgetfirst.github.io/schemas/2016/08/15/Budgeting/AddedBudget")]
+    public class AddedBudget : DomainEvent
     {
         /// <summary>
-        /// Publish an event to all subscribers of that event
+        /// Initialises a new instance of the <see cref="AddedBudget"/> class. 
         /// </summary>
-        /// <typeparam name="TDomainEvent">Event type</typeparam>
-        /// <param name="domainEvent">Event to publish</param>
-        void Publish<TDomainEvent>(TDomainEvent domainEvent) where TDomainEvent : DomainEvent;
+        /// <param name="name">Name of the budget</param>
+        /// <param name="currencyCode">Currency code</param>
+        /// <remarks>Will not be called during de-serialisation</remarks>
+        public AddedBudget(string name, string currencyCode)
+        {
+            this.Name = name;
+            this.CurrencyCode = currencyCode;
+        }
 
         /// <summary>
-        /// Register as a subscriber
+        /// Gets the name of the budget
         /// </summary>
-        /// <typeparam name="TDomainEvent">Type of event</typeparam>
-        /// <param name="handler">Event handler</param>
-        void Subscribe<TDomainEvent>(Action<TDomainEvent> handler) where TDomainEvent : DomainEvent;
+        [DataMember(Name = "Name")]
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets the currency code used in the budget
+        /// </summary>
+        /// <remarks>TODO: replace with separate type?</remarks>
+        [DataMember(Name = "CurrencyCode")]
+        public string CurrencyCode { get; private set; } 
     }
 }

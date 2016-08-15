@@ -187,7 +187,7 @@ namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
 
             var vectorClock = new MasterVectorClock(deviceId);
             var eventStore = new EventStore();
-            var messageBus = new MessageBus();
+            var messageBus = new EventBus();
 
             this.unitOfWork = new UnitOfWork(deviceId, vectorClock, eventStore, messageBus);
         }

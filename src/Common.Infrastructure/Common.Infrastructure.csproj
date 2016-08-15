@@ -64,8 +64,8 @@
     <Compile Include="Projections\IProjectFrom.cs" />
     <Compile Include="EventSourcing\IEventStore.cs" />
     <Compile Include="Persistency\IUnitOfWork.cs" />
-    <Compile Include="Messaging\IMessageBus.cs" />
-    <Compile Include="Messaging\MessageBus.cs" />
+    <Compile Include="Messaging\IEventBus.cs" />
+    <Compile Include="Messaging\EventBus.cs" />
     <Compile Include="ApplicationState\IDeviceId.cs" />
     <Compile Include="ApplicationState\DeviceId.cs" />
     <Compile Include="EventSourcing\EventStoreState.cs" />

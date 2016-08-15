@@ -120,11 +120,11 @@ namespace BudgetFirst.Application
         /// </summary>
         internal void ResetReadModelState()
         {
-            // TODO: broadcast reset after it is done
+            // TODO: broadcast reset after it is done?
             this.bootstrap.Container.Resolve<IResetableReadStore>().Clear();
             foreach (var @event in this.bootstrap.EventStore.GetEvents())
             {
-                this.bootstrap.MessageBus.Publish(@event);
+                this.bootstrap.EventBus.Publish(@event);
             }
         }
 

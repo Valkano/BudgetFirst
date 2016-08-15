@@ -34,9 +34,9 @@ namespace BudgetFirst.Common.Infrastructure.Messaging
     using BudgetFirst.Common.Infrastructure.Domain.Events;
 
     /// <summary>
-    /// A publish/subscribe message bus
+    /// A publish/subscribe message bus for events
     /// </summary>
-    public class MessageBus : IMessageBus
+    public class EventBus : IEventBus
     {
         /// <summary>
         /// Registered subscribers
@@ -44,9 +44,9 @@ namespace BudgetFirst.Common.Infrastructure.Messaging
         private Dictionary<Type, List<Action<DomainEvent>>> registrations; // code smell
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="MessageBus"/> class.
+        /// Initialises a new instance of the <see cref="EventBus"/> class.
         /// </summary>
-        public MessageBus()
+        public EventBus()
         {
             this.registrations = new Dictionary<Type, List<Action<DomainEvent>>>();
         }

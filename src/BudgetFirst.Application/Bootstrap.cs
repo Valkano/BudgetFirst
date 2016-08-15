@@ -32,6 +32,8 @@ namespace BudgetFirst.Application
     using BudgetFirst.Accounting.Domain.Events;
     using BudgetFirst.Application.Commands.Infrastructure;
     using BudgetFirst.Application.Services;
+    using BudgetFirst.Budgeting.Application.Commands;
+    using BudgetFirst.Budgeting.Application.Services;
     using BudgetFirst.Common.Infrastructure.ApplicationState;
     using BudgetFirst.Common.Infrastructure.Commands;
     using BudgetFirst.Common.Infrastructure.DependencyInjection;
@@ -57,8 +59,7 @@ namespace BudgetFirst.Application
             IPersistedApplicationStateRepository persistedApplicationStateRepository, 
             ICurrentApplicationStateFactory applicationStateFactory)
         {
-            this.Container = this.SetupDependencyInjection(persistedApplicationStateRepository, applicationStateFactory);
-            this.RegisterProjections(this.Container, this.MessageBus);
+            this.Container = this.CreateContainer(persistedApplicationStateRepository, applicationStateFactory);
             RegisterKnownTypesForSerialisation();
         }
 
@@ -85,7 +86,7 @@ namespace BudgetFirst.Application
         /// <summary>
         /// Gets the Application's MessageBus
         /// </summary>
-        public IMessageBus MessageBus { get; private set; }
+        public IEventBus EventBus { get; private set; }
 
         /// <summary>
         /// Gets the current (master) vector clock
@@ -100,39 +101,17 @@ namespace BudgetFirst.Application
             // Serialisation needs to know about the available types. However, we cannot use reflection here
             var allKnownTypes = new List<Type>();
             allKnownTypes.AddRange(BudgetFirst.Accounting.Domain.Events.KnownTypesRegistry.EventTypes);
+            allKnownTypes.AddRange(BudgetFirst.Budgeting.Domain.Events.KnownTypesRegistry.EventTypes);
             Serialiser.KnownTypes = allKnownTypes.ToArray();
         }
-
-        /// <summary>
-        /// Register projections
-        /// </summary>
-        /// <param name="container">Dependency injection container</param>
-        /// <param name="messageBus">Message bus</param>
-        private void RegisterProjections(IContainer container, IMessageBus messageBus)
-        {
-            // we'd love to solve this via reflection or some automatic means but we don't have that available in PCL projects
-            {
-                // Account
-                var accountProjection = container.Resolve<AccountProjection>();
-                messageBus.Subscribe<AccountCreated>(accountProjection.Handle);
-                messageBus.Subscribe<AccountNameChanged>(accountProjection.Handle);
-            }
-
-            {
-                // Account list
-                var accountListProjection = container.Resolve<AccountListProjection>();
-                messageBus.Subscribe<AccountCreated>(accountListProjection.Handle);
-                messageBus.Subscribe<AccountNameChanged>(accountListProjection.Handle);
-            }
-        }
-
+        
         /// <summary>
         /// Setup the dependency injection
         /// </summary>
         /// <returns>Initialised dependency injection container</returns>
         /// <param name="persistedApplicationStateRepository">Application state repository for access to the persisted application state</param>
         /// <param name="applicationStateFactory">Factory for the current application state</param>
-        private IContainer SetupDependencyInjection(
+        private IContainer CreateContainer(
             IPersistedApplicationStateRepository persistedApplicationStateRepository, 
             ICurrentApplicationStateFactory applicationStateFactory)
         {
@@ -158,24 +137,17 @@ namespace BudgetFirst.Application
             simpleInjector.RegisterSingleton<IVectorClock>(this.VectorClock);
 
             // Core messaging infrastructure
-            this.MessageBus = new MessageBus();
-            simpleInjector.RegisterSingleton<IMessageBus>(this.MessageBus);
+            this.EventBus = new EventBus();
+            simpleInjector.RegisterSingleton<IEventBus>(this.EventBus);
 
             // Initialise the command bus last because it depends on many other objects
             this.CommandBus = new CommandBus(
                 simpleInjector, 
-                this.MessageBus, 
+                this.EventBus, 
                 this.DeviceId, 
                 this.VectorClock, 
                 this.EventStore);
             simpleInjector.RegisterSingleton<ICommandBus>(this.CommandBus);
-
-            // Command Handlers
-            // Transient
-            simpleInjector.Register<IHandleCommand<CreateAccountCommand>, AccountService>();
-            simpleInjector.Register<IHandleCommand<ChangeAccountNameCommand>, AccountService>();
-            simpleInjector.Register<IHandleCommand<SaveApplicationState>, ApplicationStateService>();
-            simpleInjector.Register<IHandleCommand<LoadApplicationState>, ApplicationStateService>();
 
             // Read store (for read side repositories) 
             // same singleton for read and reset
@@ -183,24 +155,80 @@ namespace BudgetFirst.Application
             simpleInjector.RegisterSingleton<IReadStore>(readStore);
             simpleInjector.RegisterSingleton<IResetableReadStore>(readStore);
 
-            // Read side repositories. 
+            // Must also register container itself because infrastructure needs it
+            simpleInjector.RegisterSingleton<IContainer>(simpleInjector);
+
+            // Sub-registrations (must not depend on each other)
+            this.RegisterCommandHandlers(simpleInjector);
+            this.RegisterProjectionRepositories(simpleInjector);
+            this.RegisterProjections(simpleInjector, this.EventBus);
+
+            simpleInjector.Verify();
+            return simpleInjector;
+        }
+
+        /// <summary>
+        /// Register command handlers
+        /// </summary>
+        /// <param name="simpleInjector">Container to register in</param>
+        private void RegisterCommandHandlers(Container simpleInjector)
+        {
+            // Command Handlers - transient
+            // Accounting context
+            simpleInjector.Register<IHandleCommand<CreateAccountCommand>, AccountService>();
+            simpleInjector.Register<IHandleCommand<ChangeAccountNameCommand>, AccountService>();
+
+            // Budgeting context
+            simpleInjector.Register<IHandleCommand<CreateNewBudgetCommand>, BudgetService>();
+
+            // Budget First context
+            simpleInjector.Register<IHandleCommand<SaveApplicationState>, ApplicationStateService>();
+            simpleInjector.Register<IHandleCommand<LoadApplicationState>, ApplicationStateService>();
+        }
+
+        /// <summary>
+        /// Register read model repositories
+        /// </summary>
+        /// <param name="simpleInjector">Container to register in</param>
+        private void RegisterProjectionRepositories(Container simpleInjector)
+        {
             // While these could be stateless and transient, they are used by the singleton generators
             // -> Singleton
             simpleInjector.Register<AccountReadModelRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
             simpleInjector.Register<AccountListItemReadModelRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
             simpleInjector.Register<AccountListReadModelRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
             simpleInjector.Register<CurrencyRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+        }
 
-            // Generators
-            // Only one instance per generator -> Singleton
-            simpleInjector.Register<AccountProjection, AccountProjection>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
-            simpleInjector.Register<AccountListProjection, AccountListProjection>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+        /// <summary>
+        /// Register projections
+        /// </summary>
+        /// <param name="container">Dependency injection container</param>
+        /// <param name="eventBus">Message bus</param>
+        private void RegisterProjections(Container container, IEventBus eventBus)
+        {
+            // we'd love to solve this via reflection or some automatic means but we don't have that available in PCL projects
+            // All projections must be singleton. Define them here first
+            container.Register<AccountProjection, AccountProjection>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+            container.Register<AccountListProjection, AccountListProjection>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
 
-            // Must also register container itself because infrastructure needs it
-            simpleInjector.RegisterSingleton<IContainer>(simpleInjector);
+            // Set up message handling
+            // Accounting context
+            {
+                // Account
+                var accountProjection = container.Resolve<AccountProjection>();
+                eventBus.Subscribe<AccountCreated>(accountProjection.Handle);
+                eventBus.Subscribe<AccountNameChanged>(accountProjection.Handle);
+            }
 
-            simpleInjector.Verify();
-            return simpleInjector;
+            {
+                // Account list
+                var accountListProjection = container.Resolve<AccountListProjection>();
+                eventBus.Subscribe<AccountCreated>(accountListProjection.Handle);
+                eventBus.Subscribe<AccountNameChanged>(accountListProjection.Handle);
+            }
+
+            // TODO: budgeting context
         }
     }
 }

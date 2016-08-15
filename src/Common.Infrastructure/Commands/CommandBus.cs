@@ -45,10 +45,10 @@ namespace BudgetFirst.Common.Infrastructure.Commands
         private IContainer dependencyInjectionContainer;
 
         /// <summary>
-        /// Message bus, needed to publish events to
+        /// Event bus, needed to publish events to
         /// </summary>
         /// <remarks>TODO: event publishing should be job of event store?</remarks>
-        private IMessageBus messageBus;
+        private IEventBus eventBus;
 
         /// <summary>
         /// Current device Id
@@ -69,19 +69,19 @@ namespace BudgetFirst.Common.Infrastructure.Commands
         /// Initialises a new instance of the <see cref="CommandBus"/> class. 
         /// </summary>
         /// <param name="dependencyInjector">Dependency injection/resolving container</param>
-        /// <param name="messageBus">Message bus to publish events to</param>
+        /// <param name="eventBus">Message bus to publish events to</param>
         /// <param name="readOnlyDeviceId">Device id</param>
         /// <param name="vectorClock">current vector clock</param>
         /// <param name="eventStore">Event store</param>
         public CommandBus(
             IContainer dependencyInjector,
-            IMessageBus messageBus,
+            IEventBus eventBus,
             IReadOnlyDeviceId readOnlyDeviceId,
             IVectorClock vectorClock,
             IEventStore eventStore)
         {
             this.dependencyInjectionContainer = dependencyInjector;
-            this.messageBus = messageBus;
+            this.eventBus = eventBus;
             this.readOnlyDeviceId = readOnlyDeviceId;
             this.vectorClock = vectorClock;
             this.eventStore = eventStore;
@@ -94,7 +94,7 @@ namespace BudgetFirst.Common.Infrastructure.Commands
         /// <param name="command">Command to be executed</param>
         public void Submit<TCommand>(TCommand command) where TCommand : ICommand
         {
-            var unitOfWork = new UnitOfWork(this.readOnlyDeviceId, this.vectorClock, this.eventStore, this.messageBus);
+            var unitOfWork = new UnitOfWork(this.readOnlyDeviceId, this.vectorClock, this.eventStore, this.eventBus);
             this.InvokeHandler(command, unitOfWork);
             unitOfWork.Commit(); // handles saving, publishing, vector clock etc.
         }

@@ -66,7 +66,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Projections\All projections must be registered in bootstrap.txt" />
+    <Content Include="Services\Every command handler must be registered in bootstrap.txt" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Accounting.Infrastructure\Accounting.Infrastructure.csproj">
       <Project>{6e2ff562-6440-4e18-99c1-353eb8c3acbc}</Project>

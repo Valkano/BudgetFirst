@@ -57,7 +57,7 @@ namespace BudgetFirst.Common.Infrastructure.Persistency
         /// <summary>
         /// Message bus
         /// </summary>
-        private IMessageBus messageBus;
+        private IEventBus eventBus;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="UnitOfWork"/> class.
@@ -65,15 +65,15 @@ namespace BudgetFirst.Common.Infrastructure.Persistency
         /// <param name="readOnlyDeviceId">Device Id</param>
         /// <param name="vectorClock">Vector clock</param>
         /// <param name="eventStore">Event store</param>
-        /// <param name="messageBus">Message bus</param>
-        public UnitOfWork(IReadOnlyDeviceId readOnlyDeviceId, IVectorClock vectorClock, IEventStore eventStore, IMessageBus messageBus)
+        /// <param name="eventBus">Message bus</param>
+        public UnitOfWork(IReadOnlyDeviceId readOnlyDeviceId, IVectorClock vectorClock, IEventStore eventStore, IEventBus eventBus)
         {
             this.ReadOnlyDeviceId = readOnlyDeviceId;
             this.VectorClock = vectorClock.Clone(); // vector clock in unit of work must be isolated
             this.masterVectorClock = vectorClock;
             this.NewEvents = new List<DomainEvent>();
             this.eventStore = eventStore;
-            this.messageBus = messageBus;
+            this.eventBus = eventBus;
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace BudgetFirst.Common.Infrastructure.Persistency
         {
             foreach (var newEvent in this.NewEvents)
             {
-                this.messageBus.Publish(newEvent);
+                this.eventBus.Publish(newEvent);
             }
         }
 
