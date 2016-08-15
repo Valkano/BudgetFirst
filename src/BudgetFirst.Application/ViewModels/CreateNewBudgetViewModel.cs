@@ -23,6 +23,8 @@
 
 namespace BudgetFirst.Application.ViewModels
 {
+    using System.Runtime.InteropServices;
+
     using BudgetFirst.Application.Projections;
     using BudgetFirst.Currencies.Application.Projections.Models;
 
@@ -32,6 +34,7 @@ namespace BudgetFirst.Application.ViewModels
     /// <summary>
     /// View model for creating a new budget
     /// </summary>
+    [ComVisible(false)]
     public class CreateNewBudgetViewModel : ViewModelBase
     {
         // TODO: we need: a create budget command, identifier of current budget (on view model?)

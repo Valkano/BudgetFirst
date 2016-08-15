@@ -26,6 +26,7 @@ namespace BudgetFirst.Application.ViewModels
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Runtime.InteropServices;
 
     using BudgetFirst.Application.Commands.Infrastructure;
     using BudgetFirst.Application.Messages;
@@ -41,6 +42,7 @@ namespace BudgetFirst.Application.ViewModels
     /// <summary>
     /// Initial page view model. Contains steps to open or create a budget.
     /// </summary>
+    [ComVisible(false)]
     public class WelcomeViewModel : ViewModelBase
     {
         /// <summary>

@@ -29,6 +29,7 @@
 namespace BudgetFirst.Application.ViewModels
 {
     using System;
+    using System.Runtime.InteropServices;
 
     using BudgetFirst.Accounting.Application.Commands;
     using BudgetFirst.Accounting.Application.Projections.Models;
@@ -44,6 +45,7 @@ namespace BudgetFirst.Application.ViewModels
     /// <summary>
     /// Represents the main Application for Desktop Platforms.
     /// </summary>
+    [ComVisible(false)]
     public class MainDesktopViewModel : ClosableViewModel
     {
         /// <summary>

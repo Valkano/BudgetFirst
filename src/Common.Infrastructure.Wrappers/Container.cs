@@ -36,7 +36,7 @@ namespace BudgetFirst.Common.Infrastructure.Wrappers
     /// <summary>
     /// A wrapper around the SimpleInjector container.
     /// </summary>
-    public class Container : IContainer, IDisposable
+    public sealed class Container : IContainer, IDisposable
     {
         /// <summary>
         /// The underlying container.

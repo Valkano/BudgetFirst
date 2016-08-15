@@ -29,6 +29,7 @@
 namespace BudgetFirst.Application.ViewModels.ReplaceMe
 {
     using System;
+    using System.Runtime.InteropServices;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
@@ -37,6 +38,7 @@ namespace BudgetFirst.Application.ViewModels.ReplaceMe
     /// A base ViewModel that has a header and knows how to close itself, 
     /// to represent windows or Closable tabs.
     /// </summary>
+    [ComVisible(false)]
     public class ClosableViewModel : ViewModelBase
     {
         /// <summary>
