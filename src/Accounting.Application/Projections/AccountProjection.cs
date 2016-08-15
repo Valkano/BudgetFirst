@@ -65,33 +65,33 @@ namespace BudgetFirst.Accounting.Application.Projections
         /// <summary>
         /// Account created event handler
         /// </summary>
-        /// <param name="event">Account created event</param>
-        public void Handle(AccountCreated @event)
+        /// <param name="e">Account created event</param>
+        public void Handle(AccountCreated e)
         {
-            var account = this.repository.Find(@event.AggregateId);
+            var account = this.repository.Find(e.AggregateId);
             if (account != null)
             {
-                throw new InvalidOperationException("Account with id " + @event.AggregateId.ToString() + " is already created in repository.");
+                throw new InvalidOperationException("Account with id " + e.AggregateId.ToString() + " is already created in repository.");
             }
 
-            account = new Account(this.commandBus) { Id = @event.AggregateId };
-            account.UpdateName(@event.Name);
+            account = new Account(this.commandBus) { Id = e.AggregateId };
+            account.SetName(e.Name);
             this.repository.Save(account);
         }
 
         /// <summary>
         /// Account name changed event handler
         /// </summary>
-        /// <param name="event">Account renamed event</param>
-        public void Handle(AccountNameChanged @event)
+        /// <param name="e">Account renamed event</param>
+        public void Handle(AccountNameChanged e)
         {
-            var account = this.repository.Find(@event.AggregateId);
+            var account = this.repository.Find(e.AggregateId);
             if (account == null)
             {
-                throw new InvalidOperationException("Account with id " + @event.AggregateId.ToString() + " was not found in repository.");
+                throw new InvalidOperationException("Account with id " + e.AggregateId.ToString() + " was not found in repository.");
             }
 
-            account.UpdateName(@event.Name);
+            account.SetName(e.Name);
             this.repository.Save(account);
         }
     }

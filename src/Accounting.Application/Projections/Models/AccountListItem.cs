@@ -30,6 +30,8 @@ namespace BudgetFirst.Accounting.Application.Projections.Models
 {
     using System;
 
+    using BudgetFirst.Accounting.Application.Commands;
+    using BudgetFirst.Common.Infrastructure.Commands;
     using BudgetFirst.Common.Infrastructure.Projections.Models;
 
     /// <summary>
@@ -48,12 +50,29 @@ namespace BudgetFirst.Accounting.Application.Projections.Models
         private Guid id;
 
         /// <summary>
-        /// Gets or sets the account Id
+        /// Command bus
+        /// </summary>
+        private ICommandBus commandBus;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AccountListItem"/> class.
+        /// </summary>
+        /// <param name="id">Account id</param>
+        /// <param name="name">Account name</param>
+        /// <param name="commandBus">Command bus</param>
+        public AccountListItem(Guid id, string name, ICommandBus commandBus)
+        {
+            this.id = id;
+            this.name = name;
+            this.commandBus = commandBus;
+        }
+
+        /// <summary>
+        /// Gets the account Id
         /// </summary>
         public Guid Id
         {
             get { return this.id; }
-            set { this.SetProperty(ref this.id, value); }
         }
 
         /// <summary>
@@ -62,7 +81,16 @@ namespace BudgetFirst.Accounting.Application.Projections.Models
         public string Name
         {
             get { return this.name; }
-            set { this.SetProperty(ref this.name, value); }
+            set { this.commandBus.Submit(new ChangeAccountNameCommand() { Id = this.Id, Name = value }); }
+        }
+
+        /// <summary>
+        /// Set a new account name
+        /// </summary>
+        /// <param name="name">Account name</param>
+        internal void SetName(string name)
+        {
+            this.SetProperty(ref this.name, name, propertyName: nameof(this.Name));
         }
     }
 }

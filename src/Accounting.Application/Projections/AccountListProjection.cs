@@ -34,6 +34,7 @@ namespace BudgetFirst.Accounting.Application.Projections
     using BudgetFirst.Accounting.Application.Projections.Models;
     using BudgetFirst.Accounting.Application.Projections.Repositories;
     using BudgetFirst.Accounting.Domain.Events;
+    using BudgetFirst.Common.Infrastructure.Commands;
     using BudgetFirst.Common.Infrastructure.Projections;
 
     /// <summary>
@@ -52,21 +53,31 @@ namespace BudgetFirst.Accounting.Application.Projections
         private AccountListItemReadModelRepository accountListItemRepository;
 
         /// <summary>
+        /// Command bus
+        /// </summary>
+        private ICommandBus commandBus;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="AccountListProjection"/> class.
         /// </summary>
         /// <param name="accountListRepository">Account list repository to use</param>
         /// <param name="accountListItemRepository">Account list item repository to use</param>
-        public AccountListProjection(AccountListReadModelRepository accountListRepository, AccountListItemReadModelRepository accountListItemRepository)
+        /// <param name="commandBus">Command bus</param>
+        public AccountListProjection(
+            AccountListReadModelRepository accountListRepository, 
+            AccountListItemReadModelRepository accountListItemRepository,
+            ICommandBus commandBus)
         {
             this.accountListRepository = accountListRepository;
             this.accountListItemRepository = accountListItemRepository;
+            this.commandBus = commandBus;
         }
 
         /// <summary>
         /// Account created event handler
         /// </summary>
-        /// <param name="event">Account created event</param>
-        public void Handle(AccountCreated @event)
+        /// <param name="e">Account created event</param>
+        public void Handle(AccountCreated e)
         {
             var accountList = this.accountListRepository.Find();
             if (accountList == null)
@@ -75,14 +86,14 @@ namespace BudgetFirst.Accounting.Application.Projections
                 this.accountListRepository.Save(accountList);
             }
 
-            var account = this.accountListItemRepository.Find(@event.AggregateId);
+            var account = this.accountListItemRepository.Find(e.AggregateId);
             if (account == null)
             {
-                account = new AccountListItem() { Id = @event.AggregateId, Name = @event.Name };
+                account = new AccountListItem(e.AggregateId, e.Name, this.commandBus);
                 this.accountListItemRepository.Save(account);
             }
 
-            if (!accountList.Any(x => x.Id == @event.AggregateId))
+            if (!accountList.Any(x => x.Id == e.AggregateId))
             {
                 accountList.Add(account);
                 this.accountListRepository.Save(accountList);
@@ -92,16 +103,16 @@ namespace BudgetFirst.Accounting.Application.Projections
         /// <summary>
         /// Account name changed event handler
         /// </summary>
-        /// <param name="event">Account renamed event</param>
-        public void Handle(AccountNameChanged @event)
+        /// <param name="e">Account renamed event</param>
+        public void Handle(AccountNameChanged e)
         {
-            var account = this.accountListItemRepository.Find(@event.AggregateId);
+            var account = this.accountListItemRepository.Find(e.AggregateId);
             if (account == null)
             {
-                throw new InvalidOperationException("Account list item with id " + @event.AggregateId.ToString() + " was not found in repository.");
+                throw new InvalidOperationException("Account list item with id " + e.AggregateId.ToString() + " was not found in repository.");
             }
 
-            account.Name = @event.Name;
+            account.SetName(e.Name);
             this.accountListItemRepository.Save(account);
         }
     }

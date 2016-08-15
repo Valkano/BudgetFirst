@@ -39,7 +39,7 @@ namespace BudgetFirst.Common.Infrastructure.Projections
         /// <summary>
         /// Handle the domain event
         /// </summary>
-        /// <param name="event">Event to handle</param>
-        void Handle(TDomainEvent @event);
+        /// <param name="e">Event to handle</param>
+        void Handle(TDomainEvent e);
     }
 }

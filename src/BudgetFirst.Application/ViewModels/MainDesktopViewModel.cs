@@ -191,9 +191,8 @@ namespace BudgetFirst.Application.ViewModels
                 return;
             }
 
-            var accountRepo = this.applicationKernel.Repositories.AccountReadModelRepository;
-            var account = accountRepo.Find(this.SelectedAccount.Id);
-            account.Name = $"Renamed Account ({this.renameCount++})";
+            // Read models wrap changes directly for us
+            this.selectedAccount.Name = $"Renamed Account ({this.renameCount++})";
         }
 
         /// <summary>

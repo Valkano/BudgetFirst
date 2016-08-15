@@ -86,7 +86,7 @@ namespace BudgetFirst.Accounting.Application.Projections.Models
         /// </summary>
         /// <param name="newName">The new name.</param>
         /// <remarks>TODO: move projections and their models into the same assembly and make this internal</remarks>
-        public void UpdateName(string newName)
+        internal void SetName(string newName)
         {
             var propertyName = nameof(this.Name);
             this.SetProperty(ref this.name, newName, propertyName: propertyName);
