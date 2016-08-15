@@ -23,9 +23,13 @@
 
 namespace BudgetFirst.Application.ViewModels
 {
+    using System;
     using System.Runtime.InteropServices;
 
     using BudgetFirst.Application.Projections;
+    using BudgetFirst.Budgeting.Application.Commands;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
+    using BudgetFirst.Common.Infrastructure.Wrappers;
     using BudgetFirst.Currencies.Application.Projections.Models;
 
     using GalaSoft.MvvmLight;
@@ -37,10 +41,6 @@ namespace BudgetFirst.Application.ViewModels
     [ComVisible(false)]
     public class CreateNewBudgetViewModel : ViewModelBase
     {
-        // TODO: we need: a create budget command, identifier of current budget (on view model?)
-        // TODO fields for: budget name, currency; do we need formatting?
-        // TODO additional steps to guide (add accounts, define/change categories)?
-
         /// <summary>
         /// Name of the budget
         /// </summary>
@@ -67,7 +67,11 @@ namespace BudgetFirst.Application.ViewModels
             this.CreateNewBudget = new RelayCommand(
                 () =>
                 {
-                    // TODO: create actual new budget, then navigate
+                    var budgetId = new BudgetId(Guid.NewGuid());
+                    var currencyCode = this.SelectedCurrency?.Code;
+                    ServiceLocatorWrapper.Current.GetInstance<Kernel>().CommandBus.Submit(new AddBudgetCommand(budgetId, this.Name, currencyCode));
+                    
+                    // TODO: navigate?
                 },
                 () => !string.IsNullOrWhiteSpace(this.Name) && this.selectedCurrency != null);
         }

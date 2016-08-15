@@ -212,7 +212,7 @@ namespace BudgetFirst.Application
             // All projections must be singleton. Define them here first
             container.Register<AccountProjection, AccountProjection>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
             container.Register<AccountListProjection, AccountListProjection>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
-
+            
             // Set up message handling
             // Accounting context
             {
