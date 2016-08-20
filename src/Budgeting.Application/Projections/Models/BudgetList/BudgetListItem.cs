@@ -26,7 +26,7 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Budgeting.Application.Projections.Models
+namespace BudgetFirst.Budgeting.Application.Projections.Models.BudgetList
 {
     using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Commands;
@@ -45,7 +45,12 @@ namespace BudgetFirst.Budgeting.Application.Projections.Models
         /// <summary>
         /// Budget Id
         /// </summary>
-        private BudgetId id;
+        private BudgetId budgetId;
+
+        /// <summary>
+        /// Account list
+        /// </summary>
+        private AccountList accountList;
 
         /// <summary>
         /// Command bus
@@ -55,26 +60,28 @@ namespace BudgetFirst.Budgeting.Application.Projections.Models
         /// <summary>
         /// Initialises a new instance of the <see cref="BudgetListItem"/> class.
         /// </summary>
-        /// <param name="id">Budget id</param>
+        /// <param name="budgetId">Budget id</param>
         /// <param name="name">Account name</param>
+        /// <param name="accountList">Account list</param>
         /// <param name="commandBus">Command bus</param>
-        public BudgetListItem(BudgetId id, string name, ICommandBus commandBus)
+        public BudgetListItem(BudgetId budgetId, string name, AccountList accountList, ICommandBus commandBus)
         {
-            this.id = id;
+            this.budgetId = budgetId;
             this.name = name;
+            this.accountList = accountList;
             this.commandBus = commandBus;
         }
 
         /// <summary>
         /// Gets the budget Id
         /// </summary>
-        public BudgetId Id
+        public BudgetId BudgetId
         {
-            get { return this.id; }
+            get { return this.budgetId; }
         }
 
         /// <summary>
-        /// Gets or sets the budget name
+        /// Gets the budget name
         /// </summary>
         public string Name
         {
@@ -82,11 +89,16 @@ namespace BudgetFirst.Budgeting.Application.Projections.Models
             {
                 return this.name;
             }
+        }
 
-            set
+        /// <summary>
+        /// Gets the account list for this budget
+        /// </summary>
+        public AccountList Accounts
+        {
+            get
             {
-                // TODO: submit command
-                // this.commandBus.Submit(new ChangeAccountNameCommand() { Id = this.Id, Name = value }); 
+                return this.accountList;
             }
         }
 

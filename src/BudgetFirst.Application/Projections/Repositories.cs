@@ -31,7 +31,10 @@ namespace BudgetFirst.Application.Projections
     using BudgetFirst.Accounting.Application.Projections.Repositories;
     using BudgetFirst.Application;
     using BudgetFirst.Budgeting.Application.Projections.Repositories;
+    using BudgetFirst.Budgeting.Application.Projections.Repositories.BudgetList;
     using BudgetFirst.Currencies.Application.Projections.Repositories;
+
+    using AccountListRepository = BudgetFirst.Accounting.Application.Projections.Repositories.AccountListRepository;
 
     /// <summary>
     /// A class that holds references to the Application's Read Model Repositories.

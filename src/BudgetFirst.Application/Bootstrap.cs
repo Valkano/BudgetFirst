@@ -35,6 +35,7 @@ namespace BudgetFirst.Application
     using BudgetFirst.Budgeting.Application.Commands;
     using BudgetFirst.Budgeting.Application.Projections;
     using BudgetFirst.Budgeting.Application.Projections.Repositories;
+    using BudgetFirst.Budgeting.Application.Projections.Repositories.BudgetList;
     using BudgetFirst.Budgeting.Application.Services;
     using BudgetFirst.Budgeting.Domain.Events;
     using BudgetFirst.Common.Infrastructure.ApplicationState;
@@ -47,6 +48,9 @@ namespace BudgetFirst.Application
     using BudgetFirst.Common.Infrastructure.Serialisation;
     using BudgetFirst.Common.Infrastructure.Wrappers;
     using BudgetFirst.Currencies.Application.Projections.Repositories;
+
+    using AccountListItemRepository = BudgetFirst.Accounting.Application.Projections.Repositories.AccountListItemRepository;
+    using AccountListRepository = BudgetFirst.Accounting.Application.Projections.Repositories.AccountListRepository;
 
     /// <summary>
     /// Sets up dependency injection, message handler registration etc.
@@ -238,6 +242,8 @@ namespace BudgetFirst.Application
             {
                 var budgetListProjection = container.Resolve<BudgetListProjection>();
                 eventBus.Subscribe<AddedBudget>(budgetListProjection.Handle);
+                eventBus.Subscribe<AddedAccount>(budgetListProjection.Handle);
+                eventBus.Subscribe<AccountNameChanged>(budgetListProjection.Handle);
             }
         }
     }

@@ -26,16 +26,16 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Budgeting.Application.Projections.Models
+namespace BudgetFirst.Budgeting.Application.Projections.Models.BudgetList
 {
     using System.Collections.ObjectModel;
     using System.Runtime.InteropServices;
 
     /// <summary>
-    /// Budget list read model
+    /// Account list for a single budget
     /// </summary>
     [ComVisible(false)]
-    public class BudgetList : ObservableCollection<BudgetListItem>
+    public class AccountList : ObservableCollection<AccountListItem>
     {
     }
 }

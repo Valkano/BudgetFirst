@@ -34,6 +34,7 @@ namespace BudgetFirst.Accounting.Application.Projections
     using BudgetFirst.Accounting.Application.Projections.Models;
     using BudgetFirst.Accounting.Application.Projections.Repositories;
     using BudgetFirst.Accounting.Domain.Events;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Commands;
     using BudgetFirst.Common.Infrastructure.Projections;
 
@@ -79,25 +80,19 @@ namespace BudgetFirst.Accounting.Application.Projections
         /// <param name="e">Account created event</param>
         public void Handle(AddedAccount e)
         {
-            var accountList = this.accountListRepository.Find(e.Budget);
-            if (accountList == null)
-            {
-                accountList = new AccountList();
-                this.accountListRepository.Save(e.Budget, accountList);
-            }
+            var accountList = this.GetAccountListForBudget(e.Budget);
             
-            var account = this.accountListItemRepository.Find(e.AccountId);
+            var account = accountList.FirstOrDefault(x => e.AccountId.Equals(x.Id));
             if (account == null)
             {
                 account = new AccountListItem(e.AccountId, e.Name, this.commandBus);
                 this.accountListItemRepository.Save(account);
+                accountList.Add(account);
             }
 
-            if (!accountList.Any(x => e.AccountId.Equals(x.Id)))
-            {
-                accountList.Add(account);
-                this.accountListRepository.Save(e.Budget, accountList);
-            }
+            account.SetName(e.Name);
+
+            this.accountListRepository.Save(e.Budget, accountList);
         }
 
         /// <summary>
@@ -106,6 +101,7 @@ namespace BudgetFirst.Accounting.Application.Projections
         /// <param name="e">Account renamed event</param>
         public void Handle(AccountNameChanged e)
         {
+            // Only update account list item
             var account = this.accountListItemRepository.Find(e.AccountId);
             if (account == null)
             {
@@ -114,6 +110,23 @@ namespace BudgetFirst.Accounting.Application.Projections
 
             account.SetName(e.Name);
             this.accountListItemRepository.Save(account);
+        }
+
+        /// <summary>
+        /// Get the initialised account list
+        /// </summary>
+        /// <param name="budgetId">Budget id</param>
+        /// <returns>Initialised account list</returns>
+        private AccountList GetAccountListForBudget(BudgetId budgetId)
+        {
+            var accountList = this.accountListRepository.Find(budgetId);
+            if (accountList == null)
+            {
+                accountList = new AccountList();
+                this.accountListRepository.Save(budgetId, accountList);
+            }
+
+            return accountList;
         }
     }
 }
