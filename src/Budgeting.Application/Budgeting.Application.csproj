@@ -54,6 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AddBudgetCommand.cs" />
+    <Compile Include="Projections\BudgetListProjection.cs" />
+    <Compile Include="Projections\Models\BudgetList.cs" />
+    <Compile Include="Projections\Models\BudgetListItem.cs" />
+    <Compile Include="Projections\Repositories\BudgetListItemlRepository.cs" />
+    <Compile Include="Projections\Repositories\BudgetListRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BudgetService.cs" />
   </ItemGroup>
@@ -78,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Projections\All projections must be registered in bootstrap.txt" />
+    <Content Include="Projections\Repositories\All repositories must be registered in bootstrap.txt" />
     <Content Include="Services\Every command handler must be registered in bootstrap.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

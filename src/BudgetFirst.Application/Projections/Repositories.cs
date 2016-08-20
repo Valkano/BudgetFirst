@@ -30,11 +30,13 @@ namespace BudgetFirst.Application.Projections
 {
     using BudgetFirst.Accounting.Application.Projections.Repositories;
     using BudgetFirst.Application;
+    using BudgetFirst.Budgeting.Application.Projections.Repositories;
     using BudgetFirst.Currencies.Application.Projections.Repositories;
 
     /// <summary>
     /// A class that holds references to the Application's Read Model Repositories.
     /// </summary>
+    /// <remarks>TODO: provide read-only interface to repositories?</remarks>
     public class Repositories
     {
         /// <summary>
@@ -54,12 +56,17 @@ namespace BudgetFirst.Application.Projections
         /// <summary>
         /// Gets the account read model repository
         /// </summary>
-        public AccountReadModelRepository AccountReadModelRepository => this.bootstrap.Container.Resolve<AccountReadModelRepository>();
+        public AccountRepository AccountRepository => this.bootstrap.Container.Resolve<AccountRepository>();
 
         /// <summary>
         /// Gets the Account List read model Repository
         /// </summary>
-        public AccountListReadModelRepository AccountListReadModelRepository => this.bootstrap.Container.Resolve<AccountListReadModelRepository>();
+        public AccountListRepository AccountListRepository => this.bootstrap.Container.Resolve<AccountListRepository>();
+
+        /// <summary>
+        /// Gets the budget list read model repository
+        /// </summary>
+        public BudgetListRepository BudgetListRepository => this.bootstrap.Container.Resolve<BudgetListRepository>();
 
         /// <summary>
         /// Gets the currency (read model) repository

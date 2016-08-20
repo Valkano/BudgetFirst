@@ -95,7 +95,7 @@ namespace BudgetFirst.Application.ViewModels
 
             // this.RebindReadModels(); // this would cause events while this class is not yet initialised
             // so use local fields instead
-            this.accountList = repositories.AccountListReadModelRepository.Find(BudgetId.OffBudgetId); // TODO: use correct budget ids etc later
+            this.accountList = repositories.AccountListRepository.Find(BudgetId.OffBudgetId); // TODO: use correct budget ids etc later
             this.InitialiseRelayCommands();
 
             // Only after everything has been initialised, continue with the application flow
@@ -206,7 +206,7 @@ namespace BudgetFirst.Application.ViewModels
         private void RebindReadModels()
         {
             // Use properties to cause raise property changed
-            this.AccountList = this.applicationKernel.Repositories.AccountListReadModelRepository.Find(BudgetId.OffBudgetId); // TODO: non-hardcoded single budget id
+            this.AccountList = this.applicationKernel.Repositories.AccountListRepository.Find(BudgetId.OffBudgetId); // TODO: non-hardcoded single budget id
             this.SelectedAccount = null;
         }
     }

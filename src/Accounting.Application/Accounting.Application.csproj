@@ -60,14 +60,15 @@
     <Compile Include="Projections\Models\Account.cs" />
     <Compile Include="Projections\Models\AccountList.cs" />
     <Compile Include="Projections\Models\AccountListItem.cs" />
-    <Compile Include="Projections\Repositories\AccountListItemReadModelRepository.cs" />
-    <Compile Include="Projections\Repositories\AccountListReadModelRepository.cs" />
-    <Compile Include="Projections\Repositories\AccountReadModelRepository.cs" />
+    <Compile Include="Projections\Repositories\AccountListItemRepository.cs" />
+    <Compile Include="Projections\Repositories\AccountListRepository.cs" />
+    <Compile Include="Projections\Repositories\AccountRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Projections\All projections and handlers must be registered in bootstrap.txt" />
+    <Content Include="Projections\Repositories\All repositories must be registered in bootstrap.txt" />
     <Content Include="Services\Every command handler must be registered in bootstrap.txt" />
   </ItemGroup>
   <ItemGroup>

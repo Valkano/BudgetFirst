@@ -49,14 +49,14 @@ namespace BudgetFirst.Accounting.Application.Projections
         /// <summary>
         /// Account repository
         /// </summary>
-        private AccountReadModelRepository repository;
+        private AccountRepository repository;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="AccountProjection"/> class.
         /// </summary>
         /// <param name="repository">Account repository to use</param>
         /// <param name="commandBus">The application's command bus</param>
-        public AccountProjection(AccountReadModelRepository repository, ICommandBus commandBus)
+        public AccountProjection(AccountRepository repository, ICommandBus commandBus)
         {
             this.repository = repository;
             this.commandBus = commandBus;

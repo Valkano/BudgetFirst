@@ -26,49 +26,56 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Budgeting.Domain.Events
+namespace BudgetFirst.Accounting.Application.Projections.Repositories
 {
-    using System.Runtime.InteropServices;
-    using System.Runtime.Serialization;
-
+    using BudgetFirst.Accounting.Application.Projections.Models;
     using BudgetFirst.Common.Domain.Model.Identifiers;
-    using BudgetFirst.Common.Infrastructure.Domain.Events;
-    
+    using BudgetFirst.Common.Infrastructure.Projections.Models;
+
     /// <summary>
-    /// A new budget has been added
+    /// Read side account list repository
     /// </summary>
-    [DataContract(Name = "AddedBudget", Namespace = "http://budgetfirst.github.io/schemas/2016/08/15/Budgeting/AddedBudget")]
-    [ComVisible(false)]
-    public class AddedBudget : DomainEvent<BudgetId>
+    public class AccountListRepository 
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="AddedBudget"/> class. 
+        /// Read store
         /// </summary>
-        /// <param name="name">Name of the budget</param>
-        /// <param name="currencyCode">Currency code</param>
-        /// <remarks>Will not be called during de-serialisation</remarks>
-        public AddedBudget(string name, string currencyCode)
+        private IReadStore readStore;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AccountListRepository"/> class.
+        /// </summary>
+        /// <param name="readStore">Read store</param>
+        public AccountListRepository(IReadStore readStore)
         {
-            this.Name = name;
-            this.CurrencyCode = currencyCode;
+            this.readStore = readStore;
         }
 
         /// <summary>
-        /// Gets the budget id
+        /// Retrieve an account list from the repository.
         /// </summary>
-        public BudgetId BudgetId => this.AggregateId;
+        /// <param name="budget">Budget the accounts belong to</param>
+        /// <returns>Reference to the account list in the repository. Guaranteed to be not <c>null</c>.</returns>
+        public AccountList Find(BudgetId budget)
+        {
+            var list = this.readStore.Retrieve<AccountList>(budget.ToGuid());
+            if (list == null)
+            {
+                list = new AccountList();
+                this.Save(budget, list);
+            }
+
+            return list;
+        }
 
         /// <summary>
-        /// Gets the name of the budget
+        /// Save the account list, or add it to the repository. Beware: replaces existing account list in repository.
         /// </summary>
-        [DataMember(Name = "Name")]
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Gets the currency code used in the budget
-        /// </summary>
-        /// <remarks>TODO: replace with separate type?</remarks>
-        [DataMember(Name = "CurrencyCode")]
-        public string CurrencyCode { get; private set; } 
+        /// <param name="budget">Budget the accounts belong to</param>
+        /// <param name="accountList">Account list to save</param>
+        internal void Save(BudgetId budget, AccountList accountList)
+        {
+            this.readStore.Store(budget.ToGuid(), accountList);
+        }
     }
 }

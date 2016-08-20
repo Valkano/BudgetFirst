@@ -37,7 +37,7 @@ namespace BudgetFirst.Accounting.Application.Projections.Repositories
     /// <summary>
     /// Read side account repository
     /// </summary>
-    public class AccountReadModelRepository 
+    public class AccountRepository 
     {
         /// <summary>
         /// Read store
@@ -45,10 +45,10 @@ namespace BudgetFirst.Accounting.Application.Projections.Repositories
         private IReadStore readStore;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="AccountReadModelRepository"/> class.
+        /// Initialises a new instance of the <see cref="AccountRepository"/> class.
         /// </summary>
         /// <param name="readStore">Read store</param>
-        public AccountReadModelRepository(IReadStore readStore)
+        public AccountRepository(IReadStore readStore)
         {
             this.readStore = readStore;
         }

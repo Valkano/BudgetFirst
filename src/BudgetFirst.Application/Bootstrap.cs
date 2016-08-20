@@ -33,7 +33,10 @@ namespace BudgetFirst.Application
     using BudgetFirst.Application.Commands.Infrastructure;
     using BudgetFirst.Application.Services;
     using BudgetFirst.Budgeting.Application.Commands;
+    using BudgetFirst.Budgeting.Application.Projections;
+    using BudgetFirst.Budgeting.Application.Projections.Repositories;
     using BudgetFirst.Budgeting.Application.Services;
+    using BudgetFirst.Budgeting.Domain.Events;
     using BudgetFirst.Common.Infrastructure.ApplicationState;
     using BudgetFirst.Common.Infrastructure.Commands;
     using BudgetFirst.Common.Infrastructure.DependencyInjection;
@@ -195,9 +198,10 @@ namespace BudgetFirst.Application
         {
             // While these could be stateless and transient, they are used by the singleton generators
             // -> Singleton
-            simpleInjector.Register<AccountReadModelRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
-            simpleInjector.Register<AccountListItemReadModelRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
-            simpleInjector.Register<AccountListReadModelRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountListItemRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<AccountListRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<BudgetListRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
             simpleInjector.Register<CurrencyRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
         }
 
@@ -212,7 +216,8 @@ namespace BudgetFirst.Application
             // All projections must be singleton. Define them here first
             container.Register<AccountProjection, AccountProjection>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
             container.Register<AccountListProjection, AccountListProjection>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
-            
+            container.Register<BudgetListProjection, BudgetListProjection>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+
             // Set up message handling
             // Accounting context
             {
@@ -229,7 +234,11 @@ namespace BudgetFirst.Application
                 eventBus.Subscribe<AccountNameChanged>(accountListProjection.Handle);
             }
 
-            // TODO: budgeting context
+            // Budgeting context
+            {
+                var budgetListProjection = container.Resolve<BudgetListProjection>();
+                eventBus.Subscribe<AddedBudget>(budgetListProjection.Handle);
+            }
         }
     }
 }

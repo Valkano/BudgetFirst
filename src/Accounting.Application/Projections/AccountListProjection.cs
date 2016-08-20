@@ -45,12 +45,12 @@ namespace BudgetFirst.Accounting.Application.Projections
         /// <summary>
         /// Account list repository
         /// </summary>
-        private AccountListReadModelRepository accountListRepository;
+        private AccountListRepository accountListRepository;
 
         /// <summary>
         /// Account list item repository
         /// </summary>
-        private AccountListItemReadModelRepository accountListItemRepository;
+        private AccountListItemRepository accountListItemRepository;
 
         /// <summary>
         /// Command bus
@@ -64,8 +64,8 @@ namespace BudgetFirst.Accounting.Application.Projections
         /// <param name="accountListItemRepository">Account list item repository to use</param>
         /// <param name="commandBus">Command bus</param>
         public AccountListProjection(
-            AccountListReadModelRepository accountListRepository, 
-            AccountListItemReadModelRepository accountListItemRepository,
+            AccountListRepository accountListRepository, 
+            AccountListItemRepository accountListItemRepository,
             ICommandBus commandBus)
         {
             this.accountListRepository = accountListRepository;

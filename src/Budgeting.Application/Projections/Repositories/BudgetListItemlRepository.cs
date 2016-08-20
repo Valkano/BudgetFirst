@@ -26,18 +26,16 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Accounting.Application.Projections.Repositories
+namespace BudgetFirst.Budgeting.Application.Projections.Repositories
 {
-    using System;
-
-    using BudgetFirst.Accounting.Application.Projections.Models;
+    using BudgetFirst.Budgeting.Application.Projections.Models;
     using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Projections.Models;
 
     /// <summary>
-    /// Read side account list item repository
+    /// Read side budget list item repository
     /// </summary>
-    public class AccountListItemReadModelRepository 
+    public class BudgetListItemlRepository 
     {
         /// <summary>
         /// Read store
@@ -45,31 +43,31 @@ namespace BudgetFirst.Accounting.Application.Projections.Repositories
         private IReadStore readStore;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="AccountListItemReadModelRepository"/> class.
+        /// Initialises a new instance of the <see cref="BudgetListItemlRepository"/> class.
         /// </summary>
         /// <param name="readStore">Read store</param>
-        public AccountListItemReadModelRepository(IReadStore readStore)
+        public BudgetListItemlRepository(IReadStore readStore)
         {
             this.readStore = readStore;
         }
 
         /// <summary>
-        /// Retrieve an account list item from the repository.
+        /// Retrieve a budget list item from the repository.
         /// </summary>
-        /// <param name="id">Account Id</param>
-        /// <returns>Reference to the account list item in the repository, if found. <c>null</c> otherwise.</returns>
-        public AccountListItem Find(AccountId id)
+        /// <param name="id">Budget Id</param>
+        /// <returns>Reference to the budget list item in the repository, if found. <c>null</c> otherwise.</returns>
+        public BudgetListItem Find(BudgetId id)
         {
-            return this.readStore.Retrieve<AccountListItem>(id.ToGuid());
+            return this.readStore.Retrieve<BudgetListItem>(id.ToGuid());
         }
 
         /// <summary>
-        /// Save the account list item, or add it to the repository. 
+        /// Save the budget list item, or add it to the repository. 
         /// </summary>
-        /// <param name="account">Account list item to save</param>
-        internal void Save(AccountListItem account)
+        /// <param name="budget">Budget list item to save</param>
+        internal void Save(BudgetListItem budget)
         {
-            this.readStore.Store(account.Id.ToGuid(), account);
+            this.readStore.Store(budget.Id.ToGuid(), budget);
         }
     }
 }
