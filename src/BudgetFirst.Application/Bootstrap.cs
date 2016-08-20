@@ -31,11 +31,10 @@ namespace BudgetFirst.Application
     using BudgetFirst.Accounting.Application.Services;
     using BudgetFirst.Accounting.Domain.Events;
     using BudgetFirst.Application.Commands.Infrastructure;
+    using BudgetFirst.Application.Projections;
+    using BudgetFirst.Application.Projections.Repositories.BudgetList;
     using BudgetFirst.Application.Services;
     using BudgetFirst.Budgeting.Application.Commands;
-    using BudgetFirst.Budgeting.Application.Projections;
-    using BudgetFirst.Budgeting.Application.Projections.Repositories;
-    using BudgetFirst.Budgeting.Application.Projections.Repositories.BudgetList;
     using BudgetFirst.Budgeting.Application.Services;
     using BudgetFirst.Budgeting.Domain.Events;
     using BudgetFirst.Common.Infrastructure.ApplicationState;
@@ -162,6 +161,7 @@ namespace BudgetFirst.Application
             var readStore = new ReadStore();
             simpleInjector.RegisterSingleton<IReadStore>(readStore);
             simpleInjector.RegisterSingleton<IResetableReadStore>(readStore);
+            simpleInjector.RegisterSingleton<IReadStoreResetBroadcast>(readStore);
 
             // Must also register container itself because infrastructure needs it
             simpleInjector.RegisterSingleton<IContainer>(simpleInjector);
@@ -202,10 +202,18 @@ namespace BudgetFirst.Application
         {
             // While these could be stateless and transient, they are used by the singleton generators
             // -> Singleton
+            // Accounting context
             simpleInjector.Register<AccountRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
             simpleInjector.Register<AccountListItemRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
             simpleInjector.Register<AccountListRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
-            simpleInjector.Register<BudgetListRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+
+            // Overall context
+            simpleInjector.Register<Projections.Repositories.BudgetList.BudgetListRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<Projections.Repositories.BudgetList.BudgetListItemRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<Projections.Repositories.BudgetList.AccountListRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+            simpleInjector.Register<Projections.Repositories.BudgetList.AccountListItemRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
+
+            // Currency context
             simpleInjector.Register<CurrencyRepository>(Common.Infrastructure.Wrappers.Container.Lifestyle.Singleton);
         }
 
@@ -239,6 +247,8 @@ namespace BudgetFirst.Application
             }
 
             // Budgeting context
+            // ...if any
+            // Overall context
             {
                 var budgetListProjection = container.Resolve<BudgetListProjection>();
                 eventBus.Subscribe<AddedBudget>(budgetListProjection.Handle);

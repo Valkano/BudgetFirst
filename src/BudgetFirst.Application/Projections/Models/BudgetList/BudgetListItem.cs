@@ -26,7 +26,7 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Budgeting.Application.Projections.Models.BudgetList
+namespace BudgetFirst.Application.Projections.Models.BudgetList
 {
     using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Commands;
@@ -48,6 +48,11 @@ namespace BudgetFirst.Budgeting.Application.Projections.Models.BudgetList
         private BudgetId budgetId;
 
         /// <summary>
+        /// Currency code
+        /// </summary>
+        private string currencyCode;
+
+        /// <summary>
         /// Account list
         /// </summary>
         private AccountList accountList;
@@ -62,12 +67,14 @@ namespace BudgetFirst.Budgeting.Application.Projections.Models.BudgetList
         /// </summary>
         /// <param name="budgetId">Budget id</param>
         /// <param name="name">Account name</param>
+        /// <param name="currencyCode">Currency code</param>
         /// <param name="accountList">Account list</param>
         /// <param name="commandBus">Command bus</param>
-        public BudgetListItem(BudgetId budgetId, string name, AccountList accountList, ICommandBus commandBus)
+        public BudgetListItem(BudgetId budgetId, string name, string currencyCode, AccountList accountList, ICommandBus commandBus)
         {
             this.budgetId = budgetId;
             this.name = name;
+            this.currencyCode = currencyCode;
             this.accountList = accountList;
             this.commandBus = commandBus;
         }
@@ -81,7 +88,7 @@ namespace BudgetFirst.Budgeting.Application.Projections.Models.BudgetList
         }
 
         /// <summary>
-        /// Gets the budget name
+        /// Gets or sets the budget name
         /// </summary>
         public string Name
         {
@@ -89,7 +96,18 @@ namespace BudgetFirst.Budgeting.Application.Projections.Models.BudgetList
             {
                 return this.name;
             }
+
+            set
+            {
+                // TODO
+                // this.commandBus.Submit(new Change);
+            }
         }
+
+        /// <summary>
+        /// Gets the currency code used in this budget
+        /// </summary>
+        public string CurrencyCode => this.currencyCode;
 
         /// <summary>
         /// Gets the account list for this budget

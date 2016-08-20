@@ -54,19 +54,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AddBudgetCommand.cs" />
-    <Compile Include="Projections\BudgetListProjection.cs" />
-    <Compile Include="Projections\Models\BudgetList\AccountList.cs" />
-    <Compile Include="Projections\Models\BudgetList\AccountListItem.cs" />
-    <Compile Include="Projections\Models\BudgetList\BudgetList.cs" />
-    <Compile Include="Projections\Models\BudgetList\BudgetListItem.cs" />
-    <Compile Include="Projections\Repositories\BudgetList\BudgetListItemlRepository.cs" />
-    <Compile Include="Projections\Repositories\BudgetList\BudgetListRepository.cs" />
-    <Compile Include="Projections\Repositories\BudgetList\AccountListItemRepository.cs" />
-    <Compile Include="Projections\Repositories\BudgetList\AccountListRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BudgetService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Projections\Models\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Accounting.Domain.Events\Accounting.Domain.Events.csproj">
       <Project>{c0b0af45-f29d-419c-90ae-e9b3719a032a}</Project>

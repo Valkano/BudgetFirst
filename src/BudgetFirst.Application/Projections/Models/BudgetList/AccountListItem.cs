@@ -26,48 +26,77 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Budgeting.Application.Projections.Repositories.BudgetList
+namespace BudgetFirst.Application.Projections.Models.BudgetList
 {
-    using BudgetFirst.Budgeting.Application.Projections.Models.BudgetList;
+    using BudgetFirst.Accounting.Application.Commands;
     using BudgetFirst.Common.Domain.Model.Identifiers;
+    using BudgetFirst.Common.Infrastructure.Commands;
     using BudgetFirst.Common.Infrastructure.Projections.Models;
 
     /// <summary>
-    /// Read side budget list item repository
+    /// Account list item for list of accounts in budget
     /// </summary>
-    public class BudgetListItemlRepository 
+    public class AccountListItem : ReadModel
     {
         /// <summary>
-        /// Read store
+        /// Account name
         /// </summary>
-        private IReadStore readStore;
+        private string name;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="BudgetListItemlRepository"/> class.
+        /// Account Id
         /// </summary>
-        /// <param name="readStore">Read store</param>
-        public BudgetListItemlRepository(IReadStore readStore)
+        private AccountId id;
+
+        /// <summary>
+        /// Command bus
+        /// </summary>
+        private ICommandBus commandBus;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AccountListItem"/> class.
+        /// </summary>
+        /// <param name="id">Account id</param>
+        /// <param name="name">Account name</param>
+        /// <param name="commandBus">Command bus</param>
+        public AccountListItem(AccountId id, string name, ICommandBus commandBus)
         {
-            this.readStore = readStore;
+            this.id = id;
+            this.name = name;
+            this.commandBus = commandBus;
         }
 
         /// <summary>
-        /// Retrieve a budget list item from the repository.
+        /// Gets the account Id
         /// </summary>
-        /// <param name="id">Budget Id</param>
-        /// <returns>Reference to the budget list item in the repository, if found. <c>null</c> otherwise.</returns>
-        public BudgetListItem Find(BudgetId id)
+        public AccountId Id
         {
-            return this.readStore.Retrieve<BudgetListItem>(id.ToGuid());
+            get { return this.id; }
         }
 
         /// <summary>
-        /// Save the budget list item, or add it to the repository. 
+        /// Gets or sets the account name
         /// </summary>
-        /// <param name="budget">Budget list item to save</param>
-        internal void Save(BudgetListItem budget)
+        public string Name
         {
-            this.readStore.Store(budget.BudgetId.ToGuid(), budget);
+            get
+            {
+                return this.name;
+            }
+
+            set
+            {
+                this.commandBus.Submit(new ChangeAccountNameCommand() { Id = this.id, Name = value });
+            }
+        }
+
+        /// <summary>
+        /// Set a new account name
+        /// </summary>
+        /// <param name="name">Account name</param>
+        internal void SetName(string name)
+        {
+            this.SetProperty(ref this.name, name, propertyName: nameof(this.Name));
         }
     }
 }

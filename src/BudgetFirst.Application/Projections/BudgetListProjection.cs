@@ -20,23 +20,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
-namespace BudgetFirst.Budgeting.Application.Projections
+namespace BudgetFirst.Application.Projections
 {
     using System;
     using System.Linq;
 
     using BudgetFirst.Accounting.Domain.Events;
-    using BudgetFirst.Budgeting.Application.Projections.Models.BudgetList;
-    using BudgetFirst.Budgeting.Application.Projections.Repositories.BudgetList;
+    using BudgetFirst.Application.Projections.Models.BudgetList;
+    using BudgetFirst.Application.Projections.Repositories.BudgetList;
     using BudgetFirst.Budgeting.Domain.Events;
     using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Commands;
     using BudgetFirst.Common.Infrastructure.Projections;
+    using BudgetFirst.Common.Infrastructure.Projections.Models;
 
     /// <summary>
     /// Projection for budget lists
     /// </summary>
-    public class BudgetListProjection : IProjectFrom<AddedBudget>, IProjectFrom<AddedAccount>, IProjectFrom<AccountNameChanged> // any new handler must be registered in bootstrap
+    public class BudgetListProjection : IProjectFrom<AddedBudget>, 
+                                        IProjectFrom<AddedAccount>, 
+                                        IProjectFrom<AccountNameChanged> // any new handler must be registered in bootstrap
     {
         /// <summary>
         /// Account list item repository
@@ -51,7 +54,7 @@ namespace BudgetFirst.Budgeting.Application.Projections
         /// <summary>
         /// Budget list item repository
         /// </summary>
-        private BudgetListItemlRepository budgetListItemRepository;
+        private BudgetListItemRepository budgetListItemRepository;
 
         /// <summary>
         /// Budget list repository
@@ -71,18 +74,28 @@ namespace BudgetFirst.Budgeting.Application.Projections
         /// <param name="accountListRepository">Account list repository to use</param>
         /// <param name="accountListItemRepository">Account list item repository to use</param>
         /// <param name="commandBus">Command bus</param>
+        /// <param name="readStoreResetBroadcast">Read store reset broadcast</param>
         public BudgetListProjection(
             BudgetListRepository budgetListRepository, 
-            BudgetListItemlRepository budgetListItemRepository, 
+            BudgetListItemRepository budgetListItemRepository, 
             AccountListRepository accountListRepository, 
             AccountListItemRepository accountListItemRepository, 
-            ICommandBus commandBus)
+            ICommandBus commandBus, 
+            IReadStoreResetBroadcast readStoreResetBroadcast)
         {
             this.budgetListRepository = budgetListRepository;
             this.budgetListItemRepository = budgetListItemRepository;
             this.accountListRepository = accountListRepository;
             this.accountListItemRepository = accountListItemRepository;
             this.commandBus = commandBus;
+
+            readStoreResetBroadcast.ReadStoreReset +=
+                (sender, args) =>
+                    {
+                        this.Init(budgetListRepository, budgetListItemRepository, accountListRepository, commandBus);
+                    };
+
+            this.Init(budgetListRepository, budgetListItemRepository, accountListRepository, commandBus);
         }
 
         /// <summary>
@@ -97,7 +110,7 @@ namespace BudgetFirst.Budgeting.Application.Projections
             if (budget == null)
             {
                 var accountList = this.GetAccountListForBudget(e.BudgetId);
-                budget = new BudgetListItem(e.BudgetId, e.Name, accountList, this.commandBus);
+                budget = new BudgetListItem(e.BudgetId, e.Name, e.CurrencyCode, accountList, this.commandBus);
                 this.budgetListItemRepository.Save(budget);
                 budgetList.Add(budget);
             }
@@ -178,6 +191,34 @@ namespace BudgetFirst.Budgeting.Application.Projections
             }
 
             return budgetList;
+        }
+
+        /// <summary>
+        /// (Re)initialization to provide initial values not derived from events
+        /// </summary>
+        /// <param name="budgetListRepository">budget list repository</param>
+        /// <param name="budgetListItemRepository">budget list item repository</param>
+        /// <param name="accountListRepository">account list repository</param>
+        /// <param name="commandBus">Command bus</param>
+        private void Init(
+            BudgetListRepository budgetListRepository, 
+            BudgetListItemRepository budgetListItemRepository, 
+            AccountListRepository accountListRepository, 
+            ICommandBus commandBus)
+        {
+            // Init with "off-budget" budget
+            var list = this.GetBudgetList();
+            var offBudgetAccountList = new AccountList();
+            var offBudget = new BudgetListItem(
+                BudgetId.OffBudgetId, 
+                "Off-budget", 
+                null, 
+                offBudgetAccountList, 
+                commandBus);
+            list.Add(offBudget);
+            accountListRepository.Save(offBudget.BudgetId, offBudgetAccountList);
+            budgetListItemRepository.Save(offBudget);
+            budgetListRepository.Save(list);
         }
     }
 }

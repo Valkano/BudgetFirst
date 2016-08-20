@@ -26,9 +26,9 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Budgeting.Application.Projections.Repositories.BudgetList
+namespace BudgetFirst.Application.Projections.Repositories.BudgetList
 {
-    using BudgetFirst.Budgeting.Application.Projections.Models.BudgetList;
+    using BudgetFirst.Application.Projections.Models.BudgetList;
     using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Projections.Models;
 

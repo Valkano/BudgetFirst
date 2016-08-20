@@ -59,10 +59,10 @@ namespace BudgetFirst.Application.ViewModels
         /// <summary>
         /// Initialises a new instance of the <see cref="CreateNewBudgetViewModel"/> class.
         /// </summary>
-        /// <param name="repositories">Repositories for read models</param>
-        public CreateNewBudgetViewModel(Repositories repositories)
+        /// <param name="readRepositories">Repositories for read models</param>
+        public CreateNewBudgetViewModel(ReadRepositories readRepositories)
         {
-            this.currencyList = repositories.CurrencyRepository.GetAll();
+            this.currencyList = readRepositories.CurrencyRepository.GetAll();
 
             this.CreateNewBudget = new RelayCommand(
                 () =>

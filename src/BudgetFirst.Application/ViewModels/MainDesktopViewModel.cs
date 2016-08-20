@@ -29,12 +29,13 @@
 namespace BudgetFirst.Application.ViewModels
 {
     using System;
+    using System.Linq;
     using System.Runtime.InteropServices;
 
     using BudgetFirst.Accounting.Application.Commands;
-    using BudgetFirst.Accounting.Application.Projections.Models;
     using BudgetFirst.Application.Messages;
     using BudgetFirst.Application.Projections;
+    using BudgetFirst.Application.Projections.Models.BudgetList;
     using BudgetFirst.Application.ViewModels.ReplaceMe;
     using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Persistency;
@@ -91,11 +92,12 @@ namespace BudgetFirst.Application.ViewModels
                 });
 
             this.applicationKernel = ServiceLocatorWrapper.Current.GetInstance<Kernel>();
-            var repositories = ServiceLocatorWrapper.Current.GetInstance<Repositories>();
+            var repositories = ServiceLocatorWrapper.Current.GetInstance<ReadRepositories>();
 
             // this.RebindReadModels(); // this would cause events while this class is not yet initialised
             // so use local fields instead
-            this.accountList = repositories.AccountListRepository.Find(BudgetId.OffBudgetId); // TODO: use correct budget ids etc later
+            // this.accountList = repositories.AccountListRepository.Find(BudgetId.OffBudgetId); // TODO: use correct budget ids etc later
+            this.accountList = repositories.BudgetListRepository.Find().Single(x => BudgetId.OffBudgetId.Equals(x.BudgetId)).Accounts;
             this.InitialiseRelayCommands();
 
             // Only after everything has been initialised, continue with the application flow
@@ -206,7 +208,7 @@ namespace BudgetFirst.Application.ViewModels
         private void RebindReadModels()
         {
             // Use properties to cause raise property changed
-            this.AccountList = this.applicationKernel.Repositories.AccountListRepository.Find(BudgetId.OffBudgetId); // TODO: non-hardcoded single budget id
+            this.AccountList = this.applicationKernel.Repositories.BudgetListRepository.Find().Single(x => BudgetId.OffBudgetId.Equals(x.BudgetId)).Accounts;  // TODO: non-hardcoded single budget id
             this.SelectedAccount = null;
         }
     }

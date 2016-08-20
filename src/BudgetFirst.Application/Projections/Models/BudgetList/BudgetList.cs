@@ -26,7 +26,7 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Budgeting.Application.Projections.Models.BudgetList
+namespace BudgetFirst.Application.Projections.Models.BudgetList
 {
     using System.Collections.ObjectModel;
     using System.Runtime.InteropServices;

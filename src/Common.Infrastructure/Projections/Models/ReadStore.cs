@@ -34,7 +34,7 @@ namespace BudgetFirst.Common.Infrastructure.Projections.Models
     /// <summary>
     /// Read store for read models
     /// </summary>
-    public class ReadStore : IResetableReadStore, IReadStore
+    public class ReadStore : IResetableReadStore, IReadStore, IReadStoreResetBroadcast
     {
         /// <summary>
         /// Contains all values which are not resolved via id
@@ -45,6 +45,11 @@ namespace BudgetFirst.Common.Infrastructure.Projections.Models
         /// Contains all values that are resolved via id
         /// </summary>
         private Dictionary<Type, Dictionary<Guid, object>> keyValues = new Dictionary<Type, Dictionary<Guid, object>>();
+
+        /// <summary>
+        /// Event which is raised when the read store is reset
+        /// </summary>
+        public event EventHandler ReadStoreReset;
 
         /// <summary>
         /// Store an object for a specific id. Separate object types with same ID are stored and retrieved separately.
@@ -154,6 +159,17 @@ namespace BudgetFirst.Common.Infrastructure.Projections.Models
         {
             this.keyValues.Clear();
             this.singletonValues.Clear();
+            this.OnReadStoreReset(null);
+        }
+
+        /// <summary>
+        /// Raise read store reset event
+        /// </summary>
+        /// <param name="e">Event args</param>
+        protected virtual void OnReadStoreReset(EventArgs e)
+        {
+            var handler = this.ReadStoreReset;
+            handler?.Invoke(this, e);
         }
     }
 }

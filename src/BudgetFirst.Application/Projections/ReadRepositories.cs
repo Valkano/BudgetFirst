@@ -30,8 +30,7 @@ namespace BudgetFirst.Application.Projections
 {
     using BudgetFirst.Accounting.Application.Projections.Repositories;
     using BudgetFirst.Application;
-    using BudgetFirst.Budgeting.Application.Projections.Repositories;
-    using BudgetFirst.Budgeting.Application.Projections.Repositories.BudgetList;
+    using BudgetFirst.Application.Projections.Repositories.BudgetList;
     using BudgetFirst.Currencies.Application.Projections.Repositories;
 
     using AccountListRepository = BudgetFirst.Accounting.Application.Projections.Repositories.AccountListRepository;
@@ -40,7 +39,7 @@ namespace BudgetFirst.Application.Projections
     /// A class that holds references to the Application's Read Model Repositories.
     /// </summary>
     /// <remarks>TODO: provide read-only interface to repositories?</remarks>
-    public class Repositories
+    public class ReadRepositories
     {
         /// <summary>
         /// bootstrap which handles all initialisation of the application kernel
@@ -48,10 +47,10 @@ namespace BudgetFirst.Application.Projections
         private readonly Bootstrap bootstrap;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="Repositories"/> class.
+        /// Initialises a new instance of the <see cref="ReadRepositories"/> class.
         /// </summary>
         /// <param name="bootstrap">The application kernel's bootstrap</param>
-        internal Repositories(Bootstrap bootstrap)
+        internal ReadRepositories(Bootstrap bootstrap)
         {
             this.bootstrap = bootstrap;
         }

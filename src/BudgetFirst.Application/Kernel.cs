@@ -77,7 +77,7 @@ namespace BudgetFirst.Application
             this.bootstrap.VectorClock.SetState(vectorClock);
             this.bootstrap.DeviceId.SetDeviceId(deviceSettings.GetDeviceId());
 
-            this.Repositories = new Repositories(this.bootstrap);
+            this.Repositories = new ReadRepositories(this.bootstrap);
             this.CommandBus = this.bootstrap.CommandBus;
 
             Messenger.Default.Register<LoadApplicationStateRequested>(this, x => this.LoadApplicationState(x.Location));
@@ -93,7 +93,7 @@ namespace BudgetFirst.Application
         /// <summary>
         /// Gets the Application's Repositories.
         /// </summary>
-        public Repositories Repositories { get; private set; }
+        public ReadRepositories Repositories { get; private set; }
         
         /// <summary>
         /// Load application state from disk etc.

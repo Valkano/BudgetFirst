@@ -82,6 +82,7 @@
     <Compile Include="Persistency\RecentBudget.cs" />
     <Compile Include="Persistency\PersistableApplicationState.cs" />
     <Compile Include="Projections\Models\IReadStore.cs" />
+    <Compile Include="Projections\Models\IReadStoreResetBroadcast.cs" />
     <Compile Include="Projections\Models\ReadStore.cs" />
     <Compile Include="Projections\Models\IResetableReadStore.cs" />
     <Compile Include="Serialisation\Serialiser.cs" />

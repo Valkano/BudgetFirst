@@ -26,15 +26,16 @@
 // along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
 // ===================================================================
 
-namespace BudgetFirst.Budgeting.Application.Projections.Repositories.BudgetList
+namespace BudgetFirst.Application.Projections.Repositories.BudgetList
 {
-    using BudgetFirst.Budgeting.Application.Projections.Models.BudgetList;
+    using BudgetFirst.Application.Projections.Models.BudgetList;
+    using BudgetFirst.Common.Domain.Model.Identifiers;
     using BudgetFirst.Common.Infrastructure.Projections.Models;
 
     /// <summary>
-    /// Read side budget list repository
+    /// Read side account list repository
     /// </summary>
-    public class BudgetListRepository
+    public class AccountListRepository 
     {
         /// <summary>
         /// Read store
@@ -42,37 +43,39 @@ namespace BudgetFirst.Budgeting.Application.Projections.Repositories.BudgetList
         private IReadStore readStore;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="BudgetListRepository"/> class.
+        /// Initialises a new instance of the <see cref="AccountListRepository"/> class.
         /// </summary>
         /// <param name="readStore">Read store</param>
-        public BudgetListRepository(IReadStore readStore)
+        public AccountListRepository(IReadStore readStore)
         {
             this.readStore = readStore;
         }
 
         /// <summary>
-        /// Retrieve a budget list from the repository.
+        /// Retrieve an account list from the repository.
         /// </summary>
-        /// <returns>Reference to the budget list in the repository. Guaranteed to be not <c>null</c>.</returns>
-        public BudgetList Find()
+        /// <param name="budget">Budget the accounts belong to</param>
+        /// <returns>Reference to the account list in the repository. Guaranteed to be not <c>null</c>.</returns>
+        public AccountList Find(BudgetId budget)
         {
-            var list = this.readStore.RetrieveSingleton<BudgetList>();
+            var list = this.readStore.Retrieve<AccountList>(budget.ToGuid());
             if (list == null)
             {
-                list = new BudgetList();
-                this.Save(list);
+                list = new AccountList();
+                this.Save(budget, list);
             }
 
             return list;
         }
 
         /// <summary>
-        /// Save the budget list, or add it to the repository. Beware: replaces existing budget list in repository.
+        /// Save the account list, or add it to the repository. Beware: replaces existing account list in repository.
         /// </summary>
-        /// <param name="budgetList">Budget list to save</param>
-        internal void Save(BudgetList budgetList)
+        /// <param name="budget">Budget the accounts belong to</param>
+        /// <param name="accountList">Account list to save</param>
+        internal void Save(BudgetId budget, AccountList accountList)
         {
-            this.readStore.StoreSingleton(budgetList);
+            this.readStore.Store(budget.ToGuid(), accountList);
         }
     }
 }

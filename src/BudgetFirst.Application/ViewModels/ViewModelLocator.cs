@@ -58,7 +58,7 @@ namespace BudgetFirst.Application.ViewModels
 
             // Application repositories and kernel
             SimpleIocWrapper.Default.Register<Kernel>();
-            SimpleIocWrapper.Default.Register<Repositories>(() => SimpleIocWrapper.Default.GetInstance<Kernel>().Repositories);
+            SimpleIocWrapper.Default.Register<ReadRepositories>(() => SimpleIocWrapper.Default.GetInstance<Kernel>().Repositories);
         }
 
         /// <summary>
