@@ -14,5 +14,5 @@ build:
   project: src/BudgetFirst.sln
   verbosity: minimal
 artifacts:
-  - path: src\Presentation\WPF\Presentation.Wpf\bin
+  - path: src\BudgetFirst.Presentation.Windows\bin
     name: WindowsBinaries

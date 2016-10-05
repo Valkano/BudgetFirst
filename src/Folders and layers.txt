@@ -1,0 +1,11 @@
+Application: 
+	Anything having to do with application logic.
+	
+Domain:
+	Domain, i.e. aggregates and events. Should be as pure as possible.
+	
+Infrastructure:
+	Anything supporting which does not by itself fulfil any application purposes.
+	
+Presentation:
+	User interfaces, i.e. the actual executable projects.

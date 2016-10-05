@@ -1,11 +1,47 @@
-﻿namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
+﻿// BudgetFirst 
+// ©2016 Thomas Mühlgrabner
+//
+// This source code is dual-licensed under:
+//   * Mozilla Public License 2.0 (MPL 2.0) 
+//   * GNU General Public License v3.0 (GPLv3)
+//
+// ==================== Mozilla Public License 2.0 ===================
+// This Source Code Form is subject to the terms of the Mozilla Public 
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// ================= GNU General Public License v3.0 =================
+// This file is part of BudgetFirst.
+//
+// BudgetFirst is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// BudgetFirst is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Budget First.  If not, see<http://www.gnu.org/licenses/>.
+// ===================================================================
+
+namespace BudgetFirst.Infrastructure.Tests.SharedInterfacesTests
 {
     using System;
     using System.Collections.Generic;
     using System.Text;
     using System.Threading;
+
+    using BudgetFirst.Common.Infrastructure.ApplicationState;
+    using BudgetFirst.Common.Infrastructure.Domain.Events;
+    using BudgetFirst.Common.Infrastructure.Domain.Model;
+    using BudgetFirst.Common.Infrastructure.EventSourcing;
+    using BudgetFirst.Common.Infrastructure.Messaging;
+    using BudgetFirst.Common.Infrastructure.Persistency;
+    using BudgetFirst.SharedInterfaces;
+
     using NUnit.Framework;
-    using SharedInterfaces.Messaging;
 
     /// <summary>
     /// Test fixture for events and vector clocks
@@ -13,6 +49,11 @@
     [TestFixture]
     public class EventTests
     {
+        /// <summary>
+        /// Unit of work used in tests
+        /// </summary>
+        private IUnitOfWork unitOfWork;
+
         /// <summary>
         /// Device 1, first event
         /// </summary>
@@ -50,6 +91,7 @@
         [SetUp]
         public void SetUp()
         {
+            this.SetupApplicationState();
             this.evt6 = new TestEvent(); // Earliest timestamp, but should be last based on VectorClock
             Thread.Sleep(10);
 
@@ -90,7 +132,7 @@
         [Test]
         public void OrderEvents()
         {
-            List<IDomainEvent> eventList = new List<IDomainEvent>();
+            var eventList = new List<IDomainEvent>();
             eventList.Add(this.evt5);
             eventList.Add(this.evt4);
             eventList.Add(this.evt3);
@@ -111,7 +153,7 @@
         [Test]
         public void VectorClockTakesPrecedence()
         {
-            List<IDomainEvent> eventList = new List<IDomainEvent>();
+            var eventList = new List<IDomainEvent>();
             eventList.Add(this.evt6); // Earlier timestamp but later vectorclock
             eventList.Add(this.evt1);
 
@@ -127,7 +169,7 @@
         public void SimultaneousEventsLastWins()
         {
             Assert.That(this.evt3.VectorClock.CompareVectors(this.evt4.VectorClock) == VectorClock.ComparisonResult.Simultaneous);
-            List<IDomainEvent> eventList = new List<IDomainEvent>();
+            var eventList = new List<IDomainEvent>();
             eventList.Add(this.evt4); // Earlier timestamp
             eventList.Add(this.evt3);
             eventList.Sort();
@@ -137,10 +179,39 @@
         }
 
         /// <summary>
-        /// Test event
+        /// Setup the application state
         /// </summary>
-        private class TestEvent : DomainEvent
+        private void SetupApplicationState()
         {
+            var deviceId = new DeviceId();
+            deviceId.SetDeviceId(new Guid("D7BD15B7-AB64-41FE-994D-5DC8E2E8C9D8"));
+
+            var vectorClock = new MasterVectorClock(deviceId);
+            var eventStore = new EventStore();
+            var messageBus = new EventBus();
+
+            this.unitOfWork = new UnitOfWork(deviceId, vectorClock, eventStore, messageBus);
+        }
+
+        /// <summary>
+        /// Simple, empty event for tests
+        /// </summary>
+        private class TestEvent : DomainEvent<TestEventId>
+        {
+        }
+
+        /// <summary>
+        /// Simple test id
+        /// </summary>
+        private sealed class TestEventId : AggregateId
+        {
+            /// <summary>
+            /// Initialises a new instance of the <see cref="TestEventId"/> class.
+            /// </summary>
+            /// <param name="id">Underlying id</param>
+            public TestEventId(Guid id) : base(id)
+            {
+            }
         }
     }
 }

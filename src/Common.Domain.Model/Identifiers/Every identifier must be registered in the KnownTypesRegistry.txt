@@ -1,0 +1,3 @@
+﻿We cannot use reflection in Xamarin (PCLs), therefore we have to define all types for serialisation and de-serialisation in another way.
+
+Every event type must be registered in the Known Types Registry.

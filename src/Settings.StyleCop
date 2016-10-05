@@ -3,6 +3,9 @@
     <StringProperty Name="Culture">en-GB</StringProperty>
 	<CollectionProperty Name="RecognizedWords">
       <Value>fallback</Value>
+	  <Value>persistable</Value>
+    <Value>Ioc</Value>
+    <Value>Wpf</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Analyzers>
